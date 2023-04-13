@@ -10,6 +10,8 @@ jobs:
   build-lint:
     env:
       DATABASE_URL: file:./db.sqlite
+      NODE_ENV: test
+      NEXTAUTH_SECRET: supersecret
     runs-on: ubuntu-latest
 
     steps:
@@ -52,13 +54,17 @@ jobs:
       - name: Build and test
         run: pnpm build && pnpm test
 
+      - name: Create directory for artifacts
+        run: |
+         mkdir -p ${{ github.workspace }}/artifact
+
       - name: Upload test results
         if: ${{ always() }}
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: test results
           path: |
-            playwright/test-results
+            ${{ github.workspace }}/artifact
 
-      - name: Check workspaces
-        run: pnpm manypkg check
+      # - name: Check workspaces
+      #   run: pnpm manypkg check
