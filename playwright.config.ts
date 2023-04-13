@@ -9,7 +9,7 @@ const opts = {
 	// collectCoverage: !!process.env.PLAYWRIGHT_HEADLESS
 };
 const config: PlaywrightTestConfig = {
-	testDir: "./test",
+	testDir: "./src/tests",
 	use: {
 		...devices["Desktop Chrome"],
 		baseURL: baseUrl,
