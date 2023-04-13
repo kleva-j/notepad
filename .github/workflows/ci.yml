@@ -9,9 +9,9 @@ on:
 jobs:
   build-lint:
     env:
-      NODE_ENV: ${{ variables.NODE_ENV }}
-      DATABASE_URL: ${{ variables.DATABASE_URL }}
-      NEXTAUTH_URL: ${{ variables.NEXTAUTH_URL }}
+      NODE_ENV: ${{ vars.NODE_ENV }}
+      DATABASE_URL: ${{ vars.DATABASE_URL }}
+      NEXTAUTH_URL: ${{ vars.NEXTAUTH_URL }}
       NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
       DISCORD_CLIENT_ID: ${{ secrets.DISCORD_CLIENT_ID }}
       DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
