@@ -1,0 +1,31 @@
+{
+  "projectName": "nodepad",
+  "projectOwner": "kleva-j",
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 50,
+  "commit": true,
+  "commitConvention": "none",
+  "contributors": [
+    {
+      "login": "kleva-j",
+      "name": "Michael Obasi",
+      "avatar_url": "https://avatars3.githubusercontent.com/u/25040017?v=4",
+      "profile": "https://www.michaelobasi.com",
+      "contributions": [
+        "bug",
+        "doc",
+        "code",
+        "test",
+        "ideas",
+        "design",
+        "maintenance"
+      ]
+    }
+  ],
+  "contributorsPerLine": 7,
+  "skipCi": true
+}
