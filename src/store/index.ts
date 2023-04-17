@@ -3,6 +3,7 @@ import { atomWithStorage } from "jotai/utils";
 import { atom } from "jotai";
 
 export const darkModeAtom = atomWithStorage("darkMode", false);
+export const colorAtom = atomWithStorage("color", "gray");
 
 export const categoriesAtom = atomWithStorage("categories", []);
 export const settingsAtom = atomWithStorage("settings", []);
