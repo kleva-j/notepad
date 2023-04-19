@@ -13,12 +13,6 @@ export const deleteCategory = (
 	id: string
 ): CategoryItem[] => categories.filter((category) => category.id !== id);
 
-export const initialCategoryState: CategoryState = {
-	categories: [],
-	error: "",
-	loading: false,
-};
-
 export const CategoryAtom = atom<string>("");
 export const CategoriesAtom = atom<CategoryItem[]>([]);
 export const addCategoryAtom = atom(
@@ -33,5 +27,33 @@ export const deleteCategoryAtom = atom(
 	() => "",
 	(get, set, id: UUID) => {
 		set(CategoriesAtom, deleteCategory(get(CategoriesAtom), id));
+	}
+);
+
+// CategoryState
+export const sampleCategoryState: CategoryState = {
+	categories: [],
+	error: "",
+	loading: false,
+};
+
+export const updateCategoryState = (
+	state: CategoryState,
+	payload: Partial<CategoryState>
+): CategoryState => ({
+	categories: payload.categories || state.categories,
+	error: payload.error || "",
+	loading: payload.loading || false,
+});
+
+export const CategoryStateAtom = atom<CategoryState>(sampleCategoryState);
+
+export const updateCategoryStateAtom = atom(
+	() => sampleCategoryState,
+	(get, set, payload: Partial<CategoryState>) => {
+		set(
+			CategoryStateAtom,
+			updateCategoryState(get(CategoryStateAtom), payload)
+		);
 	}
 );
