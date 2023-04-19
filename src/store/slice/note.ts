@@ -26,19 +26,7 @@ export const updateNote = (
 export const deleteNote = (notes: NoteItem[], id: string): NoteItem[] =>
 	notes.filter((note) => note.id !== id);
 
-export const initialNoteState: NoteState = {
-	notes: [],
-	activeFolder: Folder.ALL,
-	activeNoteId: "",
-	selectedNotesIds: [],
-	activeCategoryId: "",
-	error: "",
-	loading: false,
-	searchValue: "",
-};
-
 // Jotai implementation
-
 export const NoteAtom = atom<string>("");
 export const NotesAtom = atom<NoteItem[]>([]);
 export const addNoteAtom = atom(
@@ -60,5 +48,37 @@ export const deleteNoteAtom = atom(
 	() => "",
 	(get, set, id: UUID) => {
 		set(NotesAtom, deleteNote(get(NotesAtom), id));
+	}
+);
+
+// NoteState
+export const sampleNoteState: NoteState = {
+	notes: [],
+	activeFolder: Folder.ALL,
+	activeNoteId: "",
+	selectedNotesIds: [],
+	activeCategoryId: "",
+	error: "",
+	loading: false,
+	searchValue: "",
+};
+
+const updateNoteState = (state: NoteState, payload: Partial<NoteState>) => ({
+	notes: payload.notes || state.notes,
+	activeFolder: payload.activeFolder || state.activeFolder,
+	activeNoteId: payload.activeNoteId || state.activeNoteId,
+	selectedNotesIds: payload.selectedNotesIds || state.selectedNotesIds,
+	activeCategoryId: payload.activeCategoryId || state.activeCategoryId,
+	error: payload.error || state.error,
+	loading: payload.loading || state.loading,
+	searchValue: payload.searchValue || state.searchValue,
+});
+
+export const NoteStateAtom = atom<NoteState>(sampleNoteState);
+
+export const updateNotes = atom(
+	() => sampleNoteState,
+	(get, set, payload: Partial<NoteState>) => {
+		set(NoteStateAtom, updateNoteState(get(NoteStateAtom), payload));
 	}
 );
