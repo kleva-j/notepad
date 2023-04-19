@@ -46,6 +46,7 @@ export const authOptions: NextAuthOptions = {
 	},
 	adapter: PrismaAdapter(prisma),
 	pages: { signIn: "/login" },
+	secret: env.NEXTAUTH_SECRET,
 	providers: [
 		GithubProvider({
 			clientId: env.GITHUB_CLIENT_ID,

@@ -1,49 +1,48 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-// import type { NextRequest } from "next/server";
+import type { NextRequest } from "next/server";
 
-// import { withAuth } from "next-auth/middleware";
-// import { NextResponse } from "next/server";
-// import { getToken } from "next-auth/jwt";
+import { withAuth } from "next-auth/middleware";
+import { NextResponse } from "next/server";
+import { getToken } from "next-auth/jwt";
 
 // This function can be marked `async` if using `await` inside
-// export default withAuth(
-// 	async function middleware(req: NextRequest) {
-// 		const token = await getToken({ req });
-// 		const isAuth = !!token;
-// 		const isAuthPage =
-// 			req.nextUrl.pathname.startsWith("/login") ||
-// 			req.nextUrl.pathname.startsWith("/register");
+export default withAuth(
+	async function middleware(req: NextRequest) {
+		const token = await getToken({ req });
+		const isAuth = !!token;
 
-// 		if (isAuthPage) {
-// 			return isAuth
-// 				? NextResponse.redirect(new URL("/dashboard", req.url))
-// 				: null;
-// 		}
+		const isAuthPage = req.nextUrl.pathname.startsWith("/auth/login");
 
-// 		if (!isAuth) {
-// 			let from = req.nextUrl.pathname;
-// 			if (req.nextUrl.search) {
-// 				from += req.nextUrl.search;
-// 			}
+		if (isAuthPage) {
+			return isAuth
+				? NextResponse.redirect(new URL("/dashboard", req.url))
+				: null;
+		}
 
-// 			return NextResponse.redirect(
-// 				new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
-// 			);
-// 		}
-// 	},
-// 	{
-// 		callbacks: {
-// 			async authorized() {
-// 				// This is a work-around for handling redirect on auth pages.
-// 				// We return true here so that the middleware function above
-// 				// is always called.
-// 				return true;
-// 			},
-// 		},
-// 	}
-// );
+		if (!isAuth) {
+			let from = req.nextUrl.pathname;
+			if (req.nextUrl.search) {
+				from += req.nextUrl.search;
+			}
 
-export default function () {}
+			return NextResponse.redirect(
+				new URL(`/auth/login?from=${encodeURIComponent(from)}`, req.url)
+			);
+		}
+	},
+	{
+		callbacks: {
+			async authorized() {
+				// This is a work-around for handling redirect on auth pages.
+				// We return true here so that the middleware function above
+				// is always called.
+				return true;
+			},
+		},
+	}
+);
+
+// export default function () {}
 
 // Stop Middleware running on static files
 export const config = {
