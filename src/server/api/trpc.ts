@@ -53,9 +53,7 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
 	// Get the session from the server using the getServerSession wrapper function
 	const session = await getServerAuthSession({ req, res });
 
-	return createInnerTRPCContext({
-		session,
-	});
+	return createInnerTRPCContext({ session });
 };
 
 /**
@@ -66,8 +64,9 @@ export const createTRPCContext = async (opts: CreateNextContextOptions) => {
  * errors on the backend.
  */
 import { initTRPC, TRPCError } from "@trpc/server";
-import superjson from "superjson";
 import { ZodError } from "zod";
+
+import superjson from "superjson";
 
 const t = initTRPC.context<typeof createTRPCContext>().create({
 	transformer: superjson,
