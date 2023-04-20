@@ -4,11 +4,15 @@ import React, { FC, PropsWithChildren } from "react";
 
 import { Provider as StoreProvider } from "jotai";
 import { SessionProvider } from "next-auth/react";
+import { Session } from "next-auth";
 
-const Providers: FC<PropsWithChildren> = ({ children }) => {
+type ProviderType = PropsWithChildren & { session: Session };
+
+const Providers: FC<ProviderType> = ({ children, session }) => {
+	console.log(session);
 	return (
 		<StoreProvider>
-			<SessionProvider>{children}</SessionProvider>
+			<SessionProvider session={session}>{children}</SessionProvider>
 		</StoreProvider>
 	);
 };
