@@ -11,6 +11,7 @@ export const addNote = (notes: NoteItem[], text: string): NoteItem[] => [
 		id: `n-${uuid()}`,
 		text,
 		categoryId: "",
+		trash: false,
 		created: new Date().toDateString(),
 		lastUpdated: new Date().toDateString(),
 	},
@@ -52,7 +53,7 @@ export const deleteNoteAtom = atom(
 );
 
 // NoteState
-export const sampleNoteState: NoteState = {
+export const initialNoteState: NoteState = {
 	notes: [],
 	activeFolder: Folder.ALL,
 	activeNoteId: "",
@@ -74,10 +75,37 @@ const updateNoteState = (state: NoteState, payload: Partial<NoteState>) => ({
 	searchValue: payload.searchValue || state.searchValue,
 });
 
-export const NoteStateAtom = atom<NoteState>(sampleNoteState);
+export const getNoteIds = (
+	notes: NoteItem[],
+	folder: Folder,
+	categoryId?: string
+): string => {
+	const firstNote = {
+		[Folder.ALL]: () => notes[0],
+		[Folder.TRASH]: () => notes.find((note) => note.trash),
+		[Folder.CATEGORY]: () =>
+			notes.find((note) => note.categoryId === categoryId),
+	}[folder]();
+
+	return firstNote ? firstNote.id : "";
+};
+
+export const updateSelectedNotesIds = (
+	notes: NoteItem[],
+	activeFolder: Folder,
+	activeCategoryId?: string
+): string[] => [getNoteIds(notes, activeFolder, activeCategoryId)];
+
+export const updateActiveNoteIds = (
+	notes: NoteItem[],
+	activeFolder: Folder,
+	activeCategoryId?: string
+): string => getNoteIds(notes, activeFolder, activeCategoryId);
+
+export const NoteStateAtom = atom<NoteState>(initialNoteState);
 
 export const updateNotes = atom(
-	() => sampleNoteState,
+	() => initialNoteState,
 	(get, set, payload: Partial<NoteState>) => {
 		set(NoteStateAtom, updateNoteState(get(NoteStateAtom), payload));
 	}
