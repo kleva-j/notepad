@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
+
 export const debounceEvent = <T extends Function>(cb: T, wait = 20) => {
 	let h = 0;
 	const callable = (...args: any) => {

@@ -8,6 +8,7 @@ export interface CategoryItem {
 export interface NoteItem {
 	id: string;
 	text: string;
+	trash: boolean;
 	created: string;
 	lastUpdated: string;
 	categoryId?: string;
