@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import React from "react";
@@ -5,13 +6,26 @@ import React from "react";
 import { signIn } from "next-auth/react";
 
 export default function LoginPage() {
+	const loginUser = async (provider: "github" | "discord") => {
+		try {
+			const result: any = await signIn(provider, {
+				redirect: false,
+				callbackUrl: "http://localhost:3000/app",
+			});
+
+			console.log(result);
+		} catch (err) {
+			console.log(err);
+		}
+	};
+
 	return (
 		<div className="flex h-screen w-screen flex-col items-center justify-center">
 			<div className="mt-16 grid space-y-4">
 				<button
 					className="group h-12 rounded-full border-2 border-gray-300 px-6 transition duration-300
  hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100"
-					onClick={() => signIn("discord")}
+					onClick={() => loginUser("discord")}
 				>
 					<div className="relative flex items-center justify-center space-x-2">
 						<img
@@ -27,7 +41,7 @@ export default function LoginPage() {
 				<button
 					className="group h-12 rounded-full border-2 border-gray-300 px-6 transition duration-300
  hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100"
-					onClick={() => signIn("github")}
+					onClick={() => loginUser("github")}
 				>
 					<div className="relative flex items-center justify-center space-x-2">
 						<svg
