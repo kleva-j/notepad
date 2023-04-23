@@ -5,3 +5,10 @@ updates:
     schedule:
       interval: daily
     open-pull-requests-limit: 2
+    target-branch: "develop"
+    labels:
+      - "npm dependencies"
+    reviewers:
+     - "kleva-j"
+    assignees:
+      - "kleva-j"

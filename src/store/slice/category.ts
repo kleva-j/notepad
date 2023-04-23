@@ -6,7 +6,11 @@ import { UUID } from "crypto";
 export const addCategory = (
 	categories: CategoryItem[],
 	name: string
-): CategoryItem[] => [...categories, { id: `c-${uuid()}`, name }];
+): CategoryItem[] => {
+	const newCategories = categories;
+	newCategories.push({ id: `c-${uuid()}`, name });
+	return newCategories;
+};
 
 export const deleteCategory = (
 	categories: CategoryItem[],

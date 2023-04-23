@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-// import type { NextRequest } from "next/server";
+
+// import { type NextRequest, NextResponse } from "next/server";
 
 // import { withAuth } from "next-auth/middleware";
 // import { NextResponse } from "next/server";
@@ -10,9 +11,8 @@
 // 	async function middleware(req: NextRequest) {
 // 		const token = await getToken({ req });
 // 		const isAuth = !!token;
-// 		const isAuthPage =
-// 			req.nextUrl.pathname.startsWith("/login") ||
-// 			req.nextUrl.pathname.startsWith("/register");
+
+// 		const isAuthPage = req.nextUrl.pathname.startsWith("/auth/login");
 
 // 		if (isAuthPage) {
 // 			return isAuth
@@ -27,7 +27,7 @@
 // 			}
 
 // 			return NextResponse.redirect(
-// 				new URL(`/login?from=${encodeURIComponent(from)}`, req.url)
+// 				new URL(`/auth/login?from=${encodeURIComponent(from)}`, req.url)
 // 			);
 // 		}
 // 	},
