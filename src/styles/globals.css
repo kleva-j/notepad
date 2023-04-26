@@ -1,3 +1,48 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.action-button {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 1rem;
+	margin-bottom: 0.5rem;
+	font-size: 0.95rem;
+	border: none;
+	text-align: left;
+	border-radius: 0;
+	cursor: pointer;
+	width: 100%;
+	-webkit-font-smoothing: antialiased;
+}
+
+.action-button:hover,
+.action-button:focus {
+	outline: none;
+	background: #5183f5;
+}
+
+.action-button > svg {
+	background: #5183f5;
+	stroke: white;
+	@apply rounded;
+}
+
+.action-button-icon {
+	stroke: white;
+	border-radius: 0.3rem;
+}
+
+.folder-options.active {
+	background-color: #1d1d1d;
+}
+
+.folder-options.active svg {
+	stroke: #5183f5;
+}
+
+.category-menulist:hover > svg,
+.category-button:hover svg {
+	stroke: white;
+}

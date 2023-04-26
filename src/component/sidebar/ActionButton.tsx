@@ -1,16 +1,30 @@
+import { Icon as IconType } from "react-feather";
+import { iconColor } from "@/utils/constants";
 import React, { FC } from "react";
 
 type ButtonProps = {
 	label: string;
-	icon?: JSX.Element;
+	disabled?: boolean;
+	icon: IconType;
 	onclick?: () => void;
 };
 
-export const Button: FC<ButtonProps> = ({ icon, label }) => {
+export const Button: FC<ButtonProps> = ({
+	icon: Icon,
+	label,
+	onclick,
+	disabled = false,
+}) => {
 	return (
-		<button className="flex items-center justify-center gap-x-2 px-2 py-1">
-			{icon}
-			<span>{label}</span>
+		<button
+			className="action-button font-semibold text-white"
+			aria-label={label}
+			onClick={onclick}
+			disabled={disabled}
+			title={label}
+		>
+			<Icon size={18} color={iconColor} aria-hidden="true" focusable="false" />
+			<span className="ml-3">{label}</span>
 		</button>
 	);
 };
