@@ -1,3 +1,79 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+.action-button {
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	padding: 1rem;
+	margin-bottom: 0.5rem;
+	font-size: 0.95rem;
+	border: none;
+	text-align: left;
+	border-radius: 0;
+	cursor: pointer;
+	width: 100%;
+	-webkit-font-smoothing: antialiased;
+}
+
+.action-button:hover,
+.action-button:focus {
+	outline: none;
+	background: #5183f5;
+}
+
+.action-button > svg {
+	background: #5183f5;
+	stroke: white;
+	@apply rounded;
+}
+
+.action-button-icon {
+	stroke: white;
+	border-radius: 0.3rem;
+}
+
+.folder-options {
+	padding: 0.42rem 1.05rem;
+}
+
+.folder-options > div {
+	font-size: 0.95rem;
+	font-stretch: 100%;
+	font-weight: 500;
+	color: rgba(255,255,255, .7);
+	letter-spacing: 0.007cm;
+}
+
+.folder-options.active > div {
+	color: white;
+}
+
+.category-menulist:hover > svg,
+.category-button:hover svg {
+	stroke: white;
+}
+
+.category-options {
+	background: transparent;
+}
+
+.folder-options:hover,
+.category-options.active,
+.category-options:hover {
+	background: #3a3a3a;
+}
+
+.folder-options.active,
+.category-options > div.active {
+	background-color: rgb(29, 29, 29, .9);
+}
+
+.category-options div:last-child svg {
+	stroke: transparent;
+}
+
+.category-options:hover div:last-child svg {
+	stroke: #7a7a7a;
+}

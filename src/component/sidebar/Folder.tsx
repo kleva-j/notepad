@@ -1,25 +1,33 @@
+"use client";
+
 import { Folder } from "@/utils/enums";
 import React, { FC } from "react";
 
-type FolderProps = {
+export type FolderProps = {
 	text: string;
 	icon: JSX.Element;
 	active: boolean;
 	folder: Folder;
-	onClick: () => void;
+	onClick?: () => void;
 	addNoteType?: (noteId: string) => void;
 };
 
-export const FolderOption: FC<FolderProps> = ({ icon, text, active }) => {
+export const FolderOption: FC<FolderProps> = ({
+	icon,
+	text,
+	active,
+	onClick,
+}) => {
 	return (
-		<button className="w-full bg-transparent text-sm">
-			<div
-				className={`${
-					active ? "bg-blend-darken" : ""
-				} flex cursor-pointer items-center gap-x-3 border-[1px] border-transparent bg-[#2d2d2d] px-4 py-2 font-semibold hover:bg-blend-lighten`}
-			>
+		<button
+			className={`folder-options ${
+				active ? "active" : ""
+			} w-full gap-x-3 bg-transparent`}
+			onClick={onClick}
+		>
+			<div className="flex items-center gap-x-3 font-semibold">
 				{icon}
-				<span className="capitalize">{text}</span>
+				{text}
 			</div>
 		</button>
 	);

@@ -1,7 +1,7 @@
 import { CategoryItem, CategoryState } from "@/types";
 import { v4 as uuid } from "uuid";
-import { atom } from "jotai";
 import { UUID } from "crypto";
+import { atom } from "jotai";
 
 export const addCategory = (
 	categories: CategoryItem[],

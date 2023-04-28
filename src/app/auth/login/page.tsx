@@ -8,12 +8,7 @@ import { signIn } from "next-auth/react";
 export default function LoginPage() {
 	const loginUser = async (provider: "github" | "discord") => {
 		try {
-			const result: any = await signIn(provider, {
-				redirect: false,
-				callbackUrl: "http://localhost:3000/app",
-			});
-
-			console.log(result);
+			await signIn(provider, { redirect: true, callbackUrl: "/app" });
 		} catch (err) {
 			console.log(err);
 		}
