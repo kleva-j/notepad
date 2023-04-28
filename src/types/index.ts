@@ -1,4 +1,10 @@
+import { MouseEvent, ChangeEvent } from "react";
 import { Folder } from "@/utils/enums";
+
+export type ReactMouseEvent =
+	| MouseEvent
+	| MouseEvent<HTMLDivElement>
+	| ChangeEvent<HTMLSelectElement>;
 
 export interface CategoryItem {
 	id: string;
@@ -10,8 +16,10 @@ export interface NoteItem {
 	text: string;
 	trash: boolean;
 	created: string;
+	scratchpad?: boolean;
 	lastUpdated: string;
 	categoryId?: string;
+	favorite?: boolean;
 }
 
 export interface SyncPayload {

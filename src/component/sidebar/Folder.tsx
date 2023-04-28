@@ -19,14 +19,15 @@ export const FolderOption: FC<FolderProps> = ({
 	onClick,
 }) => {
 	return (
-		<button className="w-full bg-transparent text-sm" onClick={onClick}>
-			<div
-				className={`folder-options ${
-					active ? "active" : ""
-				} flex cursor-pointer items-center gap-x-3 border-[1px] border-transparent bg-[#2d2d2d] px-4 py-2 font-semibold hover:bg-blend-lighten`}
-			>
+		<button
+			className={`folder-options ${
+				active ? "active" : ""
+			} w-full gap-x-3 bg-transparent`}
+			onClick={onClick}
+		>
+			<div className="flex items-center gap-x-3 font-semibold">
 				{icon}
-				<span className="capitalize">{text}</span>
+				{text}
 			</div>
 		</button>
 	);

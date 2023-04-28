@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import CategoryOptions from "@/container/CategoryOptions";
-import React, { useState, FormEvent } from "react";
 
+import React, { useState, FormEvent, MouseEvent } from "react";
 import {
 	CategoriesAtom,
 	CategoryAtom,
@@ -9,10 +10,14 @@ import {
 } from "@/store/slice/category";
 import { ChevronDown, ChevronRight, Layers, Plus } from "react-feather";
 import { LabelText, iconColor } from "@/utils/constants";
+import { ReactMouseEvent } from "@/types";
 import { v4 as uuid } from "uuid";
 import { useAtom } from "jotai";
 
+export type Event = MouseEvent<HTMLDivElement, MouseEvent> | ReactMouseEvent;
+
 export default function CategoryList() {
+	// const [activeCategory, setActiveCategory] = useState("");
 	const [isListOpen, setCategoryListOpen] = useState(false);
 	const [isAddingCategory, setIsAddingCategory] = useState(false);
 
@@ -41,11 +46,27 @@ export default function CategoryList() {
 		!isListOpen && setCategoryListOpen(true);
 	};
 
+	const handleOptionMenuClick = (
+		event: MouseEvent<HTMLDivElement, MouseEvent> | ReactMouseEvent,
+		_categoryId = ""
+	) => {
+		const clicked = event.target;
+		if (!clicked) return;
+
+		console.log("Menu has been clicked");
+		event.stopPropagation();
+	};
+
+	const handleCategoryRightClick = (event: Event, categoryId = "") => {
+		event.preventDefault();
+		handleOptionMenuClick(event, categoryId);
+	};
+
 	return (
 		<section className="flex flex-col">
 			<div className="mt-4 flex items-center justify-between py-2 pl-4">
 				<button
-					className="category-menulist m-0 flex cursor-pointer items-center bg-transparent p-0 text-sm text-[#d0d0d0]/25"
+					className="category-menulist m-0 flex cursor-pointer items-center bg-transparent p-0 text-sm text-[#d0d0d067]"
 					onClick={() => setCategoryListOpen(!isListOpen)}
 					aria-label={LabelText.COLLAPSE_CATEGORY}
 				>
@@ -58,7 +79,7 @@ export default function CategoryList() {
 					) : (
 						<Layers size={16} />
 					)}
-					<h2 className="pl-3 text-[13px] font-bold uppercase">Categories</h2>
+					<h2 className="pl-3 text-[13px] font-[600] uppercase">Categories</h2>
 				</button>
 				<button
 					className="category-button flex cursor-pointer items-center border-0 bg-transparent px-4 py-2 text-sm text-[#d0d0d0]/20 hover:text-white"
@@ -76,15 +97,18 @@ export default function CategoryList() {
 							key={category.id}
 							index={index}
 							category={category}
+							handleMenuClick={handleOptionMenuClick}
+							handleRightClick={handleCategoryRightClick}
 						/>
 					))}
 					{isAddingCategory && (
-						<form className="category-form" onSubmit={onSubmitNewCategory}>
+						<form onSubmit={onSubmitNewCategory}>
 							<input
 								aria-label="Category name"
 								type="text"
 								autoFocus
 								maxLength={20}
+								className="m-2 ml-4 w-[150px] border-0 bg-[#2d2d2d]/5 p-2 text-[0.9rem] text-[#eeeeee]"
 								value={category}
 								placeholder="New category..."
 								onChange={(evt) => setCategory(evt.target.value)}

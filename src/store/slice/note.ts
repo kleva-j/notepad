@@ -14,6 +14,7 @@ export const addNote = (notes: NoteItem[], text: string): NoteItem[] => [
 		trash: false,
 		created: new Date().toDateString(),
 		lastUpdated: new Date().toDateString(),
+		favorite: false,
 	},
 ];
 
@@ -85,6 +86,8 @@ export const getNoteIds = (
 		[Folder.TRASH]: () => notes.find((note) => note.trash),
 		[Folder.CATEGORY]: () =>
 			notes.find((note) => note.categoryId === categoryId),
+		[Folder.FAVORITE]: () => notes.find((note) => note.favorite),
+		[Folder.SCRATCHPAD]: () => notes.find((note) => note.scratchpad),
 	}[folder]();
 
 	return firstNote ? firstNote.id : "";
