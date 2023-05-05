@@ -1,6 +1,5 @@
 import { CategoryItem, CategoryState } from "@/types";
 import { v4 as uuid } from "uuid";
-import { UUID } from "crypto";
 import { atom } from "jotai";
 
 export const addCategory = (
@@ -8,31 +7,53 @@ export const addCategory = (
 	name: string
 ): CategoryItem[] => {
 	const newCategories = categories;
-	newCategories.push({ id: `c-${uuid()}`, name });
+	newCategories.push({ id: `c-${uuid()}`, name, draggedOver: false });
 	return newCategories;
+};
+
+export const updateCategory = (
+	categories: CategoryItem[],
+	id: string,
+	payload: Partial<CategoryItem>
+): CategoryItem[] =>
+	categories.map((category) =>
+		category.id === id ? { ...category, ...payload } : category
+	);
+
+export const swapCategories = (
+	categories: CategoryItem[],
+	payload: { sourceId: number; destinationId: number }
+): CategoryItem[] => {
+	const { sourceId, destinationId } = payload;
+	const newCategories = [...categories];
+	newCategories.splice(sourceId, 1);
+	newCategories.splice(destinationId, 0, categories[sourceId] as CategoryItem);
+
+	return newCategories;
+};
+
+export const categoryDragEnter = (
+	categories: CategoryItem[],
+	payload: Partial<CategoryItem>
+) => {
+	categories = categories.map((category) =>
+		category.id === payload.id ? { ...category, draggedOver: true } : category
+	);
+};
+
+export const categoryDragLeave = (
+	categories: CategoryItem[],
+	payload: Partial<CategoryItem>
+) => {
+	categories = categories.map((category) =>
+		category.id === payload.id ? { ...category, draggedOver: false } : category
+	);
 };
 
 export const deleteCategory = (
 	categories: CategoryItem[],
 	id: string
 ): CategoryItem[] => categories.filter((category) => category.id !== id);
-
-export const CategoryAtom = atom<string>("");
-export const CategoriesAtom = atom<CategoryItem[]>([]);
-export const addCategoryAtom = atom(
-	() => "",
-	(get, set) => {
-		set(CategoriesAtom, addCategory(get(CategoriesAtom), get(CategoryAtom)));
-		set(CategoryAtom, "");
-	}
-);
-
-export const deleteCategoryAtom = atom(
-	() => "",
-	(get, set, id: UUID) => {
-		set(CategoriesAtom, deleteCategory(get(CategoriesAtom), id));
-	}
-);
 
 // CategoryState
 export const sampleCategoryState: CategoryState = {

@@ -42,7 +42,7 @@
 	font-size: 0.95rem;
 	font-stretch: 100%;
 	font-weight: 500;
-	color: rgba(255,255,255, .7);
+	color: rgba(255, 255, 255, 0.7);
 	letter-spacing: 0.007cm;
 }
 
@@ -60,20 +60,117 @@
 }
 
 .folder-options:hover,
-.category-options.active,
 .category-options:hover {
 	background: #3a3a3a;
 }
 
 .folder-options.active,
-.category-options > div.active {
-	background-color: rgb(29, 29, 29, .9);
+.category-options.active {
+	background-color: rgb(29, 29, 29, 0.9);
 }
 
-.category-options div:last-child svg {
+.category-options div:last-child svg,
+.note-list svg.more-option {
 	stroke: transparent;
 }
 
 .category-options:hover div:last-child svg {
 	stroke: #7a7a7a;
+}
+
+.note-list .note-list-item:hover svg.more-option {
+	stroke: #404040;
+}
+
+.note-list .note-list-item.selected:hover svg.more-option {
+	stroke: #ffffff;
+}
+
+.category-options.dragging {
+	background: #141414;
+	box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.category-options.dragged-over {
+	border: 1px dashed #5183f5;
+	color: #fff;
+	background: #202020;
+}
+
+.category-options.dragged-over > div > svg {
+	stroke: #5183f5;
+}
+
+.note-list-item {
+	cursor: pointer;
+	font-size: 500;
+	line-height: 1.3;
+	padding: 0.5rem;
+	border-bottom: 1px solid #d1d1d1;
+	font-size: 0.85rem;
+	line-height: 1.3;
+}
+
+.note-list-item:hover {
+	background: #d8d8d8;
+}
+
+.note-list-item .note-title {
+	@apply overflow-hidden text-clip text-[0.85rem] font-normal leading-[1.3] text-[#404040];
+}
+
+.note-list-item .note-category {
+	display: flex;
+	align-items: center;
+	margin-left: 1.5625rem;
+	color: #00000066;
+}
+
+.note-list-item .note-favorite {
+	stroke: #5183f5;
+}
+
+.note-list-item.selected {
+	background: #5183f5;
+	border-bottom: 1px solid #3972f4;
+}
+
+.note-list-item.selected .note-favorite {
+	stroke: #ffffff;
+}
+
+.note-list-item.selected .note-title {
+	color: white;
+}
+
+.note-list-item.selected .note-category {
+	color: #ffffff99;
+}
+
+.note-list-item .highlighted {
+	color: #3e64ff;
+}
+
+.note-list-item.selected .highlighted {
+	background: white;
+}
+
+.empty-button {
+	cursor: pointer;
+	align-items: center;
+	justify-content: space-between;
+	color: #404040;
+	background: #e5e5e5;
+	padding: 0.7rem;
+	margin: 0 0 0 0.5rem;
+	font-size: 0.85rem;
+	font-weight: 500;
+	border: none;
+}
+
+/* Editor stylings */
+.w-md-editor-text-pre > code,
+.w-md-editor-text-input {
+  font-size: 1.2rem !important;
+  line-height: 1.3125rem !important;
 }
