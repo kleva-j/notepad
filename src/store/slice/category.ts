@@ -1,4 +1,5 @@
 import { CategoryItem, CategoryState } from "@/types";
+import { atomWithStorage } from "jotai/utils";
 import { v4 as uuid } from "uuid";
 import { atom } from "jotai";
 
@@ -71,7 +72,10 @@ export const updateCategoryState = (
 	loading: payload.loading || false,
 });
 
-export const CategoryStateAtom = atom<CategoryState>(sampleCategoryState);
+export const CategoryStateAtom = atomWithStorage<CategoryState>(
+	"categoryState",
+	sampleCategoryState
+);
 
 export const updateCategoryStateAtom = atom(
 	() => sampleCategoryState,

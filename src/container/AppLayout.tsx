@@ -6,9 +6,9 @@ import NoteList from "./AppNoteList";
 import React from "react";
 
 import {
-	swapCategories,
-	CategoryStateAtom,
 	updateCategoryStateAtom,
+	CategoryStateAtom,
+	swapCategories,
 } from "@/store/slice/category";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { fadeIn } from "@/utils/motion";

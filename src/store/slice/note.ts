@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { NoteItem, NoteState } from "@/types";
+import { atomWithStorage } from "jotai/utils";
 import { Folder } from "@/utils/enums";
 import { atom } from "jotai";
 
@@ -104,7 +105,10 @@ export const pruneNotes = (
 			note.scratchpad || note.text !== "" || selectedNotesIds.includes(note.id)
 	);
 
-export const NoteStateAtom = atom<NoteState>(initialNoteState);
+export const NoteStateAtom = atomWithStorage<NoteState>(
+	"noteState",
+	initialNoteState
+);
 
 export const updateNotes = atom(
 	() => initialNoteState,
