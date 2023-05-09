@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 import { MouseEvent, ChangeEvent, DragEvent } from "react";
 import { Folder } from "@/utils/enums";
@@ -11,7 +12,7 @@ export type ReactMouseEvent =
 	| MouseEvent<HTMLDivElement>
 	| ChangeEvent<HTMLSelectElement>;
 
-export type ReactDragEvent = DragEvent<HTMLButtonElement>;
+export type ReactDragEvent = DragEvent<HTMLButtonElement | HTMLDivElement>;
 
 export interface CategoryItem {
 	id: string;
@@ -69,6 +70,7 @@ export interface SettingsState {
 	darkTheme: boolean;
 	sidebarVisible: boolean;
 	previewMarkdown: boolean;
+	codeMirrorOptions: { [key: string]: any };
 }
 
 export interface SyncState {
