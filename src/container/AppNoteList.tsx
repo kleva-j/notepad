@@ -11,8 +11,8 @@ import { debounceEvent, getNoteTitle, isDraftNote } from "@/utils/helpers";
 import { Button as EmptyButton } from "@/component/notelist/Button";
 import { SearchBar } from "@/component/notelist/SearchBar";
 import { CategoryStateAtom } from "@/store/slice/category";
+import { NoteItem, ReactDragEvent } from "@/types";
 import { Folder } from "@/utils/enums";
-import { NoteItem } from "@/types";
 import { useAtom } from "jotai";
 
 export default function NoteList() {
@@ -56,6 +56,11 @@ export default function NoteList() {
 
 	const showEmptyTrash =
 		activeFolder === Folder.TRASH && filteredNotes.length > 0;
+
+	const handleDragStart = (event: ReactDragEvent, noteId = "") => {
+		event.stopPropagation();
+		event.dataTransfer.setData("text/plain", noteId);
+	};
 
 	return (
 		<section className="flex h-full w-full flex-col overflow-auto bg-[#e5e5e5]">
@@ -103,6 +108,8 @@ export default function NoteList() {
 									notes: pruneNotes(notes, selectedNotesIds),
 								});
 							}}
+							onDragStart={(event) => handleDragStart(event, note.id)}
+							draggable={note.text !== ""}
 						>
 							<div className="flex w-full items-center">
 								<div className="flex w-full items-center justify-start">
