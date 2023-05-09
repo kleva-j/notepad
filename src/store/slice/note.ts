@@ -1,21 +1,12 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
 import { NoteItem, NoteState } from "@/types";
+import { atomWithStorage } from "jotai/utils";
 import { Folder } from "@/utils/enums";
-import { v4 as uuid } from "uuid";
 import { atom } from "jotai";
-import { UUID } from "crypto";
 
-export const addNote = (notes: NoteItem[], text: string): NoteItem[] => [
+export const addNote = (notes: NoteItem[], newNote: NoteItem): NoteItem[] => [
 	...notes,
-	{
-		id: `n-${uuid()}`,
-		text,
-		categoryId: "",
-		trash: false,
-		created: new Date().toDateString(),
-		lastUpdated: new Date().toDateString(),
-		favorite: false,
-	},
+	newNote,
 ];
 
 export const updateNote = (
@@ -27,31 +18,6 @@ export const updateNote = (
 
 export const deleteNote = (notes: NoteItem[], id: string): NoteItem[] =>
 	notes.filter((note) => note.id !== id);
-
-// Jotai implementation
-export const NoteAtom = atom<string>("");
-export const NotesAtom = atom<NoteItem[]>([]);
-export const addNoteAtom = atom(
-	() => "",
-	(get, set) => {
-		set(NotesAtom, addNote(get(NotesAtom), get(NoteAtom)));
-		set(NoteAtom, "");
-	}
-);
-
-export const updateNoteAtom = atom(
-	() => "",
-	(get, set, { id, ...payload }: { id: string } & Partial<NoteItem>) => {
-		set(NotesAtom, updateNote(get(NotesAtom), id, { ...payload }));
-	}
-);
-
-export const deleteNoteAtom = atom(
-	() => "",
-	(get, set, id: UUID) => {
-		set(NotesAtom, deleteNote(get(NotesAtom), id));
-	}
-);
 
 // NoteState
 export const initialNoteState: NoteState = {
@@ -82,11 +48,11 @@ export const getNoteIds = (
 	categoryId?: string
 ): string => {
 	const firstNote = {
-		[Folder.ALL]: () => notes[0],
+		[Folder.ALL]: () => notes.find((note) => !note.scratchpad),
 		[Folder.TRASH]: () => notes.find((note) => note.trash),
 		[Folder.CATEGORY]: () =>
 			notes.find((note) => note.categoryId === categoryId),
-		[Folder.FAVORITE]: () => notes.find((note) => note.favorite),
+		[Folder.FAVORITES]: () => notes.find((note) => note.favorite),
 		[Folder.SCRATCHPAD]: () => notes.find((note) => note.scratchpad),
 	}[folder]();
 
@@ -105,7 +71,44 @@ export const updateActiveNoteIds = (
 	activeCategoryId?: string
 ): string => getNoteIds(notes, activeFolder, activeCategoryId);
 
-export const NoteStateAtom = atom<NoteState>(initialNoteState);
+export const updateActiveAndSelectedNotes = (
+	notes: NoteItem[],
+	activeFolder: Folder,
+	activeCategoryId?: string
+) => {
+	const noteIds = getNoteIds(notes, activeFolder, activeCategoryId);
+	return {
+		activeNoteIds: noteIds,
+		selectedNoteIds: [noteIds],
+	};
+};
+
+export const updateActiveCategoryId = (
+	notes: NoteItem[],
+	categoryId: string
+) => {
+	return {
+		activeCategoryId: categoryId,
+		activeFolder: Folder.CATEGORY,
+		activeNoteId: getNoteIds(notes, Folder.CATEGORY, categoryId),
+		selectedNotesIds: [getNoteIds(notes, Folder.CATEGORY, categoryId)],
+		notes: notes.filter((note) => note.text !== ""),
+	};
+};
+
+export const pruneNotes = (
+	notes: NoteItem[],
+	selectedNotesIds: string[]
+): NoteItem[] =>
+	notes.filter(
+		(note) =>
+			note.scratchpad || note.text !== "" || selectedNotesIds.includes(note.id)
+	);
+
+export const NoteStateAtom = atomWithStorage<NoteState>(
+	"noteState",
+	initialNoteState
+);
 
 export const updateNotes = atom(
 	() => initialNoteState,

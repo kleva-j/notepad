@@ -1,42 +1,45 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import CategoryOptions from "@/container/CategoryOptions";
 
-import React, { useState, FormEvent, MouseEvent } from "react";
+import React, { useRef, useState, FormEvent, MouseEvent } from "react";
 import {
-	CategoriesAtom,
-	CategoryAtom,
-	addCategoryAtom,
 	updateCategoryStateAtom,
+	CategoryStateAtom,
+	addCategory,
 } from "@/store/slice/category";
+import {
+	updateActiveCategoryId,
+	NoteStateAtom,
+	updateNotes,
+} from "@/store/slice/note";
 import { ChevronDown, ChevronRight, Layers, Plus } from "react-feather";
 import { LabelText, iconColor } from "@/utils/constants";
+import { Droppable } from "react-beautiful-dnd";
 import { ReactMouseEvent } from "@/types";
-import { v4 as uuid } from "uuid";
+import { Folder } from "@/utils/enums";
 import { useAtom } from "jotai";
 
 export type Event = MouseEvent<HTMLDivElement, MouseEvent> | ReactMouseEvent;
 
 export default function CategoryList() {
-	// const [activeCategory, setActiveCategory] = useState("");
+	const inputRef = useRef<HTMLInputElement>(null);
+
+	const [noteState] = useAtom(NoteStateAtom);
+	const [, updateNoteState] = useAtom(updateNotes);
 	const [isListOpen, setCategoryListOpen] = useState(false);
 	const [isAddingCategory, setIsAddingCategory] = useState(false);
 
-	const [categoryAtom] = useAtom(CategoriesAtom);
-	const [, addNewCategory] = useAtom(addCategoryAtom);
-	const [category, setCategory] = useAtom(CategoryAtom);
+	const [{ categories }] = useAtom(CategoryStateAtom);
 	const [, setCategoryState] = useAtom(updateCategoryStateAtom);
+
+	const { activeCategoryId, activeFolder, notes } = noteState;
 
 	const onSubmitNewCategory = (event: FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
+		const name = inputRef.current?.value || "";
 
-		const newCategory = { id: uuid(), name: category };
-
-		if (
-			!categoryAtom.find((cat) => cat.name === newCategory.name) ||
-			!(newCategory.name === "")
-		) {
-			addNewCategory();
-			setCategoryState({ categories: categoryAtom });
+		if (!categories.find((cat) => cat.name === name) || !(name === "")) {
+			setCategoryState({ categories: addCategory(categories, name) });
 		}
 		setIsAddingCategory(false);
 	};
@@ -53,7 +56,6 @@ export default function CategoryList() {
 		const clicked = event.target;
 		if (!clicked) return;
 
-		console.log("Menu has been clicked");
 		event.stopPropagation();
 	};
 
@@ -61,6 +63,9 @@ export default function CategoryList() {
 		event.preventDefault();
 		handleOptionMenuClick(event, categoryId);
 	};
+
+	const handleClick = (id: string) =>
+		updateNoteState(updateActiveCategoryId(notes, id));
 
 	return (
 		<section className="flex flex-col">
@@ -70,7 +75,7 @@ export default function CategoryList() {
 					onClick={() => setCategoryListOpen(!isListOpen)}
 					aria-label={LabelText.COLLAPSE_CATEGORY}
 				>
-					{categoryAtom.length > 0 ? (
+					{categories.length > 0 ? (
 						isListOpen ? (
 							<ChevronDown size={16} />
 						) : (
@@ -79,7 +84,9 @@ export default function CategoryList() {
 					) : (
 						<Layers size={16} />
 					)}
-					<h2 className="pl-3 text-[13px] font-[600] uppercase">Categories</h2>
+					<h2 className="pl-3 text-[0.8125rem] font-[600] uppercase">
+						Categories
+					</h2>
 				</button>
 				<button
 					className="category-button flex cursor-pointer items-center border-0 bg-transparent px-4 py-2 text-sm text-[#d0d0d0]/20 hover:text-white"
@@ -92,27 +99,43 @@ export default function CategoryList() {
 
 			{isListOpen && (
 				<>
-					{categoryAtom.map((category, index) => (
-						<CategoryOptions
-							key={category.id}
-							index={index}
-							category={category}
-							handleMenuClick={handleOptionMenuClick}
-							handleRightClick={handleCategoryRightClick}
-						/>
-					))}
+					<Droppable type="CATEGORY" droppableId="category-list">
+						{(provided) => (
+							<div
+								{...provided.droppableProps}
+								ref={provided.innerRef}
+								className="category-list"
+								aria-label="Category list"
+							>
+								{categories.map((category, index) => (
+									<CategoryOptions
+										key={category.id}
+										index={index}
+										category={category}
+										active={
+											activeFolder === Folder.CATEGORY &&
+											category.id === activeCategoryId
+										}
+										handleClick={() => handleClick(category.id)}
+										handleMenuClick={handleOptionMenuClick}
+										handleRightClick={handleCategoryRightClick}
+									/>
+								))}
+								{provided.placeholder}
+							</div>
+						)}
+					</Droppable>
 					{isAddingCategory && (
 						<form onSubmit={onSubmitNewCategory}>
 							<input
-								aria-label="Category name"
 								type="text"
 								autoFocus
+								ref={inputRef}
 								maxLength={20}
-								className="m-2 ml-4 w-[150px] border-0 bg-[#2d2d2d]/5 p-2 text-[0.9rem] text-[#eeeeee]"
-								value={category}
+								aria-label="Category name"
 								placeholder="New category..."
-								onChange={(evt) => setCategory(evt.target.value)}
 								onBlur={() => setIsAddingCategory(false)}
+								className="m-2 ml-4 w-[150px] border-0 bg-[#2d2d2d]/5 p-2 text-[0.9rem] text-[#eeeeee]"
 							/>
 						</form>
 					)}

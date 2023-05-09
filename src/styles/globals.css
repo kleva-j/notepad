@@ -42,7 +42,7 @@
 	font-size: 0.95rem;
 	font-stretch: 100%;
 	font-weight: 500;
-	color: rgba(255,255,255, .7);
+	color: rgba(255, 255, 255, 0.7);
 	letter-spacing: 0.007cm;
 }
 
@@ -60,20 +60,402 @@
 }
 
 .folder-options:hover,
-.category-options.active,
 .category-options:hover {
 	background: #3a3a3a;
 }
 
 .folder-options.active,
-.category-options > div.active {
-	background-color: rgb(29, 29, 29, .9);
+.category-options.active {
+	background-color: rgb(29, 29, 29, 0.9);
 }
 
-.category-options div:last-child svg {
+.category-options div:last-child svg,
+.note-list svg.more-option {
 	stroke: transparent;
 }
 
 .category-options:hover div:last-child svg {
 	stroke: #7a7a7a;
+}
+
+.note-list .note-list-item:hover svg.more-option {
+	stroke: #404040;
+}
+
+.note-list .note-list-item.selected:hover svg.more-option {
+	stroke: #ffffff;
+}
+
+.category-options.dragging {
+	background: #141414;
+	box-shadow: 2px 3px 10px rgba(0, 0, 0, 0.15);
+}
+
+.category-options.dragged-over {
+	border: 1px dashed #5183f5;
+	color: #fff;
+	background: #202020;
+}
+
+.category-options.dragged-over > div > svg {
+	stroke: #5183f5;
+}
+
+.note-list-item {
+	cursor: pointer;
+	font-size: 500;
+	line-height: 1.3;
+	padding: 0.5rem;
+	border-bottom: 1px solid #d1d1d1;
+	font-size: 0.85rem;
+	line-height: 1.3;
+}
+
+.note-list-item:hover {
+	background: #d8d8d8;
+}
+
+.note-list-item .note-title {
+	@apply overflow-hidden text-clip text-[0.85rem] font-normal leading-[1.3] text-[#404040];
+}
+
+.note-list-item .note-category {
+	display: flex;
+	align-items: center;
+	margin-left: 1.5625rem;
+	color: #00000066;
+}
+
+.note-list-item .note-favorite {
+	stroke: #5183f5;
+}
+
+.note-list-item.selected {
+	background: #5183f5;
+	border-bottom: 1px solid #3972f4;
+}
+
+.note-list-item.selected .note-favorite {
+	stroke: #ffffff;
+}
+
+.note-list-item.selected .note-title {
+	color: white;
+}
+
+.note-list-item.selected .note-category {
+	color: #ffffff99;
+}
+
+.note-list-item .highlighted {
+	color: #3e64ff;
+}
+
+.note-list-item.selected .highlighted {
+	background: white;
+}
+
+.empty-button {
+	cursor: pointer;
+	align-items: center;
+	justify-content: space-between;
+	color: #404040;
+	background: #e5e5e5;
+	padding: 0.7rem;
+	margin: 0 0 0 0.5rem;
+	font-size: 0.85rem;
+	font-weight: 500;
+	border: none;
+}
+
+/*
+	Previewer
+*/
+.previewer {
+  position: relative;
+  max-height: calc(100vh);
+  overflow-y: auto;
+  background: #fafafa;
+  color: #404040;
+  padding: 1rem;
+  -webkit-font-smoothing: subpixel-antialiased;
+
+  padding-bottom: 0px;
+  top: 0px;
+  bottom: 39px;
+}
+
+.previewer a {
+	color: --var(--primary);
+	text-decoration: none;
+	font-weight: 600;
+}
+
+.previewer a:hover {
+	cursor: pointer;
+	text-decoration: underline;
+}
+
+.previewer p,
+.previewer ol,
+.previewer ul,
+.previewer dl,
+.previewer table {
+	font-size: 1.1rem;
+	line-height: 1.7;
+	margin: 0 0 1.5rem 0;
+}
+
+.previewer ul li ul {
+	margin-bottom: 0;
+}
+
+.previewer ol li ol {
+	margin-bottom: 0;
+}
+
+.previewer ul li [type='checkbox'] {
+	margin-right: 0.75rem;
+}
+
+.previewer h1,
+.previewer h2,
+.previewer h3,
+.previewer h4,
+.previewer h5 {
+	margin: 0 0 1.5rem 0;
+	font-weight: 600;
+	line-height: 1.2;
+
+}
+.previewer h1:not(:first-child),
+.previewer h2:not(:first-child),
+.previewer h3:not(:first-child),
+.previewer h4:not(:first-child),
+.previewer h5:not(:first-child) {
+	margin: 1.5rem 0;
+}
+
+.previewer h1:not(:first-child),
+.previewer h2:not(:first-child),
+.previewer h3:not(:first-child) {
+	margin-top: 2rem;
+}
+
+.previewer h1 {
+	margin-top: 0.5rem;
+	font-size: 2rem;
+}
+
+.previewer h2 {
+	font-size: 1.6rem;
+}
+
+.previewer h3 {
+	font-size: 1.4rem;
+}
+
+.previewer h4 {
+	font-size: 1.2rem;
+}
+
+.previewer h5 {
+	font-size: 1rem;
+}
+
+/*
+	Blockquote styling
+*/
+.previewer blockquote {
+	margin: 0 0 1.5rem 0;
+	border-left: 4px solid #d0d0d0;
+	padding: 0.5rem 1.5rem;
+}
+
+.previewer blockquote p {
+	font-size: 1.1rem;
+}
+
+.previewer blockquote p:last-of-type {
+	margin-bottom: 0;
+}
+
+.previewer blockquote	cite {
+	display: block;
+	margin-top: 1.5rem;
+	font-size: 1rem;
+	text-align: right;
+}
+
+/*
+	Code block styling
+*/
+
+.previewer pre {
+	background: #e5e5e5;
+	padding: 1rem;
+	tab-size: 2;
+	color: #404040;
+	margin: 0 0 1.5rem 0;
+	white-space: pre-wrap;
+	word-spacing: normal;
+	word-break: normal;
+	border-radius: 0.3rem;
+	border: 1px solid #e5e5e5;
+	font-size: 0.9rem;
+	line-height: 1.4rem;
+}
+
+.previewer pre code {
+	padding: 0;
+	background: transparent;
+	line-height: 1.2;
+	border-width: 0;
+}
+
+.previewer code {
+	padding: 2px 3px;
+	background: #e5e5e5;
+	border-radius: 0.3rem;
+	border: 1px solid #e5e5e5;
+}
+
+.previewer hr {
+	height: 0;
+	border: 0;
+	border-top: 2px solid #d0d0d0;
+}
+
+.previewer img {
+	max-width: 100%;
+	max-height: 20rem;
+	object-fit: cover;
+}
+
+.previewer table {
+	border: 1px solid #e5e5e5;
+	border-collapse: collapse;
+	border-spacing: 0;
+	max-width: 100%;
+}
+
+.previewer thead th {
+	border-bottom: 2px solid #e5e5e5;
+}
+
+.previewer tfoot th {
+	border-top: 2px solid #e5e5e5;
+}
+
+.previewer td {
+	border-bottom: 1px solid #e5e5e5;
+}
+
+.previewer th,
+.previewer td {
+	text-align: left;
+	padding: 0.5rem;
+}
+
+
+.preview-button {
+  display: flex;
+  align-items: center;
+  position: absolute;
+  color: #404040;
+  top: 0;
+  right: 1rem;
+  border: none;
+  background-color: #e5e5e5;
+  font-weight: 500;
+  padding: 0.5rem;
+  font-size: 0.8rem;
+  z-index: 2;
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+}
+
+.preview-button:hover,
+.preview-button:focus {
+	border: none;
+	color: #404040;
+	background-color: #e5e5e5;
+}
+
+.preview-button .invalid-note-uuid {
+	color: green;
+}
+
+
+/* Editor stylings */
+.empty-editor {
+  background: #f5f5f5;
+  width: 100%;
+}
+
+.note-sidebar {
+  overflow-y: hidden;
+  overflow-x: hidden;
+}
+
+.note-sidebar::-webkit-scrollbar-thumb {
+	background: #e5e5e5;
+	border-radius: 0;
+}
+
+.note-editor {
+  position: relative;
+  min-width: 300px;
+}
+
+.note-editor .empty-editor {
+	height: calc(100vh);
+}
+
+.note-sidebar .editor,
+.note-sidebar .previewer {
+	padding-bottom: 38px;
+	height: 100vh;
+}
+
+.empty-editor {
+  display: flex !important;
+}
+
+.editor,
+.previewer {
+  display: block !important;
+}
+
+.CodeMirror {
+  -webkit-font-smoothing: subpixel-antialiased;
+  padding: 1rem;
+  height: 100% !important;
+  font-family: Menlo, Monaco, monospace !important;
+  font-weight: 500;
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.CodeMirror-lines {
+  padding: 0;
+}
+
+.CodeMirror-linenumber {
+  padding-right: 15px;
+}
+
+.CodeMirror-gutter-background {
+  color: #333;
+}
+
+.CodeMirror-activeline-background {
+  background: rgba(0, 0, 0, 0.05) !important;
+}
+
+.CodeMirror-wrap {
+	height: 100% !important;
+}
+
+.CodeMirror-wrap pre {
+	word-break: break-word;
 }

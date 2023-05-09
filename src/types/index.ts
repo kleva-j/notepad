@@ -1,14 +1,23 @@
-import { MouseEvent, ChangeEvent } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/ban-types */
+import { MouseEvent, ChangeEvent, DragEvent } from "react";
 import { Folder } from "@/utils/enums";
+
+export type Prettify<T> = {
+	[K in keyof T]: T[K];
+} & {};
 
 export type ReactMouseEvent =
 	| MouseEvent
 	| MouseEvent<HTMLDivElement>
 	| ChangeEvent<HTMLSelectElement>;
 
+export type ReactDragEvent = DragEvent<HTMLButtonElement | HTMLDivElement>;
+
 export interface CategoryItem {
 	id: string;
 	name: string;
+	draggedOver: boolean;
 }
 
 export interface NoteItem {
@@ -60,6 +69,8 @@ export interface SettingsState {
 	loading: boolean;
 	darkTheme: boolean;
 	sidebarVisible: boolean;
+	previewMarkdown: boolean;
+	codeMirrorOptions: { [key: string]: any };
 }
 
 export interface SyncState {
@@ -76,3 +87,5 @@ export interface RootState {
 	settingsState: SettingsState;
 	syncState: SyncState;
 }
+
+export type PreviewType = "edit" | "preview";
