@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import dynamic from "next/dynamic";
 import dayjs from "dayjs";
 
 import React, { FC, useCallback } from "react";
 
 import { NoteStateAtom, updateNote, updateNotes } from "@/store/slice/note";
-import { Controlled as CodeMirror } from "react-codemirror2";
 import { SettingsStateAtom } from "@/store/slice/settings";
 import { getActiveNote } from "@/utils/helpers";
 import { PreviewEditor } from "./PreviewEditor";
@@ -16,11 +16,17 @@ import { Editor, Range } from "codemirror";
 import { Menubar } from "./Menubar";
 import { NoteItem } from "@/types";
 
-import "codemirror/addon/selection/active-line";
-import "codemirror/addon/scroll/scrollpastend";
-import "codemirror/theme/base16-light.css";
-import "codemirror/lib/codemirror.css";
-import "codemirror/mode/gfm/gfm";
+const CodeMirror = dynamic(
+	async () => {
+		require("codemirror/addon/scroll/scrollpastend");
+		require("codemirror/addon/selection/active-line");
+		require("codemirror/theme/base16-light.css");
+		require("codemirror/lib/codemirror.css");
+		require("codemirror/mode/gfm/gfm");
+		return import("react-codemirror2").then((mod) => mod.Controlled);
+	},
+	{ ssr: false }
+);
 
 export const NoteEditor: FC = () => {
 	const { notes, activeNoteId, loading } = useAtomValue(NoteStateAtom);
