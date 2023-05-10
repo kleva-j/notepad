@@ -7,9 +7,10 @@ import { headers } from "next/headers";
 import Providers from "./provider";
 
 import "@/styles/globals.css";
+import { Session } from "next-auth";
 
-async function RootLayout({ children }: PropsWithChildren) {
-	const session = await getSession(headers().get("cookie") ?? "");
+export default async function RootLayout({ children }: PropsWithChildren) {
+	const session = (await getSession(headers().get("cookie") ?? "")) as Session;
 
 	return (
 		<html lang="en">
@@ -20,5 +21,3 @@ async function RootLayout({ children }: PropsWithChildren) {
 		</html>
 	);
 }
-
-export default RootLayout;
