@@ -21,8 +21,9 @@
     "studio": "prisma studio",
     "test": "playwright test",
     "test-ct": "playwright test -c playwright-ct.config",
-    "prepare": "husky install && rm -rf .git/hooks && ln -s ../.husky .git/hooks",
+    "prepare": "is-ci || pnpm run setup-husky",
     "prettier": "prettier --write .",
+    "setup-husky": "husky install && rm -rf .git/hooks && ln -s ../.husky .git/hooks",
     "postinstall": "pnpm generate"
   },
   "dependencies": {
@@ -75,6 +76,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-react": "^7.32.2",
     "husky": "^8.0.0",
+    "is-ci": "^3.0.1",
     "lint-staged": "^13.2.1",
     "postcss": "^8.4.21",
     "prettier": "^2.8.6",

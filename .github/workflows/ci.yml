@@ -57,7 +57,7 @@ jobs:
 
       - name: Create directory for artifacts
         run: |
-         mkdir -p ${{ github.workspace }}/artifact
+          mkdir -p ${{ github.workspace }}/artifact
 
       - name: Upload test results
         if: ${{ always() }}
@@ -101,4 +101,3 @@ jobs:
           token: ${{ secrets.G_TOKEN }}
           status: ${{ job.status }}
           deployment_id: ${{ steps.deployment.outputs.deployment_id }}
-
