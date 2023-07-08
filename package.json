@@ -12,7 +12,7 @@
     "db-migrate-dev": "prisma migrate dev",
     "deploy-gh-pages": "git push origin :gh-pages && git subtree push --prefix dist origin gh-pages",
     "dev-nuke": "rm -rf prisma/*.db**",
-    "generate": "prisma generate",
+    "generate": "npx prisma generate --schema=./prisma/schema.prisma",
     "lint": "next lint",
     "lint-fix": "pnpm lint --fix",
     "migrate": "prisma migrate deploy",
@@ -21,9 +21,9 @@
     "studio": "prisma studio",
     "test": "playwright test",
     "test-ct": "playwright test -c playwright-ct.config",
-    "prepare": "is-ci || pnpm run setup-husky",
+    "prepare": "is-ci || husky install",
     "prettier": "prettier --write .",
-    "setup-husky": "husky install && rm -rf .git/hooks && ln -s ../.husky .git/hooks",
+    "setup-husky": "npx husky install && rm -rf .git/hooks && ln -s ../.husky .git/hooks",
     "postinstall": "pnpm generate"
   },
   "dependencies": {
@@ -87,5 +87,12 @@
   },
   "ct3aMetadata": {
     "initVersion": "7.10.3"
+  },
+	"lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint . --fix",
+      "prettier --write",
+      "git add"
+    ]
   }
 }
