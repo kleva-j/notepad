@@ -6,19 +6,17 @@ import {
 	Book,
 	Star,
 } from "react-feather";
-import { NoteStateAtom, pruneNotes, updateNotes } from "@/store/slice/note";
 import { debounceEvent, getNoteTitle, isDraftNote } from "@/utils/helpers";
 import { Button as EmptyButton } from "@/component/notelist/Button";
+import { UseNotesContext, UseCategoryContext } from "@/lib/context";
 import { SearchBar } from "@/component/notelist/SearchBar";
-import { CategoryStateAtom } from "@/store/slice/category";
 import { NoteItem, ReactDragEvent } from "@/types";
+import { NotesActions } from "@/lib/constants";
 import { Folder } from "@/utils/enums";
-import { useAtom } from "jotai";
 
 export default function NoteList() {
-	const [noteState] = useAtom(NoteStateAtom);
-	const [, updateNoteState] = useAtom(updateNotes);
-	const [{ categories }] = useAtom(CategoryStateAtom);
+	const { state: noteState, dispatch } = UseNotesContext();
+	const { categories } = UseCategoryContext().state;
 
 	const {
 		activeFolder,
@@ -29,7 +27,8 @@ export default function NoteList() {
 	} = noteState;
 
 	const searchNotes = debounceEvent(
-		(searchValue: string) => updateNoteState({ searchValue }),
+		(searchValue: string) =>
+			dispatch({ type: NotesActions.SET_NOTES_SEARCH, payload: searchValue }),
 		100
 	);
 
@@ -101,11 +100,9 @@ export default function NoteList() {
 							className={`note-list-item ${isSelected ? "selected" : ""} `}
 							onClick={(event) => {
 								event.stopPropagation();
-								const selectedNotesIds = [note.id];
-								updateNoteState({
-									selectedNotesIds,
-									activeNoteId: note.id,
-									notes: pruneNotes(notes, selectedNotesIds),
+								dispatch({
+									type: NotesActions.PRUNE_VOID_NOTES,
+									payload: { noteId: note.id },
 								});
 							}}
 							onDragStart={(event) => handleDragStart(event, note.id)}

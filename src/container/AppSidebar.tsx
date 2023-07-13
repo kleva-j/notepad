@@ -1,37 +1,27 @@
 import CategoryList from "./CategoryList";
 import React from "react";
 
-import { updateNotes, NoteStateAtom, addNote } from "@/store/slice/note";
 import { Edit, Plus, Star, Trash2, Book } from "react-feather";
 import { FolderOption } from "@/component/sidebar/Folder";
 import { Button } from "@/component/sidebar/ActionButton";
 import { setStrokeColor } from "@/utils/helpers";
+import { UseNotesContext } from "@/lib/context";
+import { NotesActions } from "@/lib/constants";
 import { Folder } from "@/utils/enums";
-import { v4 as uuid } from "uuid";
-import { useAtom } from "jotai";
 
 export default function Sidebar() {
-	const [{ activeFolder, activeCategoryId, notes }] = useAtom(NoteStateAtom);
-	const [, updateNoteState] = useAtom(updateNotes);
-	const setActiveFolder = (folder: Folder) =>
-		updateNoteState({ activeFolder: folder });
+	const { state, dispatch } = UseNotesContext();
+	const { activeFolder, activeCategoryId } = state;
 
-	const handleAddNote = () =>
-		updateNoteState({
-			notes: addNote(notes, {
-				id: `n-${uuid()}`,
-				text: "",
-				categoryId: activeFolder === Folder.CATEGORY ? activeCategoryId : "",
-				trash: false,
-				created: new Date().toDateString(),
-				lastUpdated: new Date().toDateString(),
-				favorite: activeFolder === Folder.FAVORITES,
-			}),
+	const addNewNote = () =>
+		dispatch({
+			type: NotesActions.ADD_NEW_NOTE,
+			payload: { activeFolder, activeCategoryId },
 		});
 
 	return (
 		<section className="h-full bg-[#2d2d2d] pt-[0.4rem] text-[#d0d0d0]">
-			<Button icon={Plus} label="New note" onclick={handleAddNote} />
+			<Button icon={Plus} label="New note" onclick={addNewNote} />
 			<section className="relative flex flex-1 flex-col pb-4">
 				<FolderOption
 					text="Scratchpad"
@@ -45,7 +35,12 @@ export default function Sidebar() {
 					}
 					folder={Folder.SCRATCHPAD}
 					active={activeFolder === Folder.SCRATCHPAD}
-					onClick={() => setActiveFolder(Folder.SCRATCHPAD)}
+					onClick={() =>
+						dispatch({
+							type: NotesActions.SET_ACTIVE_FOLDER,
+							payload: Folder.SCRATCHPAD,
+						})
+					}
 				/>
 				<FolderOption
 					text="Notes"
@@ -57,7 +52,12 @@ export default function Sidebar() {
 					}
 					folder={Folder.ALL}
 					active={activeFolder === Folder.ALL}
-					onClick={() => setActiveFolder(Folder.ALL)}
+					onClick={() =>
+						dispatch({
+							type: NotesActions.SET_ACTIVE_FOLDER,
+							payload: Folder.ALL,
+						})
+					}
 				/>
 				<FolderOption
 					text="Favorites"
@@ -69,7 +69,12 @@ export default function Sidebar() {
 					}
 					folder={Folder.FAVORITES}
 					active={activeFolder === Folder.FAVORITES}
-					onClick={() => setActiveFolder(Folder.FAVORITES)}
+					onClick={() =>
+						dispatch({
+							type: NotesActions.SET_ACTIVE_FOLDER,
+							payload: Folder.FAVORITES,
+						})
+					}
 				/>
 				<FolderOption
 					text="Trash"
@@ -81,7 +86,12 @@ export default function Sidebar() {
 					}
 					folder={Folder.TRASH}
 					active={activeFolder === Folder.TRASH}
-					onClick={() => setActiveFolder(Folder.TRASH)}
+					onClick={() =>
+						dispatch({
+							type: NotesActions.SET_ACTIVE_FOLDER,
+							payload: Folder.TRASH,
+						})
+					}
 				/>
 				<CategoryList />
 			</section>

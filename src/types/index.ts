@@ -14,6 +14,10 @@ export type ReactMouseEvent =
 
 export type ReactDragEvent = DragEvent<HTMLButtonElement | HTMLDivElement>;
 
+export type ClickEvent =
+	| MouseEvent<HTMLDivElement, MouseEvent>
+	| ReactMouseEvent;
+
 export interface CategoryItem {
 	id: string;
 	name: string;
