@@ -1,17 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, {
-	PropsWithChildren,
-	createContext,
-	useReducer,
-	useContext,
-} from "react";
-import { Actions } from "@/lib/constants";
+import React, { PropsWithChildren, createContext, useContext } from "react";
 
-export const initialState = {};
+import { SettingsStateAtom } from "@/store/slice/settings";
+import { SettingsActions } from "@/lib/constants";
+import { useReducerAtom } from "jotai/utils";
+import { SettingsState } from "@/types";
 
-type Action = { type: keyof typeof Actions; payload?: any };
-type State = typeof initialState;
+type Action = { type: SettingsActions; payload?: any };
 type Dispatch = (action: Action) => void;
+type State = SettingsState;
 
 const AppContext = createContext<
 	{ state: State; dispatch: Dispatch } | undefined
@@ -20,26 +17,33 @@ const AppContext = createContext<
 export function UseAppContext() {
 	const context = useContext(AppContext);
 	if (context === undefined)
-		throw new Error(`useUserDispatch must be used within a UserProvider`);
+		throw new Error(`useAppContext must be used within a AppContext provider.`);
 	return context;
 }
 
-function AppReducer(state: State, action: Action) {
-	switch (action.type) {
-		case Actions.FETCH_NOTES: {
-			return { ...state };
+function AppReducer(state: State, { type, payload }: Action) {
+	switch (type) {
+		case SettingsActions.UPDATE_SETTINGS: {
+			const { codeMirrorOptions, ...rest } = state;
+			return { ...rest, ...payload, codeMirrorOptions };
 		}
-		case Actions.SET_NOTE_ID: {
-			return { ...state };
+		case SettingsActions.SET_CODEMIRROR_CONFIG: {
+			return {
+				...state,
+				codeMirrorOptions: {
+					...state.codeMirrorOptions,
+					...payload,
+				},
+			};
 		}
 		default: {
-			throw new Error(`Unhandled action type: ${action.type}`);
+			throw new Error(`Unhandled action type: ${type}`);
 		}
 	}
 }
 
-export function ContextProvider({ children }: PropsWithChildren) {
-	const [state, dispatch] = useReducer(AppReducer, { ...initialState });
+export function AppProvider({ children }: PropsWithChildren) {
+	const [state, dispatch] = useReducerAtom(SettingsStateAtom, AppReducer);
 	const value = { state, dispatch };
 	return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }

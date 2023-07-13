@@ -2,19 +2,18 @@
 "use client";
 
 import dynamic from "next/dynamic";
-import dayjs from "dayjs";
 
 import React, { FC, useCallback } from "react";
 
-import { NoteStateAtom, updateNote, updateNotes } from "@/store/slice/note";
-import { SettingsStateAtom } from "@/store/slice/settings";
+import { NotesActions, SettingsActions } from "@/lib/constants";
+import { UseNotesContext, UseAppContext } from "@/lib/context";
 import { getActiveNote } from "@/utils/helpers";
-import { PreviewEditor } from "./PreviewEditor";
-import { useAtom, useAtomValue } from "jotai";
-import { EmptyEditor } from "./EmptyEditor";
 import { Editor, Range } from "codemirror";
-import { Menubar } from "./Menubar";
 import { NoteItem } from "@/types";
+
+import { PreviewEditor } from "./PreviewEditor";
+import { EmptyEditor } from "./EmptyEditor";
+import { Menubar } from "./Menubar";
 
 const CodeMirror = dynamic(
 	async () => {
@@ -29,16 +28,21 @@ const CodeMirror = dynamic(
 );
 
 export const NoteEditor: FC = () => {
-	const { notes, activeNoteId, loading } = useAtomValue(NoteStateAtom);
-	const [settings, updateSettings] = useAtom(SettingsStateAtom);
-	const [, updateNoteState] = useAtom(updateNotes);
+	const { state: noteState, dispatch: updateNoteState } = UseNotesContext();
+	const { state: settings, dispatch: updateSettings } = UseAppContext();
+
+	const { notes, activeNoteId, loading } = noteState;
 
 	const activeNote = getActiveNote(notes, activeNoteId) as NoteItem;
 
 	const { previewMarkdown, codeMirrorOptions } = settings;
 
 	const togglePreview = useCallback(
-		() => updateSettings({ ...settings, previewMarkdown: !previewMarkdown }),
+		() =>
+			updateSettings({
+				type: SettingsActions.UPDATE_SETTINGS,
+				payload: { previewMarkdown: !previewMarkdown },
+			}),
 		[settings, previewMarkdown]
 	);
 
@@ -84,10 +88,8 @@ export const NoteEditor: FC = () => {
 				}}
 				onBeforeChange={(_editor, _data, value) => {
 					updateNoteState({
-						notes: updateNote(notes, activeNote.id, {
-							text: value,
-							lastUpdated: dayjs().format(),
-						}),
+						type: NotesActions.UPDATE_NOTES,
+						payload: { text: value },
 					});
 				}}
 				onPaste={(editor, event: any) => {
