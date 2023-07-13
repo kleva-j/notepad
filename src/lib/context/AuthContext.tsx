@@ -1,23 +1,14 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, {
-	PropsWithChildren,
-	createContext,
-	useReducer,
-	useContext,
-} from "react";
-import { Actions } from "@/lib/constants";
+import React, { PropsWithChildren, createContext, useContext } from "react";
+
+import { AuthStateAtom } from "@/store/slice/auth";
+import { AuthActions } from "@/lib/constants";
+import { useReducerAtom } from "jotai/utils";
 import { AuthState } from "@/types";
 
-export const initialState: AuthState = {
-	loading: false,
-	currentUser: {},
-	isAuthenticated: false,
-	error: "",
-};
-
-type Action = { type: keyof typeof Actions; payload?: any };
-type State = typeof initialState;
+type Action = { type: AuthActions; payload: any };
 type Dispatch = (action: Action) => void;
+type State = AuthState;
 
 const AuthContext = createContext<
 	{ state: State; dispatch: Dispatch } | undefined
@@ -30,21 +21,21 @@ export function UseAuthContext() {
 	return context;
 }
 
-function AppReducer(state: State, { type, payload }: Action) {
+function AuthReducer(state: State, { type, payload }: Action) {
 	switch (type) {
-		case Actions.SET_AUTH_STATE: {
+		case AuthActions.SET_AUTH_STATE: {
 			return { ...state, isAuthenticated: payload };
 		}
-		case Actions.SET_CURRENT_USER: {
+		case AuthActions.SET_CURRENT_USER: {
 			return { ...state, currentUser: payload };
 		}
-		case Actions.SET_LOGIN_SUCCESS: {
+		case AuthActions.SET_LOGIN_SUCCESS: {
 			return { ...state, error: "" };
 		}
-		case Actions.SET_LOGIN_LOADING: {
+		case AuthActions.SET_LOGIN_LOADING: {
 			return { ...state, loading: payload };
 		}
-		case Actions.SET_LOGIN_ERROR: {
+		case AuthActions.SET_LOGIN_ERROR: {
 			return { ...state, error: payload };
 		}
 		default: {
@@ -53,8 +44,8 @@ function AppReducer(state: State, { type, payload }: Action) {
 	}
 }
 
-export function ContextProvider({ children }: PropsWithChildren) {
-	const [state, dispatch] = useReducer(AppReducer, initialState);
+export function AuthProvider({ children }: PropsWithChildren) {
+	const [state, dispatch] = useReducerAtom(AuthStateAtom, AuthReducer);
 	const value = { state, dispatch };
 	return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
