@@ -5,22 +5,17 @@ import NoteEditor from "./AppEditor";
 import NoteList from "./AppNoteList";
 import React from "react";
 
-import {
-	updateCategoryStateAtom,
-	CategoryStateAtom,
-	swapCategories,
-} from "@/store/slice/category";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
+import { UseCategoryContext } from "@/lib/context";
+import { CategoryActions } from "@/lib/constants";
 import { fadeIn } from "@/utils/motion";
 import { motion } from "framer-motion";
 import { Allotment } from "allotment";
-import { useAtom } from "jotai";
 
 import "allotment/dist/style.css";
 
 export const Layout = () => {
-	const [{ categories }] = useAtom(CategoryStateAtom);
-	const [, updateCategory] = useAtom(updateCategoryStateAtom);
+	const { dispatch: updateCategory } = UseCategoryContext();
 
 	const onDragEnd = (result: DropResult) => {
 		const { destination, source } = result;
@@ -31,14 +26,11 @@ export const Layout = () => {
 		)
 			return;
 
-		if (result.type === "CATEGORY") {
+		if (result.type === "CATEGORY")
 			updateCategory({
-				categories: swapCategories(categories, {
-					sourceId: source.index,
-					destinationId: destination.index,
-				}),
+				type: CategoryActions.SWAP_CATEGORY,
+				payload: { sourceId: source.index, destinationId: destination.index },
 			});
-		}
 	};
 
 	return (

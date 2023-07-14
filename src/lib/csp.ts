@@ -26,6 +26,4 @@ export const securityHeaders = {
 	"X-Content-Type-Options": "nosniff",
 };
 
-export const csp = getCSP({
-	presets: [sitePreset],
-});
+export const csp = getCSP({ presets: [sitePreset] });

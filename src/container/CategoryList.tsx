@@ -2,44 +2,35 @@
 import CategoryOptions from "@/container/CategoryOptions";
 
 import React, { useRef, useState, FormEvent, MouseEvent } from "react";
-import {
-	updateCategoryStateAtom,
-	CategoryStateAtom,
-	addCategory,
-} from "@/store/slice/category";
-import {
-	updateActiveCategoryId,
-	NoteStateAtom,
-	updateNotes,
-} from "@/store/slice/note";
-import { ChevronDown, ChevronRight, Layers, Plus } from "react-feather";
-import { LabelText, iconColor } from "@/utils/constants";
-import { Droppable } from "react-beautiful-dnd";
-import { ReactMouseEvent } from "@/types";
-import { Folder } from "@/utils/enums";
-import { useAtom } from "jotai";
 
-export type Event = MouseEvent<HTMLDivElement, MouseEvent> | ReactMouseEvent;
+import { ChevronDown, ChevronRight, Layers, Plus } from "react-feather";
+import { UseNotesContext, UseCategoryContext } from "@/lib/context";
+import { NotesActions, CategoryActions } from "@/lib/constants";
+import { LabelText, iconColor } from "@/utils/constants";
+import { ReactMouseEvent, ClickEvent } from "@/types";
+import { Droppable } from "react-beautiful-dnd";
+import { Folder } from "@/utils/enums";
 
 export default function CategoryList() {
 	const inputRef = useRef<HTMLInputElement>(null);
 
-	const [noteState] = useAtom(NoteStateAtom);
-	const [, updateNoteState] = useAtom(updateNotes);
-	const [isListOpen, setCategoryListOpen] = useState(false);
+	const { state: noteState, dispatch: dispatchNotes } = UseNotesContext();
+	const { state: categoryState, dispatch } = UseCategoryContext();
+	const { activeFolder, activeCategoryId } = noteState;
+	const { categories } = categoryState;
+
 	const [isAddingCategory, setIsAddingCategory] = useState(false);
-
-	const [{ categories }] = useAtom(CategoryStateAtom);
-	const [, setCategoryState] = useAtom(updateCategoryStateAtom);
-
-	const { activeCategoryId, activeFolder, notes } = noteState;
+	const [isListOpen, setCategoryListOpen] = useState(false);
 
 	const onSubmitNewCategory = (event: FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		const name = inputRef.current?.value || "";
 
 		if (!categories.find((cat) => cat.name === name) || !(name === "")) {
-			setCategoryState({ categories: addCategory(categories, name) });
+			dispatch({
+				type: CategoryActions.ADD_NEW_CATEGORY,
+				payload: name,
+			});
 		}
 		setIsAddingCategory(false);
 	};
@@ -59,13 +50,16 @@ export default function CategoryList() {
 		event.stopPropagation();
 	};
 
-	const handleCategoryRightClick = (event: Event, categoryId = "") => {
+	const handleCategoryRightClick = (event: ClickEvent, categoryId = "") => {
 		event.preventDefault();
 		handleOptionMenuClick(event, categoryId);
 	};
 
 	const handleClick = (id: string) =>
-		updateNoteState(updateActiveCategoryId(notes, id));
+		dispatchNotes({
+			type: NotesActions.SET_ACTIVE_CATEGORY_ID,
+			payload: id,
+		});
 
 	return (
 		<section className="flex flex-col">

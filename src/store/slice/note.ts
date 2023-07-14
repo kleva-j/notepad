@@ -31,7 +31,10 @@ export const initialNoteState: NoteState = {
 	searchValue: "",
 };
 
-const updateNoteState = (state: NoteState, payload: Partial<NoteState>) => ({
+export const updateNoteState = (
+	state: NoteState,
+	payload: Partial<NoteState>
+): NoteState => ({
 	notes: payload.notes || state.notes,
 	activeFolder: payload.activeFolder || state.activeFolder,
 	activeNoteId: payload.activeNoteId || state.activeNoteId,
@@ -78,7 +81,7 @@ export const updateActiveAndSelectedNotes = (
 ) => {
 	const noteIds = getNoteIds(notes, activeFolder, activeCategoryId);
 	return {
-		activeNoteIds: noteIds,
+		activeNoteId: noteIds,
 		selectedNoteIds: [noteIds],
 	};
 };

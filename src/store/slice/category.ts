@@ -57,7 +57,7 @@ export const deleteCategory = (
 ): CategoryItem[] => categories.filter((category) => category.id !== id);
 
 // CategoryState
-export const sampleCategoryState: CategoryState = {
+export const initialCategoryState: CategoryState = {
 	categories: [],
 	error: "",
 	loading: false,
@@ -74,11 +74,11 @@ export const updateCategoryState = (
 
 export const CategoryStateAtom = atomWithStorage<CategoryState>(
 	"categoryState",
-	sampleCategoryState
+	initialCategoryState
 );
 
 export const updateCategoryStateAtom = atom(
-	() => sampleCategoryState,
+	() => initialCategoryState,
 	(get, set, payload: Partial<CategoryState>) => {
 		set(
 			CategoryStateAtom,

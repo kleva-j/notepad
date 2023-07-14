@@ -1,19 +1,17 @@
 import React, { DragEvent } from "react";
 
-import { type Event } from "./CategoryList";
-
 import { Folder as FolderIcon, MoreHorizontal } from "react-feather";
-import { CategoryItem } from "@/types";
 import { Draggable } from "react-beautiful-dnd";
 import { iconColor } from "@/utils/constants";
+import { CategoryItem, ClickEvent } from "@/types";
 
 interface CategoryOptionProps {
 	category: CategoryItem;
 	active?: boolean;
 	index: number;
 	handleClick?: () => void;
-	handleMenuClick: (event: Event, categoryId: string) => void;
-	handleRightClick: (event: Event, categoryId: string) => void;
+	handleMenuClick: (event: ClickEvent, categoryId: string) => void;
+	handleRightClick: (event: ClickEvent, categoryId: string) => void;
 }
 
 export default function CategoryOptions({
@@ -49,10 +47,7 @@ export default function CategoryOptions({
 						/>
 						<span className="font-light">{category.name}</span>
 					</div>
-					<div
-						className=""
-						onClick={(event) => handleMenuClick(event, category.id)}
-					>
+					<div onClick={(event) => handleMenuClick(event, category.id)}>
 						<MoreHorizontal size={15} className="text-white/95" />
 					</div>
 				</div>

@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
+import Image from "next/image";
 import React from "react";
 
 import { signIn } from "next-auth/react";
@@ -23,9 +24,11 @@ export default function LoginPage() {
 					onClick={() => loginUser("discord")}
 				>
 					<div className="relative flex items-center justify-center space-x-2">
-						<img
+						<Image
 							src="https://assets-global.website-files.com/6257adef93867e50d84d30e2/636e0a6a49cf127bf92de1e2_icon_clyde_blurple_RGB.png"
 							className="w-5 text-sky-700"
+							width={20}
+							height={20}
 							alt="google logo"
 						/>
 						<span className="block w-max text-sm font-semibold tracking-wide text-gray-700 transition duration-300 group-hover:text-blue-600 sm:text-base">
