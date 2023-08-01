@@ -1,32 +1,36 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import CategoryOptions from "@/container/CategoryOptions";
 
-import React, { useRef, useState, FormEvent, MouseEvent } from "react";
-
 import { ChevronDown, ChevronRight, Layers, Plus } from "react-feather";
+import { AddCategoryForm } from "@/component/sidebar/AddCategoryForm";
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
 import { NotesActions, CategoryActions } from "@/lib/constants";
+import { useRef, useState, FormEvent, useEffect } from "react";
 import { LabelText, iconColor } from "@/utils/constants";
-import { ReactMouseEvent, ClickEvent } from "@/types";
 import { Droppable } from "react-beautiful-dnd";
 import { Folder } from "@/utils/enums";
+import { ClickEvent } from "@/types";
 
 export default function CategoryList() {
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	const { state: noteState, dispatch: dispatchNotes } = UseNotesContext();
+	const [optionsPosition, setOptionsPosition] = useState({ x: 0, y: 0 });
 	const { state: categoryState, dispatch } = UseCategoryContext();
+	const [isAddingCategory, setIsAddingCategory] = useState(false);
 	const { activeFolder, activeCategoryId } = noteState;
 	const { categories } = categoryState;
 
-	const [isAddingCategory, setIsAddingCategory] = useState(false);
 	const [isListOpen, setCategoryListOpen] = useState(false);
+
+	useEffect(() => {
+		categories.length > 0 && setCategoryListOpen(true);
+	}, [categories.length]);
 
 	const onSubmitNewCategory = (event: FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
 		const name = inputRef.current?.value || "";
 
-		if (!categories.find((cat) => cat.name === name) || !(name === "")) {
+		if (!categories.find((c) => c.name === name) || !(name === "")) {
 			dispatch({
 				type: CategoryActions.ADD_NEW_CATEGORY,
 				payload: name,
@@ -40,19 +44,20 @@ export default function CategoryList() {
 		!isListOpen && setCategoryListOpen(true);
 	};
 
-	const handleOptionMenuClick = (
-		event: MouseEvent<HTMLDivElement, MouseEvent> | ReactMouseEvent,
-		_categoryId = ""
-	) => {
+	const openMenuOption = (event: ClickEvent, categoryId = "") => {
 		const clicked = event.target;
 		if (!clicked) return;
 
+		if ("clientX" in event && "clientY" in event)
+			setOptionsPosition(() => ({ x: event.clientX, y: event.clientY }));
+
 		event.stopPropagation();
+		setOptionsId(!optionsId || optionsId !== categoryId ? categoryId : "");
 	};
 
-	const handleCategoryRightClick = (event: ClickEvent, categoryId = "") => {
+	const handleRightClick = (event: Event | ClickEvent, categoryId = "") => {
 		event.preventDefault();
-		handleOptionMenuClick(event, categoryId);
+		openMenuOption(event as ClickEvent, categoryId);
 	};
 
 	const handleClick = (id: string) =>
@@ -60,6 +65,8 @@ export default function CategoryList() {
 			type: NotesActions.SET_ACTIVE_CATEGORY_ID,
 			payload: id,
 		});
+
+	const [optionsId, setOptionsId] = useState("");
 
 	return (
 		<section className="flex flex-col">
@@ -103,16 +110,19 @@ export default function CategoryList() {
 							>
 								{categories.map((category, index) => (
 									<CategoryOptions
-										key={category.id}
 										index={index}
+										key={category.id}
 										category={category}
+										optionsId={optionsId}
+										options={optionsPosition}
+										setOptionsId={setOptionsId}
+										handleMenuClick={openMenuOption}
+										handleRightClick={handleRightClick}
+										handleClick={() => handleClick(category.id)}
 										active={
 											activeFolder === Folder.CATEGORY &&
 											category.id === activeCategoryId
 										}
-										handleClick={() => handleClick(category.id)}
-										handleMenuClick={handleOptionMenuClick}
-										handleRightClick={handleCategoryRightClick}
 									/>
 								))}
 								{provided.placeholder}
@@ -120,18 +130,11 @@ export default function CategoryList() {
 						)}
 					</Droppable>
 					{isAddingCategory && (
-						<form onSubmit={onSubmitNewCategory}>
-							<input
-								type="text"
-								autoFocus
-								ref={inputRef}
-								maxLength={20}
-								aria-label="Category name"
-								placeholder="New category..."
-								onBlur={() => setIsAddingCategory(false)}
-								className="m-2 ml-4 w-[150px] border-0 bg-[#2d2d2d]/5 p-2 text-[0.9rem] text-[#eeeeee]"
-							/>
-						</form>
+						<AddCategoryForm
+							ref={inputRef}
+							setIsAddingCategory={setIsAddingCategory}
+							onSubmit={onSubmitNewCategory}
+						/>
 					)}
 				</>
 			)}

@@ -6,3 +6,7 @@ README.md
 prisma/migrations
 .next
 .git
+.gitattributes
+.github
+.gitignore
+docker-compose.yml

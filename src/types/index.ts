@@ -93,3 +93,21 @@ export interface RootState {
 }
 
 export type PreviewType = "edit" | "preview";
+
+export enum Method {
+	GET = "GET",
+	POST = "POST",
+	PUT = "PUT",
+	PATCH = "PATCH",
+	DELETE = "DELETE",
+}
+
+export type OptionsPosition = {
+	x: number;
+	y: number;
+};
+
+export type HandleOptionsEvent = (
+	event: ClickEvent,
+	categoryId: string
+) => void;
