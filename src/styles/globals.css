@@ -175,7 +175,9 @@
 	padding: 0.25rem 0;
 	z-index: 5;
 	background-color: #2d2d2d;
-	box-shadow: 0 10px 15px rgba(0, 0, 0, 0.07), 0 5px 5px rgba(0, 0, 0, 0.2);
+	box-shadow:
+		0 10px 15px rgba(0, 0, 0, 0.07),
+		0 5px 5px rgba(0, 0, 0, 0.2);
 	/* box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2), 0 5px 5px rgba(0, 0, 0, 0.25); */
 }
 
@@ -183,7 +185,9 @@
 	background: #fff;
 	min-width: 15rem;
 	border-radius: 3px;
-	box-shadow: 0 10px 15px rgba(0, 0, 0, 0.07), 0 5px 5px rgba(0, 0, 0, 0.2);
+	box-shadow:
+		0 10px 15px rgba(0, 0, 0, 0.07),
+		0 5px 5px rgba(0, 0, 0, 0.2);
 }
 
 /*
@@ -387,7 +391,9 @@
 	padding: 0.5rem;
 	font-size: 0.8rem;
 	z-index: 2;
-	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.1), 0 2px 4px 0 rgba(0, 0, 0, 0.08);
+	box-shadow:
+		0 8px 16px 0 rgba(0, 0, 0, 0.1),
+		0 2px 4px 0 rgba(0, 0, 0, 0.08);
 }
 
 .preview-button:hover,

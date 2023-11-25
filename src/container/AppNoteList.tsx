@@ -35,12 +35,12 @@ export default function NoteList() {
 	const searchNotes = debounceEvent(
 		(searchValue: string) =>
 			dispatch({ type: NotesActions.SET_NOTES_SEARCH, payload: searchValue }),
-		100
+		100,
 	);
 
 	const re = new RegExp(
 		searchValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
-		"i"
+		"i",
 	);
 	const isMatch = (result: NoteItem) => re.test(result.text);
 
@@ -104,7 +104,7 @@ export default function NoteList() {
 				{filteredNotes.map((note: NoteItem) => {
 					let noteTitle: string | ReactElement = getNoteTitle(note.text);
 					const noteCategory = categories.find(
-						(category) => category.id === note.categoryId
+						(category) => category.id === note.categoryId,
 					);
 
 					if (searchValue) {

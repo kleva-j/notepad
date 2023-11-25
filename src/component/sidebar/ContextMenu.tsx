@@ -100,6 +100,6 @@ export const ContextMenu: FC<ContextMenuProps> = (props) => {
 				)}
 			</div>
 		</div>,
-		document.body
+		document.body,
 	);
 };

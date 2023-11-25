@@ -22,7 +22,7 @@ export const atomWithLocalStorage = (key: string, initialValue: any) => {
 				typeof update === "function" ? update(get(baseAtom)) : update;
 			set(baseAtom, nextValue);
 			localStorage.setItem(key, JSON.stringify(nextValue));
-		}
+		},
 	);
 	return derivedAtom;
 };

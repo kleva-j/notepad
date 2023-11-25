@@ -109,5 +109,5 @@ export type OptionsPosition = {
 
 export type HandleOptionsEvent = (
 	event: ClickEvent,
-	categoryId: string
+	categoryId: string,
 ) => void;

@@ -6,7 +6,7 @@ export function GithubApiService(
 	method: Method,
 	path: string,
 	accessToken: string,
-	data?: Record<string, string | number | boolean>
+	data?: Record<string, string | number | boolean>,
 ) {
 	return axios({
 		data,
@@ -22,13 +22,13 @@ export async function getUserFromHeader() {
 
 export async function firstTimeLoginCheck(
 	username: string,
-	accessToken: string
+	accessToken: string,
 ) {
 	try {
 		await GithubApiService(
 			Method.GET,
 			`/repos/${username}/notepad-data`,
-			accessToken
+			accessToken,
 		);
 		return false;
 	} catch (err) {
@@ -37,7 +37,7 @@ export async function firstTimeLoginCheck(
 }
 
 export async function createNotepadDataRepo(
-	accessToken: string
+	accessToken: string,
 ): Promise<void> {
 	const notepadDataRepo = {
 		name: "notepad-data",
@@ -58,7 +58,7 @@ export async function createNotepadDataRepo(
 			Method.POST,
 			`/user/repos`,
 			accessToken,
-			notepadDataRepo
+			notepadDataRepo,
 		);
 	} catch (err) {
 		if (err instanceof Error) throw new Error(err.message);
@@ -67,7 +67,7 @@ export async function createNotepadDataRepo(
 
 export async function createInitialCommit(
 	username: string,
-	accessToken: string
+	accessToken: string,
 ) {
 	const noteCommit = {
 		message: "Initial commit",

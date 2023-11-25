@@ -7,7 +7,7 @@ type DelayChildren = number;
 
 export const staggerContainer = (
 	staggerChildren?: StaggerChildren,
-	delayChildren: DelayChildren = 0
+	delayChildren: DelayChildren = 0,
 ) => {
 	return {
 		hidden: {},
@@ -19,7 +19,7 @@ export const slideIn = (
 	direction: Direction,
 	type: Type,
 	delay: Delay,
-	duration: Duration
+	duration: Duration,
 ) => {
 	return {
 		hidden: {
@@ -38,7 +38,7 @@ export const fadeIn = (
 	direction: Direction | string,
 	type: Type,
 	delay: Delay,
-	duration: Duration
+	duration: Duration,
 ) => {
 	return {
 		hidden: {

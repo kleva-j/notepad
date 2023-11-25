@@ -7,7 +7,7 @@ type Handler = (event: MouseEvent | TouchEvent) => void;
 export function useOnClickOutside<T extends HTMLElement = HTMLElement>(
 	ref: MutableRefObject<T>,
 	handler: Handler,
-	mouseEvent: "mousedown" | "mouseup" = "mousedown"
+	mouseEvent: "mousedown" | "mouseup" = "mousedown",
 ): void {
 	useEventListener(mouseEvent, (event) => {
 		const el = ref?.current;

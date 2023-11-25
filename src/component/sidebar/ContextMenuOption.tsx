@@ -21,14 +21,14 @@ export const ContextMenuOption: React.FC<ContextMenuOptionProps> = ({
 	...rest
 }) => {
 	const optionHandler: MouseEventHandler & KeyboardEventHandler = (
-		event: React.MouseEvent<Element, MouseEvent> & React.KeyboardEvent<Element>
+		event: React.MouseEvent<Element, MouseEvent> & React.KeyboardEvent<Element>,
 	) => handler(event);
 
 	const className = cn(
 		"flex items-center gap-4 px-5 py-1",
 		ContextMenuStyleMap[type],
 		optionType === OptionTypesEnum.delete &&
-			"hover:bg-red-500 hover:text-[#f2f2f2]"
+			"hover:bg-red-500 hover:text-[#f2f2f2]",
 	);
 
 	return (

@@ -24,7 +24,7 @@ const CodeMirror = dynamic(
 		require("codemirror/mode/gfm/gfm");
 		return import("react-codemirror2").then((mod) => mod.Controlled);
 	},
-	{ ssr: false }
+	{ ssr: false },
 );
 
 export const NoteEditor: FC = () => {
@@ -43,7 +43,7 @@ export const NoteEditor: FC = () => {
 				type: SettingsActions.UPDATE_SETTINGS,
 				payload: { previewMarkdown: !previewMarkdown },
 			}),
-		[settings, previewMarkdown]
+		[settings, previewMarkdown],
 	);
 
 	const setEditorOverlay = (editor: Editor) => {
