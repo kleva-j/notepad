@@ -1,30 +1,39 @@
-import React, { DragEvent } from "react";
-
+import { HandleOptionsEvent, OptionsPosition, CategoryItem } from "@/types";
 import { Folder as FolderIcon, MoreHorizontal } from "react-feather";
+import { ContextMenu } from "@/component/sidebar/ContextMenu";
+import { ContextMenuEnum } from "@/utils/enums";
 import { Draggable } from "react-beautiful-dnd";
 import { iconColor } from "@/utils/constants";
-import { CategoryItem, ClickEvent } from "@/types";
+import { DragEvent } from "react";
 
 interface CategoryOptionProps {
-	category: CategoryItem;
-	active?: boolean;
 	index: number;
+	active?: boolean;
+	optionsId: string;
+	category: CategoryItem;
+	options: OptionsPosition;
+	setOptionsId: React.Dispatch<React.SetStateAction<string>>;
 	handleClick?: () => void;
-	handleMenuClick: (event: ClickEvent, categoryId: string) => void;
-	handleRightClick: (event: ClickEvent, categoryId: string) => void;
+	handleMenuClick: HandleOptionsEvent;
+	handleRightClick: HandleOptionsEvent;
 }
 
 export default function CategoryOptions({
-	category,
-	active,
 	index,
+	active,
+	options,
+	category,
+	optionsId,
 	handleClick,
+	setOptionsId,
 	handleMenuClick,
+	handleRightClick,
 }: CategoryOptionProps): JSX.Element {
 	return (
 		<Draggable draggableId={category.id} index={index}>
 			{(provided, snapshot) => (
 				<div
+					tabIndex={0}
 					ref={provided.innerRef}
 					{...provided.dragHandleProps}
 					{...provided.draggableProps}
@@ -38,6 +47,8 @@ export default function CategoryOptions({
 					onDragOver={(event: DragEvent<HTMLDivElement>) =>
 						event.preventDefault()
 					}
+					onContextMenu={(event) => handleRightClick(event, category.id)}
+					onFocus={() => console.log("Menu option is in focus")}
 				>
 					<div className="flex cursor-pointer items-center gap-x-3.5 px-4 py-2 font-semibold">
 						<FolderIcon
@@ -48,8 +59,19 @@ export default function CategoryOptions({
 						<span className="font-light">{category.name}</span>
 					</div>
 					<div onClick={(event) => handleMenuClick(event, category.id)}>
-						<MoreHorizontal size={15} className="text-white/95" />
+						<MoreHorizontal
+							size={15}
+							className="text-white/95 hover:cursor-pointer"
+						/>
 					</div>
+					{optionsId === category.id && (
+						<ContextMenu
+							item={category}
+							optionsPosition={options}
+							setOptionsId={setOptionsId}
+							type={ContextMenuEnum.CATEGORY}
+						/>
+					)}
 				</div>
 			)}
 		</Draggable>

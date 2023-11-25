@@ -2,7 +2,6 @@
 
 This is a [Nextjs](https://create.t3.gg/) project bootstrapped with `create-t3-app`.
 
-
 ## Folder Structure
 
 Description of the project files and directories.
@@ -83,7 +82,6 @@ Coding conventions are enforced by [ESLint](.eslintrc.js) and [Prettier](.pretti
 - TypeScript: strict mode, with no implicitly any
 - React: functional style with Hooks (no classes)
 - `const` preferred over `let`
-
 
 ## How do I deploy this?
 

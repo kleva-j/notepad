@@ -10,7 +10,7 @@ import { CategoryActions } from "@/lib/constants";
 import { useReducerAtom } from "jotai/utils";
 import { CategoryState } from "@/types";
 
-type Action = { type: CategoryActions; payload?: any };
+type Action = { type: keyof typeof CategoryActions; payload?: any };
 type Dispatch = (action: Action) => void;
 type State = CategoryState;
 
@@ -22,7 +22,7 @@ export function UseCategoryContext() {
 	const context = useContext(CategoryContext);
 	if (context === undefined)
 		throw new Error(
-			`UseCategoryContext must be used within a CategoryProvider`
+			`UseCategoryContext must be used within a CategoryProvider`,
 		);
 	return context;
 }

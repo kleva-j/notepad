@@ -43,7 +43,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 				content="#fff"
 				media="(prefers-color-scheme: light)"
 			/>
-			<body className={fontMono.className}>
+			<body className={`${fontMono.className} relative`}>
 				<Providers session={session}>{children}</Providers>
 			</body>
 		</html>

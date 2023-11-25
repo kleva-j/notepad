@@ -12,7 +12,7 @@ export const addNote = (notes: NoteItem[], newNote: NoteItem): NoteItem[] => [
 export const updateNote = (
 	notes: NoteItem[],
 	id: string,
-	payload: Partial<NoteItem>
+	payload: Partial<NoteItem>,
 ): NoteItem[] =>
 	notes.map((note) => (note.id === id ? { ...note, ...payload } : note));
 
@@ -33,7 +33,7 @@ export const initialNoteState: NoteState = {
 
 export const updateNoteState = (
 	state: NoteState,
-	payload: Partial<NoteState>
+	payload: Partial<NoteState>,
 ): NoteState => ({
 	notes: payload.notes || state.notes,
 	activeFolder: payload.activeFolder || state.activeFolder,
@@ -48,7 +48,7 @@ export const updateNoteState = (
 export const getNoteIds = (
 	notes: NoteItem[],
 	folder: Folder,
-	categoryId?: string
+	categoryId?: string,
 ): string => {
 	const firstNote = {
 		[Folder.ALL]: () => notes.find((note) => !note.scratchpad),
@@ -65,19 +65,19 @@ export const getNoteIds = (
 export const updateSelectedNotesIds = (
 	notes: NoteItem[],
 	activeFolder: Folder,
-	activeCategoryId?: string
+	activeCategoryId?: string,
 ): string[] => [getNoteIds(notes, activeFolder, activeCategoryId)];
 
 export const updateActiveNoteIds = (
 	notes: NoteItem[],
 	activeFolder: Folder,
-	activeCategoryId?: string
+	activeCategoryId?: string,
 ): string => getNoteIds(notes, activeFolder, activeCategoryId);
 
 export const updateActiveAndSelectedNotes = (
 	notes: NoteItem[],
 	activeFolder: Folder,
-	activeCategoryId?: string
+	activeCategoryId?: string,
 ) => {
 	const noteIds = getNoteIds(notes, activeFolder, activeCategoryId);
 	return {
@@ -88,7 +88,7 @@ export const updateActiveAndSelectedNotes = (
 
 export const updateActiveCategoryId = (
 	notes: NoteItem[],
-	categoryId: string
+	categoryId: string,
 ) => {
 	return {
 		activeCategoryId: categoryId,
@@ -101,21 +101,21 @@ export const updateActiveCategoryId = (
 
 export const pruneNotes = (
 	notes: NoteItem[],
-	selectedNotesIds: string[]
+	selectedNotesIds: string[],
 ): NoteItem[] =>
 	notes.filter(
 		(note) =>
-			note.scratchpad || note.text !== "" || selectedNotesIds.includes(note.id)
+			note.scratchpad || note.text !== "" || selectedNotesIds.includes(note.id),
 	);
 
 export const NoteStateAtom = atomWithStorage<NoteState>(
 	"noteState",
-	initialNoteState
+	initialNoteState,
 );
 
 export const updateNotes = atom(
 	() => initialNoteState,
 	(get, set, payload: Partial<NoteState>) => {
 		set(NoteStateAtom, updateNoteState(get(NoteStateAtom), payload));
-	}
+	},
 );

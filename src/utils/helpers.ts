@@ -1,6 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/ban-types */
 
+import { ContextMenuEnum } from "@/utils/enums";
+import { twMerge } from "tailwind-merge";
+import { ClassValue, clsx } from "clsx";
 import { LabelText } from "./constants";
 import { NoteItem } from "@/types";
 import { Folder } from "./enums";
@@ -40,3 +43,13 @@ export const isDraftNote = (note: NoteItem) => {
 
 export const getActiveNote = (notes: NoteItem[], activeNoteId: string) =>
 	notes.find((note) => note.id === activeNoteId);
+
+export function cn(...inputs: ClassValue[]) {
+	return twMerge(clsx(inputs));
+}
+
+export const ContextMenuStyleMap: Record<ContextMenuEnum, string> = {
+	[ContextMenuEnum.CATEGORY]: "bg-[#2d2d2d] text-[#c0c0c0] hover:bg-[#4d4d4d]",
+	[ContextMenuEnum.NOTE]:
+		"text-slate-500 hover:text-slate-800 hover:bg-[#f0f0f0]",
+};

@@ -5,7 +5,7 @@ import { atom } from "jotai";
 
 export const addCategory = (
 	categories: CategoryItem[],
-	name: string
+	name: string,
 ): CategoryItem[] => {
 	const newCategories = categories;
 	newCategories.push({ id: `c-${uuid()}`, name, draggedOver: false });
@@ -15,15 +15,15 @@ export const addCategory = (
 export const updateCategory = (
 	categories: CategoryItem[],
 	id: string,
-	payload: Partial<CategoryItem>
+	payload: Partial<CategoryItem>,
 ): CategoryItem[] =>
 	categories.map((category) =>
-		category.id === id ? { ...category, ...payload } : category
+		category.id === id ? { ...category, ...payload } : category,
 	);
 
 export const swapCategories = (
 	categories: CategoryItem[],
-	payload: { sourceId: number; destinationId: number }
+	payload: { sourceId: number; destinationId: number },
 ): CategoryItem[] => {
 	const { sourceId, destinationId } = payload;
 	const newCategories = [...categories];
@@ -35,25 +35,25 @@ export const swapCategories = (
 
 export const categoryDragEnter = (
 	categories: CategoryItem[],
-	payload: Partial<CategoryItem>
+	payload: Partial<CategoryItem>,
 ) => {
 	categories = categories.map((category) =>
-		category.id === payload.id ? { ...category, draggedOver: true } : category
+		category.id === payload.id ? { ...category, draggedOver: true } : category,
 	);
 };
 
 export const categoryDragLeave = (
 	categories: CategoryItem[],
-	payload: Partial<CategoryItem>
+	payload: Partial<CategoryItem>,
 ) => {
 	categories = categories.map((category) =>
-		category.id === payload.id ? { ...category, draggedOver: false } : category
+		category.id === payload.id ? { ...category, draggedOver: false } : category,
 	);
 };
 
 export const deleteCategory = (
 	categories: CategoryItem[],
-	id: string
+	id: string,
 ): CategoryItem[] => categories.filter((category) => category.id !== id);
 
 // CategoryState
@@ -65,7 +65,7 @@ export const initialCategoryState: CategoryState = {
 
 export const updateCategoryState = (
 	state: CategoryState,
-	payload: Partial<CategoryState>
+	payload: Partial<CategoryState>,
 ): CategoryState => ({
 	categories: payload.categories || state.categories,
 	error: payload.error || "",
@@ -74,7 +74,7 @@ export const updateCategoryState = (
 
 export const CategoryStateAtom = atomWithStorage<CategoryState>(
 	"categoryState",
-	initialCategoryState
+	initialCategoryState,
 );
 
 export const updateCategoryStateAtom = atom(
@@ -82,7 +82,7 @@ export const updateCategoryStateAtom = atom(
 	(get, set, payload: Partial<CategoryState>) => {
 		set(
 			CategoryStateAtom,
-			updateCategoryState(get(CategoryStateAtom), payload)
+			updateCategoryState(get(CategoryStateAtom), payload),
 		);
-	}
+	},
 );

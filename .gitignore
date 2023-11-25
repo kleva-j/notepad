@@ -4,6 +4,7 @@
 /node_modules
 /.pnp
 .pnp.js
+.eslintcache
 
 # testing
 /coverage
@@ -43,3 +44,5 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+certificates

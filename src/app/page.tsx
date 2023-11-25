@@ -10,7 +10,7 @@ function RootPage() {
 	const { data: session } = useSession();
 	const { data: secretMessage } = api.example.getSecretMessage.useQuery(
 		undefined, // no input
-		{ enabled: session?.user !== undefined }
+		{ enabled: session?.user !== undefined },
 	);
 
 	return (

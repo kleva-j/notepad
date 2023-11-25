@@ -16,7 +16,6 @@ export const PreviewEditor = (props: PreviewEditorProps) => {
 		<ReactMarkdown
 			rehypePlugins={[rehypeSanitizer]}
 			remarkPlugins={[remarkGfm]}
-			linkTarget="_blank"
 			className="previewer h-full"
 		>
 			{props.noteText}

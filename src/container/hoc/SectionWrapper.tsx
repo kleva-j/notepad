@@ -4,9 +4,9 @@ import { staggerContainer } from "@/utils/motion";
 import { motion } from "framer-motion";
 
 interface HOC<T> {
-	(Component: (() => JSX.Element) | React.ComponentType<T>): (
-		props: T
-	) => JSX.Element;
+	(
+		Component: (() => JSX.Element) | React.ComponentType<T>,
+	): (props: T) => JSX.Element;
 }
 
 export const SectionWrapper: HOC<unknown> = (Component) =>

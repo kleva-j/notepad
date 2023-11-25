@@ -10,7 +10,7 @@ const initialState: AuthState = {
 
 export const updateAuthState = (
 	state: AuthState,
-	payload: Partial<AuthState>
+	payload: Partial<AuthState>,
 ): AuthState => ({ ...state, ...payload });
 
 export const AuthStateAtom = atom<AuthState>(initialState);
@@ -19,7 +19,7 @@ export const updateAuthStateAtom = atom(
 	() => initialState,
 	(get, set, payload: Partial<AuthState>) => {
 		set(AuthStateAtom, updateAuthState(get(AuthStateAtom), payload));
-	}
+	},
 );
 
 export const login = ({ loading }: Pick<AuthState, "loading">) => ({ loading });

@@ -1,18 +1,24 @@
-import React, { useRef, MutableRefObject, ReactElement } from "react";
-
+import { debounceEvent, getNoteTitle, isDraftNote } from "@/utils/helpers";
+import { Button as EmptyButton } from "@/component/notelist/Button";
+import { UseNotesContext, UseCategoryContext } from "@/lib/context";
+import { ClickEvent, NoteItem, ReactDragEvent } from "@/types";
+import { ContextMenu } from "@/component/sidebar/ContextMenu";
+import { SearchBar } from "@/component/notelist/SearchBar";
+import { Folder, ContextMenuEnum } from "@/utils/enums";
+import { NotesActions } from "@/lib/constants";
+import {
+	MutableRefObject,
+	ReactElement,
+	useEffect,
+	useState,
+	useRef,
+} from "react";
 import {
 	Folder as FolderIcon,
 	MoreHorizontal,
 	Book,
 	Star,
 } from "react-feather";
-import { debounceEvent, getNoteTitle, isDraftNote } from "@/utils/helpers";
-import { Button as EmptyButton } from "@/component/notelist/Button";
-import { UseNotesContext, UseCategoryContext } from "@/lib/context";
-import { SearchBar } from "@/component/notelist/SearchBar";
-import { NoteItem, ReactDragEvent } from "@/types";
-import { NotesActions } from "@/lib/constants";
-import { Folder } from "@/utils/enums";
 
 export default function NoteList() {
 	const { state: noteState, dispatch } = UseNotesContext();
@@ -29,12 +35,12 @@ export default function NoteList() {
 	const searchNotes = debounceEvent(
 		(searchValue: string) =>
 			dispatch({ type: NotesActions.SET_NOTES_SEARCH, payload: searchValue }),
-		100
+		100,
 	);
 
 	const re = new RegExp(
 		searchValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
-		"i"
+		"i",
 	);
 	const isMatch = (result: NoteItem) => re.test(result.text);
 
@@ -61,6 +67,33 @@ export default function NoteList() {
 		event.dataTransfer.setData("text/plain", noteId);
 	};
 
+	const [optionsId, setOptionsId] = useState("");
+	const [optionsPosition, setOptionsPosition] = useState({ x: 0, y: 0 });
+
+	const handleOptionMenuClick = (event: Event | ClickEvent, noteId = "") => {
+		const clicked = event.target;
+		if (!clicked) return;
+
+		if ("clientX" in event && "clientY" in event)
+			setOptionsPosition(() => ({ x: event.pageX + 3, y: event.pageY + 5 }));
+
+		event.stopPropagation();
+		setOptionsId(!optionsId || optionsId !== noteId ? noteId : "");
+	};
+
+	const handleNoteRightClick = (event: Event | ClickEvent, noteId = "") => {
+		event.preventDefault();
+		handleOptionMenuClick(event as ClickEvent, noteId);
+	};
+
+	useEffect(() => {
+		document.addEventListener("mousedown", handleNoteRightClick);
+
+		return () => {
+			document.removeEventListener("mousedown", handleNoteRightClick);
+		};
+	});
+
 	return (
 		<section className="flex h-full w-full flex-col overflow-auto bg-[#e5e5e5]">
 			<div className="sticky top-0 flex h-[49px] w-full max-w-full items-center border-b border-b-[#cccccc] bg-[#e5e5e5] px-[0.5rem] text-center">
@@ -71,7 +104,7 @@ export default function NoteList() {
 				{filteredNotes.map((note: NoteItem) => {
 					let noteTitle: string | ReactElement = getNoteTitle(note.text);
 					const noteCategory = categories.find(
-						(category) => category.id === note.categoryId
+						(category) => category.id === note.categoryId,
 					);
 
 					if (searchValue) {
@@ -105,8 +138,9 @@ export default function NoteList() {
 									payload: { noteId: note.id },
 								});
 							}}
-							onDragStart={(event) => handleDragStart(event, note.id)}
 							draggable={note.text !== ""}
+							onDragStart={(event) => handleDragStart(event, note.id)}
+							onContextMenu={(event) => handleNoteRightClick(event, note.id)}
 						>
 							<div className="flex w-full items-center">
 								<div className="flex w-full items-center justify-start">
@@ -130,7 +164,10 @@ export default function NoteList() {
 									)}
 								</div>
 								{!isDraftNote(note) ? (
-									<div className="z-1 block cursor-pointer p-[0.4rem] text-base text-transparent">
+									<div
+										className="z-1 block cursor-pointer p-[0.4rem] text-base text-transparent"
+										onClick={(event) => handleOptionMenuClick(event, note.id)}
+									>
 										<MoreHorizontal
 											aria-hidden="true"
 											size={15}
@@ -150,6 +187,14 @@ export default function NoteList() {
 										{noteCategory?.name || "Notes"}
 									</span>
 								</div>
+							)}
+							{optionsId === note.id && !isDraftNote(note) && (
+								<ContextMenu
+									item={note}
+									optionsPosition={optionsPosition}
+									setOptionsId={setOptionsId}
+									type={ContextMenuEnum.NOTE}
+								/>
 							)}
 						</div>
 					);

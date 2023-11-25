@@ -31,7 +31,7 @@ export const updateSettings = (
 		sidebarVisible,
 		previewMarkdown,
 		codeMirrorOptions,
-	}: Partial<SettingsState>
+	}: Partial<SettingsState>,
 ): SettingsState => ({
 	isOpen: isOpen || state.isOpen,
 	loading: loading || state.loading,
