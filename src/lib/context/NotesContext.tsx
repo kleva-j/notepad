@@ -16,7 +16,7 @@ import { Folder } from "@/utils/enums";
 import { NoteState } from "@/types";
 import { v4 as uuid } from "uuid";
 
-type Action = { type: NotesActions; payload?: any };
+type Action = { type: keyof typeof NotesActions; payload?: any };
 type Dispatch = (action: Action) => void;
 type State = NoteState;
 
@@ -67,7 +67,7 @@ function NotesReducer(state: State, { type, payload }: Action) {
 		case NotesActions.SET_ACTIVE_CATEGORY_ID: {
 			return updateNoteState(
 				state,
-				updateActiveCategoryId(state.notes, payload)
+				updateActiveCategoryId(state.notes, payload),
 			);
 		}
 		case NotesActions.SET_NOTES_ERROR: {

@@ -6,7 +6,7 @@ import { AuthActions } from "@/lib/constants";
 import { useReducerAtom } from "jotai/utils";
 import { AuthState } from "@/types";
 
-type Action = { type: AuthActions; payload: any };
+type Action = { type: keyof typeof AuthActions; payload: any };
 type Dispatch = (action: Action) => void;
 type State = AuthState;
 
