@@ -4,16 +4,8 @@
 import Image from "next/image";
 import React from "react";
 
-import { signIn } from "next-auth/react";
-
 export default function LoginPage() {
-	const loginUser = async (provider: "github" | "discord") => {
-		try {
-			await signIn(provider, { redirect: true, callbackUrl: "/app" });
-		} catch (err) {
-			console.log(err);
-		}
-	};
+	const loginUser = async () => ({});
 
 	return (
 		<div className="flex h-screen w-screen flex-col items-center justify-center">
@@ -21,7 +13,7 @@ export default function LoginPage() {
 				<button
 					className="group h-12 rounded-full border-2 border-gray-300 px-6 transition duration-300
  hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100"
-					onClick={() => loginUser("discord")}
+					onClick={() => loginUser()}
 				>
 					<div className="relative flex items-center justify-center space-x-2">
 						<Image
@@ -39,7 +31,7 @@ export default function LoginPage() {
 				<button
 					className="group h-12 rounded-full border-2 border-gray-300 px-6 transition duration-300
  hover:border-blue-400 focus:bg-blue-50 active:bg-blue-100"
-					onClick={() => loginUser("github")}
+					onClick={() => loginUser()}
 				>
 					<div className="relative flex items-center justify-center space-x-2">
 						<svg

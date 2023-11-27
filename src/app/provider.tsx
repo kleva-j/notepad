@@ -7,20 +7,16 @@ import { NotesProvider } from "@/lib/context/NotesContext";
 import { AuthProvider } from "@/lib/context/AuthContext";
 import { AppProvider } from "@/lib/context/AppContext";
 import { Provider as StoreProvider } from "jotai";
-import { SessionProvider } from "next-auth/react";
-import { Session } from "next-auth";
 
-type ProviderType = PropsWithChildren & { session: Session };
+type ProviderType = PropsWithChildren;
 
-const Providers: FC<ProviderType> = ({ children, session }) => {
+const Providers: FC<ProviderType> = ({ children }) => {
 	return (
 		<StoreProvider>
 			<AuthProvider>
 				<AppProvider>
 					<CategoryProvider>
-						<NotesProvider>
-							<SessionProvider session={session}>{children}</SessionProvider>
-						</NotesProvider>
+						<NotesProvider>{children}</NotesProvider>
 					</CategoryProvider>
 				</AppProvider>
 			</AuthProvider>
