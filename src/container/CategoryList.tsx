@@ -1,6 +1,6 @@
 import CategoryOptions from "@/container/CategoryOptions";
 
-import { ChevronDown, ChevronRight, Layers, Plus } from "react-feather";
+import { ChevronDown, ChevronRight, Layers, Plus } from "lucide-react";
 import { AddCategoryForm } from "@/component/sidebar/AddCategoryForm";
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
 import { NotesActions, CategoryActions } from "@/lib/constants";

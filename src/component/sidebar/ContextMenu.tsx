@@ -1,6 +1,6 @@
 import { OptionsPosition, CategoryItem, NoteItem } from "@/types";
 import { ContextMenuEnum, OptionTypesEnum } from "@/utils/enums";
-import { Download, Trash, Edit2, Star, X } from "react-feather";
+import { Download, Trash, Edit2, Star, X } from "lucide-react";
 import { LabelText } from "@/utils/constants";
 import { createPortal } from "react-dom";
 import { FC, RefObject } from "react";
