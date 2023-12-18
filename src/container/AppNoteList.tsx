@@ -1,10 +1,10 @@
 import { Folder as FolderIcon, MoreHorizontal, Book, Star } from "lucide-react";
 import { debounceEvent, getNoteTitle, isDraftNote } from "@/utils/helpers";
-import { Button as EmptyButton } from "@/component/notelist/Button";
+import { Button as EmptyButton } from "@/components/notelist/Button";
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
 import { ClickEvent, NoteItem, ReactDragEvent } from "@/types";
-import { ContextMenu } from "@/component/sidebar/ContextMenu";
-import { SearchBar } from "@/component/notelist/SearchBar";
+import { ContextMenu } from "@/components/sidebar/ContextMenu";
+import { SearchBar } from "@/components/notelist/SearchBar";
 import { Folder, ContextMenuEnum } from "@/utils/enums";
 import { NotesActions } from "@/lib/constants";
 import {

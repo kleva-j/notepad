@@ -16,7 +16,7 @@ const fontMono = Roboto({
 
 export default async function RootLayout({ children }: PropsWithChildren) {
 	return (
-		<html lang="en">
+		<html lang="en" suppressHydrationWarning>
 			<body className={`${fontMono.className} relative`}>
 				<Providers>
 					{children}

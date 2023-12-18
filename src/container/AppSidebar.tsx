@@ -1,9 +1,9 @@
-import CategoryList from "./CategoryList";
+import CategoryList from "@/container/CategoryList";
 import React from "react";
 
 import { Edit, Plus, Star, Trash2, Book } from "lucide-react";
-import { FolderOption } from "@/component/sidebar/Folder";
-import { Button } from "@/component/sidebar/ActionButton";
+import { FolderOption } from "@/components/sidebar/Folder";
+import { Button } from "@/components/sidebar/ActionButton";
 import { setStrokeColor } from "@/utils/helpers";
 import { UseNotesContext } from "@/lib/context";
 import { NotesActions } from "@/lib/constants";
