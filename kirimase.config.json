@@ -1,0 +1,17 @@
+{
+  "hasSrc": true,
+  "packages": [
+    "drizzle",
+    "trpc",
+    "clerk"
+  ],
+  "preferredPackageManager": "pnpm",
+  "t3": true,
+  "alias": "@",
+  "rootPath": "src/",
+  "orm": "drizzle",
+  "auth": "clerk",
+  "provider": "node-postgres",
+  "driver": "pg",
+  "componentLib": null
+}
