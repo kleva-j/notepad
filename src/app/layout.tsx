@@ -1,24 +1,13 @@
 import React, { PropsWithChildren } from "react";
 
+import { Toaster } from "@/components/ui/toaster";
 import { Roboto } from "next/font/google";
-import { Metadata } from "next";
 
-import Providers from "./provider";
+export { metadata } from "@/app/_metadata";
+
+import Providers from "@/app/_providers";
 
 import "@/styles/globals.css";
-
-const title = "Notepad";
-const description = "This is a Note taking app.";
-
-export const metadata: Metadata = {
-	title,
-	description,
-	icons: {
-		icon: "/favicon.ico",
-		shortcut: "/favicon-16x16.png",
-		apple: "/apple-touch-icon.png",
-	},
-};
 
 const fontMono = Roboto({
 	weight: ["100", "300", "400", "500", "700", "900"],
@@ -28,18 +17,11 @@ const fontMono = Roboto({
 export default async function RootLayout({ children }: PropsWithChildren) {
 	return (
 		<html lang="en">
-			<meta
-				name="theme-color"
-				content="#000"
-				media="(prefers-color-scheme: dark)"
-			/>
-			<meta
-				name="theme-color"
-				content="#fff"
-				media="(prefers-color-scheme: light)"
-			/>
 			<body className={`${fontMono.className} relative`}>
-				<Providers>{children}</Providers>
+				<Providers>
+					{children}
+					<Toaster />
+				</Providers>
 			</body>
 		</html>
 	);
