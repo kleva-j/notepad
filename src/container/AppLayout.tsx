@@ -3,7 +3,6 @@
 import AppSidebar from "./AppSidebar";
 import NoteEditor from "./AppEditor";
 import NoteList from "./AppNoteList";
-import React from "react";
 
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { UseCategoryContext } from "@/lib/context";

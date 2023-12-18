@@ -12,6 +12,5 @@
   "orm": "drizzle",
   "auth": "clerk",
   "provider": "node-postgres",
-  "driver": "pg",
-  "componentLib": null
+  "driver": "pg"
 }
