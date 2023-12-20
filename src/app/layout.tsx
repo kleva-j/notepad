@@ -1,6 +1,5 @@
-import React, { PropsWithChildren } from "react";
+import { type PropsWithChildren } from "react";
 
-import { Toaster } from "@/components/ui/toaster";
 import { Roboto } from "next/font/google";
 
 export { metadata } from "@/app/_metadata";
@@ -20,7 +19,6 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 			<body className={`${fontMono.className} relative`}>
 				<Providers>
 					{children}
-					<Toaster />
 				</Providers>
 			</body>
 		</html>
