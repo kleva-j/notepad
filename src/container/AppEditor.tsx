@@ -1,6 +1,4 @@
-import React from "react";
-
-import { NoteEditor } from "@/component/editor/NoteEditor";
+import { NoteEditor } from "@/components/editor/NoteEditor";
 
 export default function Editor() {
 	return <NoteEditor />;

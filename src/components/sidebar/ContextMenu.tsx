@@ -1,9 +1,9 @@
-import { OptionsPosition, CategoryItem, NoteItem } from "@/types";
+import type { OptionsPosition, CategoryItem, NoteItem } from "@/types";
+import type { FC, RefObject } from "react";
+
 import { ContextMenuEnum, OptionTypesEnum } from "@/utils/enums";
-import { Download, Trash, Edit2, Star, X } from "lucide-react";
 import { LabelText } from "@/utils/constants";
 import { createPortal } from "react-dom";
-import { FC, RefObject } from "react";
 
 import { ContextMenuOption } from "./ContextMenuOption";
 
@@ -29,26 +29,22 @@ const NoteMenu: FC<NoteMenuProps> = () => {
 				type={ContextMenuEnum.NOTE}
 				handler={removeFavoriteHandler}
 				text={LabelText.REMOVE_FAVORITE}
-				icon={Star}
 			/>
 			<ContextMenuOption
 				type={ContextMenuEnum.NOTE}
 				handler={moveToTrashHandler}
 				text={LabelText.MOVE_TO_TRASH}
 				optionType={OptionTypesEnum.delete}
-				icon={Trash}
 			/>
 			<ContextMenuOption
 				type={ContextMenuEnum.NOTE}
 				handler={removeCategoryHandler}
 				text={LabelText.REMOVE_CATEGORY}
-				icon={X}
 			/>
 			<ContextMenuOption
 				type={ContextMenuEnum.NOTE}
 				handler={downloadHandler}
 				text={LabelText.DOWNLOAD}
-				icon={Download}
 			/>
 		</nav>
 	);
@@ -64,14 +60,12 @@ const CategoryMenu: FC<CategoryMenuProps> = () => {
 				type={ContextMenuEnum.CATEGORY}
 				handler={startRenameHandler}
 				text={LabelText.RENAME}
-				icon={Edit2}
 			/>
 			<ContextMenuOption
 				text={LabelText.DELETE_PERMANENTLY}
 				type={ContextMenuEnum.CATEGORY}
 				handler={removeCategoryHandler}
 				optionType={OptionTypesEnum.delete}
-				icon={X}
 			/>
 		</nav>
 	);

@@ -1,9 +1,8 @@
-import CategoryList from "./CategoryList";
+import CategoryList from "@/container/CategoryList";
 import React from "react";
 
-import { Edit, Plus, Star, Trash2, Book } from "lucide-react";
-import { FolderOption } from "@/component/sidebar/Folder";
-import { Button } from "@/component/sidebar/ActionButton";
+import { FolderOption } from "@/components/sidebar/Folder";
+import { Edit, Star, Trash2, Book } from "lucide-react";
 import { setStrokeColor } from "@/utils/helpers";
 import { UseNotesContext } from "@/lib/context";
 import { NotesActions } from "@/lib/constants";
@@ -21,7 +20,7 @@ export default function Sidebar() {
 
 	return (
 		<section className="h-full bg-[#2d2d2d] pt-[0.4rem] text-[#d0d0d0]">
-			<Button icon={Plus} label="New note" onclick={addNewNote} />
+			<button onClick={addNewNote} />
 			<section className="relative flex flex-1 flex-col pb-4">
 				<FolderOption
 					text="Scratchpad"

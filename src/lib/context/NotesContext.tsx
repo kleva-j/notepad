@@ -1,7 +1,4 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { PropsWithChildren, createContext, useContext } from "react";
-import dayjs from "dayjs";
-
+import { type PropsWithChildren, createContext, useContext } from "react";
 import {
 	updateActiveCategoryId,
 	updateNoteState,
@@ -15,6 +12,8 @@ import { useReducerAtom } from "jotai/utils";
 import { Folder } from "@/utils/enums";
 import { NoteState } from "@/types";
 import { v4 as uuid } from "uuid";
+
+import dayjs from "dayjs";
 
 type Action = { type: keyof typeof NotesActions; payload?: any };
 type Dispatch = (action: Action) => void;

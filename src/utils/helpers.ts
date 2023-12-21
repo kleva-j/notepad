@@ -7,6 +7,7 @@ import { ClassValue, clsx } from "clsx";
 import { LabelText } from "./constants";
 import { NoteItem } from "@/types";
 import { Folder } from "./enums";
+
 export const debounceEvent = <T extends Function>(cb: T, wait = 20) => {
 	let h = 0;
 	const callable = (...args: any) => {

@@ -1,7 +1,6 @@
-import { ContextMenuEnum, OptionTypesEnum } from "@/utils/enums";
-import { KeyboardEventHandler, MouseEventHandler } from "react";
+import type { KeyboardEventHandler, MouseEventHandler } from "react";
+import { type ContextMenuEnum, OptionTypesEnum } from "@/utils/enums";
 import { ContextMenuStyleMap } from "@/utils/helpers";
-import { Icon } from "react-feather";
 import { cn } from "@/utils/helpers";
 
 type ContextMenuOptionProps = {
@@ -9,7 +8,6 @@ type ContextMenuOptionProps = {
 	optionType?: OptionTypesEnum;
 	type: ContextMenuEnum;
 	text: string;
-	icon: Icon;
 };
 
 export const ContextMenuOption: React.FC<ContextMenuOptionProps> = ({
@@ -17,7 +15,6 @@ export const ContextMenuOption: React.FC<ContextMenuOptionProps> = ({
 	text,
 	handler,
 	optionType,
-	icon: IconCmp,
 	...rest
 }) => {
 	const optionHandler: MouseEventHandler & KeyboardEventHandler = (
@@ -40,7 +37,6 @@ export const ContextMenuOption: React.FC<ContextMenuOptionProps> = ({
 			tabIndex={0}
 			{...rest}
 		>
-			<IconCmp className="nav-item-icon" size={18} />
 			{text}
 		</div>
 	);

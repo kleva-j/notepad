@@ -1,15 +1,15 @@
+import type { ClickEvent, NoteItem, ReactDragEvent } from "@/types";
+
 import { Folder as FolderIcon, MoreHorizontal, Book, Star } from "lucide-react";
 import { debounceEvent, getNoteTitle, isDraftNote } from "@/utils/helpers";
-import { Button as EmptyButton } from "@/component/notelist/Button";
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
-import { ClickEvent, NoteItem, ReactDragEvent } from "@/types";
-import { ContextMenu } from "@/component/sidebar/ContextMenu";
-import { SearchBar } from "@/component/notelist/SearchBar";
+import { ContextMenu } from "@/components/sidebar/ContextMenu";
+import { SearchBar } from "@/components/notelist/SearchBar";
 import { Folder, ContextMenuEnum } from "@/utils/enums";
 import { NotesActions } from "@/lib/constants";
 import {
-	MutableRefObject,
-	ReactElement,
+	type MutableRefObject,
+	type ReactElement,
 	useEffect,
 	useState,
 	useRef,
@@ -93,7 +93,7 @@ export default function NoteList() {
 		<section className="flex h-full w-full flex-col overflow-auto bg-[#e5e5e5]">
 			<div className="sticky top-0 flex h-[49px] w-full max-w-full items-center border-b border-b-[#cccccc] bg-[#e5e5e5] px-[0.5rem] text-center">
 				<SearchBar searchRef={searchRef} searchNotes={searchNotes} />
-				{showEmptyTrash && <EmptyButton label="Empty" />}
+				{showEmptyTrash && <div>Empty Button</div>}
 			</div>
 			<div className="note-list">
 				{filteredNotes.map((note: NoteItem) => {
@@ -179,7 +179,7 @@ export default function NoteList() {
 								<div className="note-category">
 									{noteCategory ? <FolderIcon size={12} /> : <Book size={12} />}
 									<span className="ml-[0.5rem] text-[0.8rem]">
-										{noteCategory?.name || "Notes"}
+										{noteCategory?.name ?? "Notes"}
 									</span>
 								</div>
 							)}
