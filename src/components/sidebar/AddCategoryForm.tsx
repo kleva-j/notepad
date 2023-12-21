@@ -1,4 +1,4 @@
-import { forwardRef, FormEvent } from "react";
+import { type FormEvent, forwardRef } from "react";
 
 type AddCategoryFormProps = {
 	setIsAddingCategory: React.Dispatch<React.SetStateAction<boolean>>;
@@ -25,3 +25,5 @@ export const AddCategoryForm = forwardRef<
 		</form>
 	);
 });
+
+AddCategoryForm.displayName = "AddCategoryForm";

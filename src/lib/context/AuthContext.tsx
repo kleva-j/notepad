@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { PropsWithChildren, createContext, useContext } from "react";
 
 import { AuthStateAtom } from "@/store/slice/auth";

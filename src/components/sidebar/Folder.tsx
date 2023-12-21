@@ -1,7 +1,7 @@
 "use client";
 
-import { Folder } from "@/utils/enums";
-import React, { FC } from "react";
+import type { Folder } from "@/utils/enums";
+import type { FC } from "react";
 
 export type FolderProps = {
 	text: string;

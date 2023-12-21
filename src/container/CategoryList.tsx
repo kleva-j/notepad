@@ -1,14 +1,15 @@
-import CategoryOptions from "@/container/CategoryOptions";
+import type { ClickEvent } from "@/types";
+
+import { type FormEvent, useRef, useState, useEffect } from "react";
 
 import { ChevronDown, ChevronRight, Layers, Plus } from "lucide-react";
 import { AddCategoryForm } from "@/components/sidebar/AddCategoryForm";
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
 import { NotesActions, CategoryActions } from "@/lib/constants";
-import { useRef, useState, FormEvent, useEffect } from "react";
 import { LabelText, iconColor } from "@/utils/constants";
-import { Droppable } from "react-beautiful-dnd";
 import { Folder } from "@/utils/enums";
-import { ClickEvent } from "@/types";
+
+import CategoryOptions from "@/container/CategoryOptions";
 
 export default function CategoryList() {
 	const inputRef = useRef<HTMLInputElement>(null);
@@ -28,7 +29,7 @@ export default function CategoryList() {
 
 	const onSubmitNewCategory = (event: FormEvent<HTMLFormElement>): void => {
 		event.preventDefault();
-		const name = inputRef.current?.value || "";
+		const name = inputRef.current?.value ?? "";
 
 		if (!categories.find((c) => c.name === name) || !(name === "")) {
 			dispatch({
@@ -99,36 +100,29 @@ export default function CategoryList() {
 			</div>
 
 			{isListOpen && (
-				<>
-					<Droppable type="CATEGORY" droppableId="category-list">
-						{(provided) => (
-							<div
-								{...provided.droppableProps}
-								ref={provided.innerRef}
-								className="category-list"
-								aria-label="Category list"
-							>
-								{categories.map((category, index) => (
-									<CategoryOptions
-										index={index}
-										key={category.id}
-										category={category}
-										optionsId={optionsId}
-										options={optionsPosition}
-										setOptionsId={setOptionsId}
-										handleMenuClick={openMenuOption}
-										handleRightClick={handleRightClick}
-										handleClick={() => handleClick(category.id)}
-										active={
-											activeFolder === Folder.CATEGORY &&
-											category.id === activeCategoryId
-										}
-									/>
-								))}
-								{provided.placeholder}
-							</div>
-						)}
-					</Droppable>
+				<div>
+					<div
+						className="category-list"
+						aria-label="Category list"
+					>
+						{categories.map((category) => (
+							<CategoryOptions
+								key={category.id}
+								category={category}
+								optionsId={optionsId}
+								options={optionsPosition}
+								setOptionsId={setOptionsId}
+								handleMenuClick={openMenuOption}
+								handleRightClick={handleRightClick}
+								handleClick={() => handleClick(category.id)}
+								active={
+									activeFolder === Folder.CATEGORY &&
+									category.id === activeCategoryId
+								}
+							/>
+						))}
+					</div>
+
 					{isAddingCategory && (
 						<AddCategoryForm
 							ref={inputRef}
@@ -136,7 +130,7 @@ export default function CategoryList() {
 							onSubmit={onSubmitNewCategory}
 						/>
 					)}
-				</>
+				</div>
 			)}
 		</section>
 	);

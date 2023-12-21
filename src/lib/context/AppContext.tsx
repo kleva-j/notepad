@@ -1,10 +1,10 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { PropsWithChildren, createContext, useContext } from "react";
+import type { SettingsState } from "@/types";
+
+import { type PropsWithChildren, createContext, useContext } from "react";
 
 import { SettingsStateAtom } from "@/store/slice/settings";
 import { SettingsActions } from "@/lib/constants";
 import { useReducerAtom } from "jotai/utils";
-import { SettingsState } from "@/types";
 
 type Action = { type: keyof typeof SettingsActions; payload?: any };
 type Dispatch = (action: Action) => void;

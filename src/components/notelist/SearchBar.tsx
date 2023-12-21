@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC } from "react";
+import type { ChangeEvent, FC } from "react";
 
 export interface SearchBarProps {
 	searchRef: React.MutableRefObject<HTMLInputElement>;
