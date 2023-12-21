@@ -1,3 +1,4 @@
+import { Folder as FolderIcon, MoreHorizontal, Book, Star } from "lucide-react";
 import { debounceEvent, getNoteTitle, isDraftNote } from "@/utils/helpers";
 import { Button as EmptyButton } from "@/component/notelist/Button";
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
@@ -13,12 +14,6 @@ import {
 	useState,
 	useRef,
 } from "react";
-import {
-	Folder as FolderIcon,
-	MoreHorizontal,
-	Book,
-	Star,
-} from "react-feather";
 
 export default function NoteList() {
 	const { state: noteState, dispatch } = UseNotesContext();

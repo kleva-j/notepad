@@ -1,9 +1,6 @@
 import React, { PropsWithChildren } from "react";
 
-import { getSession } from "@/lib/session";
 import { Roboto } from "next/font/google";
-import { headers } from "next/headers";
-import { Session } from "next-auth";
 import { Metadata } from "next";
 
 import Providers from "./provider";
@@ -29,8 +26,6 @@ const fontMono = Roboto({
 });
 
 export default async function RootLayout({ children }: PropsWithChildren) {
-	const session = (await getSession(headers().get("cookie") ?? "")) as Session;
-
 	return (
 		<html lang="en">
 			<meta
@@ -44,7 +39,7 @@ export default async function RootLayout({ children }: PropsWithChildren) {
 				media="(prefers-color-scheme: light)"
 			/>
 			<body className={`${fontMono.className} relative`}>
-				<Providers session={session}>{children}</Providers>
+				<Providers>{children}</Providers>
 			</body>
 		</html>
 	);

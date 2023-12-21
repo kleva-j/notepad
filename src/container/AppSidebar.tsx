@@ -1,7 +1,7 @@
 import CategoryList from "./CategoryList";
 import React from "react";
 
-import { Edit, Plus, Star, Trash2, Book } from "react-feather";
+import { Edit, Plus, Star, Trash2, Book } from "lucide-react";
 import { FolderOption } from "@/component/sidebar/Folder";
 import { Button } from "@/component/sidebar/ActionButton";
 import { setStrokeColor } from "@/utils/helpers";

@@ -1,8 +1,8 @@
 import { z } from "zod";
 
-import { createTRPCRouter, protectedProcedure } from "@/server/api/trpc";
+import { createTRPCRouter, protectedProcedure } from "@/server/trpc";
 
-export const exampleRouter = createTRPCRouter({
+export const syncRouter = createTRPCRouter({
 	sync: protectedProcedure.query(() => {
 		return "Synced Successfully!";
 	}),

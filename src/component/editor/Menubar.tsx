@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Edit, Eye } from "react-feather";
+import { Edit, Eye } from "lucide-react";
 
 interface MenubarProps {
 	activeNote: boolean;

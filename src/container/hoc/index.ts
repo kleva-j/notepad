@@ -1,1 +1,0 @@
-export { SectionWrapper } from "./SectionWrapper";

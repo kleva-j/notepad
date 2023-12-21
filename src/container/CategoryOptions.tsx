@@ -1,5 +1,5 @@
 import { HandleOptionsEvent, OptionsPosition, CategoryItem } from "@/types";
-import { Folder as FolderIcon, MoreHorizontal } from "react-feather";
+import { Folder as FolderIcon, MoreHorizontal } from "lucide-react";
 import { ContextMenu } from "@/component/sidebar/ContextMenu";
 import { ContextMenuEnum } from "@/utils/enums";
 import { Draggable } from "react-beautiful-dnd";
