@@ -7,9 +7,10 @@ import { ThemeProvider } from "@/components/ThemeProvider";
 import { NotesProvider } from "@/lib/context/NotesContext";
 import { AuthProvider } from "@/lib/context/AuthContext";
 import { AppProvider } from "@/lib/context/AppContext";
+import { Toaster } from "@/components/ui/toaster";
 import { Provider } from "jotai";
 
-const Providers: FC<PropsWithChildren> = ({ children }) => {
+export const Providers: FC<PropsWithChildren> = ({ children }) => {
 	return (
 		<ThemeProvider
 			attribute="class"
@@ -21,7 +22,10 @@ const Providers: FC<PropsWithChildren> = ({ children }) => {
 				<AuthProvider>
 					<AppProvider>
 						<CategoryProvider>
-							<NotesProvider>{children}</NotesProvider>
+							<NotesProvider>
+								{children}
+								<Toaster />
+							</NotesProvider>
 						</CategoryProvider>
 					</AppProvider>
 				</AuthProvider>

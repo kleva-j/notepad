@@ -1,3 +1,5 @@
+"use client";
+
 import type { CategoryState } from "@/types";
 
 import { type PropsWithChildren, createContext, useContext } from "react";

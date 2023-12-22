@@ -1,12 +1,11 @@
-import CategoryList from "@/container/CategoryList";
-import React from "react";
-
 import { FolderOption } from "@/components/sidebar/Folder";
 import { Edit, Star, Trash2, Book } from "lucide-react";
 import { setStrokeColor } from "@/utils/helpers";
 import { UseNotesContext } from "@/lib/context";
 import { NotesActions } from "@/lib/constants";
 import { Folder } from "@/utils/enums";
+
+import CategoryList from "@/container/CategoryList";
 
 export default function Sidebar() {
 	const { state, dispatch } = UseNotesContext();

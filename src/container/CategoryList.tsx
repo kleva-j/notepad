@@ -1,3 +1,5 @@
+"use client";
+
 import type { ClickEvent } from "@/types";
 
 import { type FormEvent, useRef, useState, useEffect } from "react";

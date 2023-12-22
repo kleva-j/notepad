@@ -1,4 +1,6 @@
-import React, { PropsWithChildren, createContext, useContext } from "react";
+"use client";
+
+import { type PropsWithChildren, createContext, useContext } from "react";
 
 import { AuthStateAtom } from "@/store/slice/auth";
 import { AuthActions } from "@/lib/constants";

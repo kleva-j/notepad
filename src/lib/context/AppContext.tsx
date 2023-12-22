@@ -1,3 +1,5 @@
+"use client";
+
 import type { SettingsState } from "@/types";
 
 import { type PropsWithChildren, createContext, useContext } from "react";

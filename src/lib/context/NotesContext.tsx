@@ -1,3 +1,5 @@
+"use client";
+
 import { type PropsWithChildren, createContext, useContext } from "react";
 import {
 	updateActiveCategoryId,
