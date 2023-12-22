@@ -38,8 +38,8 @@ dependencies:
     specifier: ^10.12.4
     version: 10.12.4(react-dom@18.2.0)(react@18.2.0)
   jotai:
-    specifier: ^2.0.4
-    version: 2.0.4(react@18.2.0)
+    specifier: ^2.6.0
+    version: 2.6.0(@types/react@18.0.28)(react@18.2.0)
   next:
     specifier: ^13.4.1
     version: 13.4.1(react-dom@18.2.0)(react@18.2.0)
@@ -3038,15 +3038,19 @@ packages:
     resolution: {integrity: sha512-MSJQC5vXco5Br38mzaQKiq9mwt7lwj2eXpgpRyQYNHYt2lq1PjkWa7DLXX0WVcQLE9HhMh3jPiufS7fhJf+CLQ==}
     dev: false
 
-  /jotai@2.0.4(react@18.2.0):
-    resolution: {integrity: sha512-XkR1Jtm4a2iKV/7fdB3rNHjJz8FkkDMVczqiAok7lt8W4F69l/ZQkPGWSEV+hJOJXRn27k6XYKOoKEQIwBuAMA==}
+  /jotai@2.6.0(@types/react@18.0.28)(react@18.2.0):
+    resolution: {integrity: sha512-Vt6hsc04Km4j03l+Ax+Sc+FVft5cRJhqgxt6GTz6GM2eM3DyX3CdBdzcG0z2FrlZToL1/0OAkqDghIyARWnSuQ==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
+      '@types/react': '>=17.0.0'
       react: '>=17.0.0'
     peerDependenciesMeta:
+      '@types/react':
+        optional: true
       react:
         optional: true
     dependencies:
+      '@types/react': 18.0.28
       react: 18.2.0
     dev: false
 

@@ -38,7 +38,7 @@
     "csp-header": "^5.1.0",
     "dayjs": "^1.11.7",
     "framer-motion": "^10.12.4",
-    "jotai": "^2.0.4",
+    "jotai": "^2.6.0",
     "next": "^13.4.1",
     "next-auth": "^4.21.0",
     "react": "18.2.0",
