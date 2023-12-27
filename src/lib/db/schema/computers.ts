@@ -1,12 +1,13 @@
-import { createInsertSchema, createSelectSchema } from 'drizzle-zod';
-import { z } from 'zod';
+import { createInsertSchema, createSelectSchema } from "drizzle-zod";
 import { pgTable, serial, text, integer } from "drizzle-orm/pg-core";
+import { z } from "zod";
 
 export const computers = pgTable("computers", {
-  id: serial("id").primaryKey(),
-  brand: text("brand").notNull(),
-  cores: integer("cores").notNull(),
+	id: serial("id").primaryKey(),
+	brand: text("brand").notNull(),
+	cores: integer("cores").notNull(),
 });
+
 // Schema for CRUD - used to validate API requests
 export const insertComputerSchema = createInsertSchema(computers);
 export const selectComputerSchema = createSelectSchema(computers);
