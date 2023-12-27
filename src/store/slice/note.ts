@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-empty-function */
 import { NoteItem, NoteState } from "@/types";
 import { atomWithStorage } from "jotai/utils";
 import { Folder } from "@/utils/enums";

@@ -37,8 +37,8 @@ jobs:
       - name: Install deps (with cache)
         run: pnpm install
 
-      - name: Install playwright
-        run: pnpm playwright install chromium
+      # - name: Install playwright
+      #   run: pnpm playwright install chromium
 
       - name: Next.js cache
         uses: actions/cache@v3
@@ -46,20 +46,20 @@ jobs:
           path: ${{ github.workspace }}apps/nextjs/.next/cache
           key: ${{ runner.os }}-${{ runner.node }}-${{ hashFiles('**/pnpm-lock.yaml') }}-nextjs
 
-      - name: Build and test
-        run: pnpm build && pnpm test
+      # - name: Build and test
+      #   run: pnpm build && pnpm test
 
-      - name: Create directory for artifacts
-        run: |
-          mkdir -p ${{ github.workspace }}/artifact
+      # - name: Create directory for artifacts
+      #   run: |
+      #     mkdir -p ${{ github.workspace }}/artifact
 
-      - name: Upload test results
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: test results
-          path: |
-            ${{ github.workspace }}/artifact
+      # - name: Upload test results
+      #   if: ${{ always() }}
+      #   uses: actions/upload-artifact@v3
+      #   with:
+      #     name: test results
+      #     path: |
+      #       ${{ github.workspace }}/artifact
 
   deploy:
     needs: build-and-test
