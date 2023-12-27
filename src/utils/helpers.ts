@@ -1,6 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/ban-types */
-
 import { ContextMenuEnum } from "@/utils/enums";
 import { twMerge } from "tailwind-merge";
 import { ClassValue, clsx } from "clsx";

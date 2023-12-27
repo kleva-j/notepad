@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { atomWithStorage } from "jotai/utils";
 import { atom } from "jotai";
 
