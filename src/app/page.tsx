@@ -21,9 +21,7 @@ export default function RootPage() {
 				className="min-h-[200px] rounded-lg border"
 			>
 				<ResizablePanel defaultSize={18}>
-					<div className="flex h-full items-center justify-center p-6">
-						<AppSidebar />
-					</div>
+					<AppSidebar />
 				</ResizablePanel>
 				<ResizableHandle withHandle />
 				<ResizablePanel defaultSize={24}>
