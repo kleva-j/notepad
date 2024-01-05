@@ -37,7 +37,7 @@
     "codemirror": "^5.57.0",
     "csp-header": "^5.1.0",
     "dayjs": "^1.11.7",
-    "framer-motion": "^10.12.4",
+    "framer-motion": "^10.17.6",
     "jotai": "^2.0.4",
     "next": "^13.4.1",
     "next-auth": "^4.21.0",
