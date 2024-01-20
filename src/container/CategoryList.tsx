@@ -9,6 +9,7 @@ import { AddCategoryForm } from "@/components/sidebar/AddCategoryForm";
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
 import { NotesActions, CategoryActions } from "@/lib/constants";
 import { LabelText, iconColor } from "@/utils/constants";
+import { Each } from "@/components/Each";
 import { Folder } from "@/utils/enums";
 
 import CategoryOptions from "@/container/CategoryOptions";
@@ -103,26 +104,26 @@ export default function CategoryList() {
 
 			{isListOpen && (
 				<div>
-					<div
-						className="category-list"
-						aria-label="Category list"
-					>
-						{categories.map((category) => (
-							<CategoryOptions
-								key={category.id}
-								category={category}
-								optionsId={optionsId}
-								options={optionsPosition}
-								setOptionsId={setOptionsId}
-								handleMenuClick={openMenuOption}
-								handleRightClick={handleRightClick}
-								handleClick={() => handleClick(category.id)}
-								active={
-									activeFolder === Folder.CATEGORY &&
-									category.id === activeCategoryId
-								}
-							/>
-						))}
+					<div className="category-list" aria-label="Category list">
+						<Each
+							of={categories}
+							render={(category) => (
+								<CategoryOptions
+									key={category.id}
+									category={category}
+									optionsId={optionsId}
+									options={optionsPosition}
+									setOptionsId={setOptionsId}
+									handleMenuClick={openMenuOption}
+									handleRightClick={handleRightClick}
+									handleClick={() => handleClick(category.id)}
+									active={
+										activeFolder === Folder.CATEGORY &&
+										category.id === activeCategoryId
+									}
+								/>
+							)}
+						/>
 					</div>
 
 					{isAddingCategory && (

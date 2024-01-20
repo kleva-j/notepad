@@ -7,6 +7,7 @@ import { ContextMenu } from "@/components/sidebar/ContextMenu";
 import { SearchBar } from "@/components/notelist/SearchBar";
 import { Folder, ContextMenuEnum } from "@/utils/enums";
 import { NotesActions } from "@/lib/constants";
+import { Each } from "@/components/Each";
 import {
 	type MutableRefObject,
 	type ReactElement,
@@ -96,104 +97,111 @@ export default function NoteList() {
 				{showEmptyTrash && <div>Empty Button</div>}
 			</div>
 			<div className="note-list">
-				{filteredNotes.map((note: NoteItem) => {
-					let noteTitle: string | ReactElement = getNoteTitle(note.text);
-					const noteCategory = categories.find(
-						(category) => category.id === note.categoryId,
-					);
+				<Each
+					of={filteredNotes}
+					render={(note: NoteItem) => {
+						let noteTitle: string | ReactElement = getNoteTitle(note.text);
+						const noteCategory = categories.find(
+							(category) => category.id === note.categoryId,
+						);
 
-					if (searchValue) {
-						const highlightStart = noteTitle.search(re);
+						if (searchValue) {
+							const highlightStart = noteTitle.search(re);
 
-						if (highlightStart !== -1) {
-							const highlightEnd = highlightStart + searchValue.length;
+							if (highlightStart !== -1) {
+								const highlightEnd = highlightStart + searchValue.length;
 
-							noteTitle = (
-								<>
-									{noteTitle.slice(0, highlightStart)}
-									<strong className="highlighted">
-										{noteTitle.slice(highlightStart, highlightEnd)}
-									</strong>
-									{noteTitle.slice(highlightEnd)}
-								</>
-							);
+								noteTitle = (
+									<>
+										{noteTitle.slice(0, highlightStart)}
+										<strong className="highlighted">
+											{noteTitle.slice(highlightStart, highlightEnd)}
+										</strong>
+										{noteTitle.slice(highlightEnd)}
+									</>
+								);
+							}
 						}
-					}
 
-					const isSelected = selectedNotesIds.includes(note.id);
+						const isSelected = selectedNotesIds.includes(note.id);
 
-					return (
-						<div
-							key={note.id}
-							className={`note-list-item ${isSelected ? "selected" : ""} `}
-							onClick={(event) => {
-								event.stopPropagation();
-								dispatch({
-									type: NotesActions.PRUNE_VOID_NOTES,
-									payload: { noteId: note.id },
-								});
-							}}
-							draggable={note.text !== ""}
-							onDragStart={(event) => handleDragStart(event, note.id)}
-							onContextMenu={(event) => handleNoteRightClick(event, note.id)}
-						>
-							<div className="flex w-full items-center">
-								<div className="flex w-full items-center justify-start">
-									{note.favorite ? (
-										<>
-											<div className="flex-[0_0_9%]">
-												<Star
-													aria-hidden="true"
-													className="note-favorite mr-[0.25rem]"
-													size={12}
-												/>
-												<span className="sr-only">Favorite note</span>
-											</div>
-											<div className="note-title">{noteTitle}</div>
-										</>
+						return (
+							<div
+								key={note.id}
+								className={`note-list-item ${isSelected ? "selected" : ""} `}
+								onClick={(event) => {
+									event.stopPropagation();
+									dispatch({
+										type: NotesActions.PRUNE_VOID_NOTES,
+										payload: { noteId: note.id },
+									});
+								}}
+								draggable={note.text !== ""}
+								onDragStart={(event) => handleDragStart(event, note.id)}
+								onContextMenu={(event) => handleNoteRightClick(event, note.id)}
+							>
+								<div className="flex w-full items-center">
+									<div className="flex w-full items-center justify-start">
+										{note.favorite ? (
+											<>
+												<div className="flex-[0_0_9%]">
+													<Star
+														aria-hidden="true"
+														className="note-favorite mr-[0.25rem]"
+														size={12}
+													/>
+													<span className="sr-only">Favorite note</span>
+												</div>
+												<div className="note-title">{noteTitle}</div>
+											</>
+										) : (
+											<>
+												<div className="flex-[9%_0_0]" />
+												<div className="note-title">{noteTitle}</div>
+											</>
+										)}
+									</div>
+									{!isDraftNote(note) ? (
+										<div
+											className="z-1 block cursor-pointer p-[0.4rem] text-base text-transparent"
+											onClick={(event) => handleOptionMenuClick(event, note.id)}
+										>
+											<MoreHorizontal
+												aria-hidden="true"
+												size={15}
+												className="more-option"
+											/>
+											<span className="sr-only">Note options</span>
+										</div>
 									) : (
-										<>
-											<div className="flex-[9%_0_0]" />
-											<div className="note-title">{noteTitle}</div>
-										</>
+										<div className="note-options">&nbsp;</div>
 									)}
 								</div>
-								{!isDraftNote(note) ? (
-									<div
-										className="z-1 block cursor-pointer p-[0.4rem] text-base text-transparent"
-										onClick={(event) => handleOptionMenuClick(event, note.id)}
-									>
-										<MoreHorizontal
-											aria-hidden="true"
-											size={15}
-											className="more-option"
-										/>
-										<span className="sr-only">Note options</span>
+								{(activeFolder === Folder.ALL ||
+									activeFolder === Folder.FAVORITES) && (
+									<div className="note-category">
+										{noteCategory ? (
+											<FolderIcon size={12} />
+										) : (
+											<Book size={12} />
+										)}
+										<span className="ml-[0.5rem] text-[0.8rem]">
+											{noteCategory?.name ?? "Notes"}
+										</span>
 									</div>
-								) : (
-									<div className="note-options">&nbsp;</div>
+								)}
+								{optionsId === note.id && !isDraftNote(note) && (
+									<ContextMenu
+										item={note}
+										optionsPosition={optionsPosition}
+										setOptionsId={setOptionsId}
+										type={ContextMenuEnum.NOTE}
+									/>
 								)}
 							</div>
-							{(activeFolder === Folder.ALL ||
-								activeFolder === Folder.FAVORITES) && (
-								<div className="note-category">
-									{noteCategory ? <FolderIcon size={12} /> : <Book size={12} />}
-									<span className="ml-[0.5rem] text-[0.8rem]">
-										{noteCategory?.name ?? "Notes"}
-									</span>
-								</div>
-							)}
-							{optionsId === note.id && !isDraftNote(note) && (
-								<ContextMenu
-									item={note}
-									optionsPosition={optionsPosition}
-									setOptionsId={setOptionsId}
-									type={ContextMenuEnum.NOTE}
-								/>
-							)}
-						</div>
-					);
-				})}
+						);
+					}}
+				/>
 			</div>
 		</section>
 	);
