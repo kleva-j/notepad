@@ -11,6 +11,15 @@ dependencies:
   '@auth/drizzle-adapter':
     specifier: ^0.3.16
     version: 0.3.16
+  '@octokit/plugin-create-or-update-text-file':
+    specifier: ^4.0.1
+    version: 4.0.1(@octokit/core@5.1.0)
+  '@octokit/plugin-request-log':
+    specifier: ^4.0.0
+    version: 4.0.0(@octokit/core@5.1.0)
+  '@octokit/plugin-retry':
+    specifier: ^6.0.1
+    version: 6.0.1(@octokit/core@5.1.0)
   '@radix-ui/react-avatar':
     specifier: ^1.0.4
     version: 1.0.4(@types/react-dom@18.2.18)(@types/react@18.2.48)(react-dom@18.2.0)(react@18.2.0)
@@ -1472,6 +1481,17 @@ packages:
     resolution: {integrity: sha512-6G+ywGClliGQwRsjvqVYpklIfa7oRPA0vyhPQG/1Feh+B+wU0vGH1JiJ5T25d3g1JZYBHzR2qefLi9x8Gt+cpw==}
     dev: false
 
+  /@octokit/plugin-create-or-update-text-file@4.0.1(@octokit/core@5.1.0):
+    resolution: {integrity: sha512-r0kY7MrV+QTTPeVzNmjeAuuPraF8i6cQ2ff2/W+C2monXTAyx21jLd/2jczrC2e+ohnXQvDT3acqpBhtBcqXYQ==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@octokit/core': '>= 5'
+    dependencies:
+      '@octokit/core': 5.1.0
+      '@octokit/request-error': 5.0.1
+      '@octokit/types': 12.4.0
+    dev: false
+
   /@octokit/plugin-paginate-graphql@4.0.0(@octokit/core@5.1.0):
     resolution: {integrity: sha512-7HcYW5tP7/Z6AETAPU14gp5H5KmCPT3hmJrS/5tO7HIgbwenYmgw4OY9Ma54FDySuxMwD+wsJlxtuGWwuZuItA==}
     engines: {node: '>= 18'}
@@ -1489,6 +1509,15 @@ packages:
     dependencies:
       '@octokit/core': 5.1.0
       '@octokit/types': 12.4.0
+    dev: false
+
+  /@octokit/plugin-request-log@4.0.0(@octokit/core@5.1.0):
+    resolution: {integrity: sha512-2uJI1COtYCq8Z4yNSnM231TgH50bRkheQ9+aH8TnZanB6QilOnx8RMD2qsnamSOXtDj0ilxvevf5fGsBhBBzKA==}
+    engines: {node: '>= 18'}
+    peerDependencies:
+      '@octokit/core': '>=5'
+    dependencies:
+      '@octokit/core': 5.1.0
     dev: false
 
   /@octokit/plugin-rest-endpoint-methods@10.2.0(@octokit/core@5.1.0):
