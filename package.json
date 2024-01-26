@@ -17,7 +17,8 @@
     "setup-husky": "npx husky install && rm -rf .git/hooks && ln -s ../.husky .git/hooks",
     "db:generate": "drizzle-kit generate:pg",
     "db:migrate": "tsx src/lib/db/migrate.ts",
-    "db:drop": "drizzle-kit drop",
+    "db:drop": "drizzle-kit drop:pg",
+    "db:push": "drizzle-kit push:pg",
     "db:pull": "drizzle-kit introspect:pg",
     "db:studio": "drizzle-kit studio",
     "db:check": "drizzle-kit check:pg"
@@ -71,6 +72,7 @@
     "@typescript-eslint/eslint-plugin": "^6.19.0",
     "@typescript-eslint/parser": "^6.19.0",
     "autoprefixer": "^10.4.17",
+    "dotenv": "^16.4.1",
     "drizzle-kit": "^0.20.13",
     "eslint": "^8.54.0",
     "eslint-config-next": "^14.1.0",
