@@ -1,52 +1,62 @@
-import axios from "axios";
+import { createOrUpdateTextFile } from "@octokit/plugin-create-or-update-text-file";
+import { requestLog } from "@octokit/plugin-request-log";
+import { retry } from "@octokit/plugin-retry";
+import { Octokit } from "octokit";
+import { env } from "./env.mjs";
 
-import { requestHandler } from "./api";
+const { GITHUB_TOKEN: auth, FILENAME, FILEPATH, REPO_NAME } = env;
+const filePath = `${FILEPATH}${FILENAME}`;
 
-type OAuthParams = {
-	username: string;
-	accessToken: string;
-};
+const MyOctokit = Octokit.plugin(createOrUpdateTextFile)
+	.plugin(requestLog)
+	.plugin(retry)
+	.defaults({ userAgent: "Notepad" });
 
-const baseUrl = "https://api.github.com";
+const octokit = new MyOctokit({ auth });
 
-const repoConfig = {
-	name: "notepad-data",
-	description: "Database of notes for notepad",
-	private: true,
-	visibility: "private",
-	has_issues: false,
-	has_projects: false,
-	has_wiki: false,
-	is_template: false,
-	auto_init: false,
-	allow_squash_merge: false,
-	allow_rebase_merge: false,
-};
+export async function getUser() {
+	const { data: user } = await octokit.request("GET /user");
+	return user;
+}
 
-export const createInitialCommit = requestHandler<OAuthParams, any>(
-	(params) => {
-		const path = `/repos/${params?.username}/notepad-data/contents/notes.json`;
-		const bufferContent = Buffer.from(JSON.stringify([{}, {}], null, 2));
-		const noteCommit = {
-			message: "Initial commit",
-			branch: "master",
-			content: bufferContent.toString("base64"),
-		};
-		const headers = { Authorization: `token ${params?.accessToken}` };
+type GithubUser = Awaited<ReturnType<typeof getUser>>;
 
-		return axios.get(baseUrl + path, { headers, data: noteCommit });
-	},
-);
+export async function getUserRepo(user: GithubUser) {
+	const { data: repo } = await octokit.request("GET /repos/{owner}/{repo}", {
+		owner: user.login,
+		repo: REPO_NAME,
+		headers: { "X-GitHub-Api-Version": "2022-11-28" },
+	});
+	return repo;
+}
 
-export const createNotepadRepo = requestHandler<string, any>((token) => {
-	const headers = { Authorization: `token ${token}` };
-	return axios.get(baseUrl + "/user/repos", { data: repoConfig, headers });
-});
+export async function createRepoIfNotExist() {
+	const { data: newRepo } = await octokit.request("POST /user/repos", {
+		name: REPO_NAME,
+		description: "A repository for all Notepad Notes",
+		homepage: "https://github.com",
+		private: false,
+		is_template: false,
+		headers: { "X-GitHub-Api-Version": "2022-11-28" },
+	});
+	return newRepo;
+}
 
+export async function getJSONFile(owner: GithubUser) {
+	const { data: file } = await octokit.request(
+		"GET /repos/{owner}/{repo}/contents/{path}",
+		{ owner: owner.login, repo: REPO_NAME, path: filePath },
+	);
+	return file;
+}
 
-export const firstTimeLoginCheck = requestHandler<OAuthParams, any>((params) => {
-	const path = `/repos/${params?.username}/notepad-data`;
-	return axios.get(baseUrl + path)
-});
-
-export async function getUserFromHeader() {}
+export async function createOrUpdateFile(owner: GithubUser, content: string) {
+	const { data: file } = await octokit.createOrUpdateTextFile({
+		owner: owner.login,
+		repo: REPO_NAME,
+		path: filePath,
+		message: "Update file content",
+		content: ({ exists }) => (!exists ? "" : content),
+	});
+	return file;
+}
