@@ -5,8 +5,15 @@ on: [push, pull_request]
 jobs:
   build-and-test:
     env:
-      NODE_ENV: ${{ vars.NODE_ENV }}
-      DATABASE_URL: ${{ vars.DATABASE_URL }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      G_TOKEN: ${{ secrets.G_TOKEN }}
+      REPO_NAME: ${{ secrets.REPO_NAME }}
+      FILENAME: ${{ secrets.FILENAME }}
+      FILEPATH: ${{ secrets.FILEPATH }}
+      AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
+      AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
     runs-on: ubuntu-latest
 
     steps:
