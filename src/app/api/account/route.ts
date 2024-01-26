@@ -6,7 +6,7 @@ import { auth } from "@/lib/auth";
 import { eq } from "drizzle-orm";
 
 export async function PUT(request: Request) {
-	const session = await auth() as AuthSession;
+	const session = (await auth()) as AuthSession;
 
 	if (!session) return new Response("Error", { status: 400 });
 

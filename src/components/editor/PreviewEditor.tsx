@@ -6,6 +6,6 @@ interface PreviewEditorProps {
 	notes?: NoteItem[];
 }
 
-export const PreviewEditor = ({ }: PreviewEditorProps) => {
-	return (<div></div>);
+export const PreviewEditor = ({}: PreviewEditorProps) => {
+	return <div></div>;
 };

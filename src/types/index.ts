@@ -7,10 +7,10 @@ export type Prettify<T> = {
 } & {};
 
 export type WithoutNullableKeys<T> = {
-  [Key in keyof T]-?: Prettify<WithoutNullableKeys<NonNullable<T[Key]>>>;
+	[Key in keyof T]-?: Prettify<WithoutNullableKeys<NonNullable<T[Key]>>>;
 };
 
-export type AuthSession = WithoutNullableKeys<DefaultSession>
+export type AuthSession = WithoutNullableKeys<DefaultSession>;
 
 export type ReactMouseEvent =
 	| MouseEvent

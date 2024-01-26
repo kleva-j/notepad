@@ -21,7 +21,8 @@
     "db:push": "drizzle-kit push:pg",
     "db:pull": "drizzle-kit introspect:pg",
     "db:studio": "drizzle-kit studio",
-    "db:check": "drizzle-kit check:pg"
+    "db:check": "drizzle-kit check:pg",
+		"format": "prettier --write \"**/*.{js,jsx,ts,tsx}\""
   },
   "dependencies": {
     "@auth/core": "^0.22.0",

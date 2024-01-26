@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default async function Navbar() {
-	const session = await auth()
+	const session = await auth();
 	const nameExists =
 		session?.user && !!session?.user.name && session?.user.name.length > 5;
 

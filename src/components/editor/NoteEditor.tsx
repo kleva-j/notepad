@@ -39,7 +39,7 @@ export const NoteEditor: FC = () => {
 		else if (previewMarkdown)
 			return <PreviewEditor noteText={activeNote.text} />;
 
-		return (<div></div>);
+		return <div></div>;
 	};
 
 	return (
