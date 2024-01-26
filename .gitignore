@@ -48,3 +48,5 @@ yarn-error.log*
 certificates
 
 testapp
+
+src/lib/db/migrations
