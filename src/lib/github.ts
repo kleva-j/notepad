@@ -1,10 +1,10 @@
 import { createOrUpdateTextFile } from "@octokit/plugin-create-or-update-text-file";
 import { requestLog } from "@octokit/plugin-request-log";
 import { retry } from "@octokit/plugin-retry";
+import { env } from "@/lib/env.mjs";
 import { Octokit } from "octokit";
-import { env } from "./env.mjs";
 
-const { GITHUB_TOKEN: auth, FILENAME, FILEPATH, REPO_NAME } = env;
+const { G_TOKEN: auth, FILENAME, FILEPATH, REPO_NAME } = env;
 const filePath = `${FILEPATH}${FILENAME}`;
 
 const MyOctokit = Octokit.plugin(createOrUpdateTextFile)

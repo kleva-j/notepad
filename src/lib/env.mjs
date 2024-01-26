@@ -9,7 +9,7 @@ export const env = createEnv({
 			.enum(["development", "test", "production"])
 			.default("development"),
 		DATABASE_URL: z.string().min(1),
-		GITHUB_TOKEN: z.string().min(3),
+		G_TOKEN: z.string().min(3),
 		REPO_NAME: z.string().min(3),
 		FILENAME: z.string().min(3),
 		FILEPATH: z.string().min(3),
