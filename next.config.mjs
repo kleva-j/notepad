@@ -1,3 +1,5 @@
+import "./src/lib/env.mjs";
+
 /** @type {import("next").NextConfig} */
 const config = {
 	images: {
@@ -6,7 +8,8 @@ const config = {
 			"https://assets-global.website-files.com",
 		],
 	},
+	experimental: {
+		esmExternals: "loose",
+	},
 };
 export default config;
-
-// site:greenhouse.io | site:lever.co | site:workable.com | site:himalayas.app | site:arch.dev | site:weworkremotely.com | site:ycombinator.com/jobs frontend developer

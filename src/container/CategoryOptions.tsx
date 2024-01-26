@@ -1,4 +1,8 @@
-import type { HandleOptionsEvent, OptionsPosition, CategoryItem } from "@/types";
+import type {
+	HandleOptionsEvent,
+	OptionsPosition,
+	CategoryItem,
+} from "@/types";
 import type { DragEvent } from "react";
 
 import { Folder as FolderIcon, MoreHorizontal } from "lucide-react";
@@ -32,9 +36,7 @@ export default function CategoryOptions({
 			tabIndex={0}
 			onClick={handleClick}
 			onDrop={(event) => event.preventDefault()}
-			onDragOver={(event: DragEvent<HTMLDivElement>) =>
-				event.preventDefault()
-			}
+			onDragOver={(event: DragEvent<HTMLDivElement>) => event.preventDefault()}
 			onContextMenu={(event) => handleRightClick(event, category.id)}
 			onFocus={() => console.log("Menu option is in focus")}
 		>

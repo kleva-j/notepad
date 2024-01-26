@@ -5,8 +5,15 @@ on: [push, pull_request]
 jobs:
   build-and-test:
     env:
-      NODE_ENV: ${{ vars.NODE_ENV }}
-      DATABASE_URL: ${{ vars.DATABASE_URL }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      NODE_ENV: ${{ secrets.NODE_ENV }}
+      G_TOKEN: ${{ secrets.G_TOKEN }}
+      REPO_NAME: ${{ secrets.REPO_NAME }}
+      FILENAME: ${{ secrets.FILENAME }}
+      FILEPATH: ${{ secrets.FILEPATH }}
+      AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
+      AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
+      AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
     runs-on: ubuntu-latest
 
     steps:
@@ -46,8 +53,8 @@ jobs:
           path: ${{ github.workspace }}apps/nextjs/.next/cache
           key: ${{ runner.os }}-${{ runner.node }}-${{ hashFiles('**/pnpm-lock.yaml') }}-nextjs
 
-      # - name: Build and test
-      #   run: pnpm build && pnpm test
+      - name: Build
+        run: pnpm build
 
       # - name: Create directory for artifacts
       #   run: |
@@ -61,37 +68,37 @@ jobs:
       #     path: |
       #       ${{ github.workspace }}/artifact
 
-  deploy:
-    needs: build-and-test
-    if: github.repository_owner == 'kleva-j' && ((github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name == 'push'))
-    runs-on: ubuntu-latest
-    permissions:
-      deployments: write
-    steps:
-      - name: start deployment
-        uses: bobheadxi/deployments@v0.4.3
-        id: deployment
-        with:
-          step: start
-          token: ${{ secrets.G_TOKEN }}
-          env: ${{ fromJSON('["Production", "Preview"]')[github.ref != 'refs/heads/main'] }}
+  # deploy:
+  #   needs: build-and-test
+  #   if: github.repository_owner == 'kleva-j' && ((github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name == 'push'))
+  #   runs-on: ubuntu-latest
+  #   permissions:
+  #     deployments: write
+  #   steps:
+  #     - name: start deployment
+  #       uses: bobheadxi/deployments@v0.4.3
+  #       id: deployment
+  #       with:
+  #         step: start
+  #         token: ${{ secrets.G_TOKEN }}
+  #         env: ${{ fromJSON('["Production", "Preview"]')[github.ref != 'refs/heads/main'] }}
 
-      - uses: actions/checkout@v3
+  #     - uses: actions/checkout@v3
 
-      - uses: amondnet/vercel-action@v20
-        with:
-          vercel-token: ${{ secrets.VERCEL_TOKEN }}
-          vercel-args: ${{ fromJSON('["--prod", ""]')[github.ref != 'refs/heads/main'] }}
-          vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
-          vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
-          scope: ${{ secrets.VERCEL_ORG_ID}}
-          working-directory: ./
+  #     - uses: amondnet/vercel-action@v20
+  #       with:
+  #         vercel-token: ${{ secrets.VERCEL_TOKEN }}
+  #         vercel-args: ${{ fromJSON('["--prod", ""]')[github.ref != 'refs/heads/main'] }}
+  #         vercel-org-id: ${{ secrets.VERCEL_ORG_ID}}
+  #         vercel-project-id: ${{ secrets.VERCEL_PROJECT_ID}}
+  #         scope: ${{ secrets.VERCEL_ORG_ID}}
+  #         working-directory: ./
 
-      - name: update deployment status
-        uses: bobheadxi/deployments@v0.4.3
-        if: always()
-        with:
-          step: finish
-          token: ${{ secrets.G_TOKEN }}
-          status: ${{ job.status }}
-          deployment_id: ${{ steps.deployment.outputs.deployment_id }}
+  #     - name: update deployment status
+  #       uses: bobheadxi/deployments@v0.4.3
+  #       if: always()
+  #       with:
+  #         step: finish
+  #         token: ${{ secrets.G_TOKEN }}
+  #         status: ${{ job.status }}
+  #         deployment_id: ${{ steps.deployment.outputs.deployment_id }}

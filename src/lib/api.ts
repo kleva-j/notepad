@@ -1,4 +1,6 @@
-import { AxiosError, AxiosResponse } from "axios";
+import axios, { AxiosError, AxiosResponse } from "axios";
+
+import { getBaseUrl } from "@/lib/utils";
 
 type BaseRequest<T, V> = (params?: T) => Promise<AxiosResponse<V>>;
 
@@ -21,3 +23,5 @@ export const requestHandler =
 			return { code: "error", error: e as E };
 		}
 	};
+
+axios.defaults.baseURL = getBaseUrl();

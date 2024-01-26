@@ -1,9 +1,16 @@
 import { MouseEvent, ChangeEvent, DragEvent } from "react";
+import { DefaultSession } from "next-auth";
 import { Folder } from "@/utils/enums";
 
 export type Prettify<T> = {
 	[K in keyof T]: T[K];
 } & {};
+
+export type WithoutNullableKeys<T> = {
+	[Key in keyof T]-?: Prettify<WithoutNullableKeys<NonNullable<T[Key]>>>;
+};
+
+export type AuthSession = WithoutNullableKeys<DefaultSession>;
 
 export type ReactMouseEvent =
 	| MouseEvent

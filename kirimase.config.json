@@ -1,7 +1,8 @@
 {
   "hasSrc": true,
   "packages": [
-    "shadcn-ui"
+    "shadcn-ui",
+    "next-auth"
   ],
   "preferredPackageManager": "pnpm",
   "t3": false,
@@ -10,5 +11,6 @@
   "componentLib": "shadcn-ui",
   "driver": "pg",
   "provider": "postgresjs",
-  "orm": "drizzle"
+  "orm": "drizzle",
+  "auth": "next-auth"
 }
