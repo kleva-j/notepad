@@ -1,3 +1,5 @@
+import "./src/lib/env.mjs";
+
 /** @type {import("next").NextConfig} */
 const config = {
 	images: {
@@ -5,6 +7,9 @@ const config = {
 			"avatars.githubusercontent.com",
 			"https://assets-global.website-files.com",
 		],
+	},
+	experimental: {
+		esmExternals: "loose",
 	},
 };
 export default config;
