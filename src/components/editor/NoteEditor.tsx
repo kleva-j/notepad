@@ -3,11 +3,9 @@
 
 import { type FC, useCallback } from "react";
 
-import { PreviewEditor } from "@/components/editor/PreviewEditor";
-import { SettingsActions } from "@/lib/constants";
+import { PreviewEditor, EditorMenu, EmptyEditor } from "@/components/editor";
 import { UseNotesContext, UseAppContext } from "@/lib/context";
-import { EmptyEditor } from "@/components/editor/EmptyEditor";
-import { Menubar } from "@/components/editor/Menubar";
+import { SettingsActions } from "@/lib/constants";
 import { getActiveNote } from "@/utils/helpers";
 
 export const NoteEditor: FC = () => {
@@ -44,7 +42,7 @@ export const NoteEditor: FC = () => {
 
 	return (
 		<section className="relative h-full min-w-[300px]">
-			<Menubar
+			<EditorMenu
 				activeNote={!!activeNote}
 				togglePreview={togglePreview}
 				previewMarkdown={previewMarkdown}
