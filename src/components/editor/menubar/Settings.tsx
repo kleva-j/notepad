@@ -16,32 +16,34 @@ import {
 
 export const SettingsModal = () => {
 	return (
-		<Tooltip>
-			<TooltipTrigger asChild>
-				<Dialog>
-					<DialogTrigger>
-						<Button
-							variant="ghost"
-							className="ml-auto rounded-none"
-							size="icon"
-						>
-							<Settings className="h-[1.1rem] w-[1.1rem] transition-all" />
-						</Button>
-					</DialogTrigger>
-					<DialogContent>
-						<DialogHeader>
-							<DialogTitle>Are you absolutely sure?</DialogTitle>
-							<DialogDescription>
-								This action cannot be undone. This will permanently delete your
-								account and remove your data from our servers.
-							</DialogDescription>
-						</DialogHeader>
-					</DialogContent>
-				</Dialog>
-			</TooltipTrigger>
-			<TooltipContent>
-				<p>Settings</p>
-			</TooltipContent>
-		</Tooltip>
+		<Dialog>
+			<DialogTrigger asChild>
+				<div>
+					<Tooltip>
+						<TooltipTrigger asChild>
+							<Button
+								variant="ghost"
+								className="ml-auto rounded-none"
+								size="icon"
+							>
+								<Settings className="h-[1.1rem] w-[1.1rem] transition-all" />
+							</Button>
+						</TooltipTrigger>
+						<TooltipContent>
+							<p>Settings</p>
+						</TooltipContent>
+					</Tooltip>
+				</div>
+			</DialogTrigger>
+			<DialogContent>
+				<DialogHeader>
+					<DialogTitle>Are you absolutely sure?</DialogTitle>
+					<DialogDescription>
+						This action cannot be undone. This will permanently delete your
+						account and remove your data from our servers.
+					</DialogDescription>
+				</DialogHeader>
+			</DialogContent>
+		</Dialog>
 	);
 };
