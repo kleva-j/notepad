@@ -1,5 +1,6 @@
 "use client";
 
+import { EmptyEditor, EditorMenu } from "@/components/editor";
 import { fadeIn } from "@/utils/motion";
 import { motion } from "framer-motion";
 import {
@@ -31,8 +32,9 @@ export default function RootPage() {
 				</ResizablePanel>
 				<ResizableHandle withHandle />
 				<ResizablePanel defaultSize={58}>
-					<div className="flex h-full items-center justify-center p-6">
-						<div>Editor Panel</div>
+					<div className="relative flex h-full flex-col items-center justify-center p-6">
+						<EmptyEditor />
+						<EditorMenu activeNote />
 					</div>
 				</ResizablePanel>
 			</ResizablePanelGroup>

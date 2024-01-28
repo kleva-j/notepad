@@ -2,8 +2,8 @@
 
 import type { FC, PropsWithChildren } from "react";
 
-import { ThemeProvider } from "@/components/ThemeProvider";
 import { Toaster } from "@/components/ui/toaster";
+import { ThemeProvider } from "next-themes";
 import { Provider } from "jotai";
 
 import {
