@@ -1,7 +1,7 @@
 import type { KeyboardEventHandler, MouseEventHandler } from "react";
 import { type ContextMenuEnum, OptionTypesEnum } from "@/utils/enums";
 import { ContextMenuStyleMap } from "@/utils/helpers";
-import { cn } from "@/utils/helpers";
+import { cn } from "@/lib/utils";
 
 type ContextMenuOptionProps = {
 	handler: MouseEventHandler & KeyboardEventHandler;

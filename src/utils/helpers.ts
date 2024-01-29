@@ -35,16 +35,14 @@ export const getNoteTitle = (text: string): string => {
 export const setStrokeColor = (folder: Folder, activeFolder: Folder) =>
 	activeFolder === folder ? "#5183f5" : "#ffffff40";
 
+export const setActiveColor = (isActive: boolean) => isActive ? "#5183f5" : "#ffffff40"
+
 export const isDraftNote = (note: NoteItem) => {
 	return !note.scratchpad && note.text === "";
 };
 
 export const getActiveNote = (notes: NoteItem[], activeNoteId: string) =>
 	notes.find((note) => note.id === activeNoteId);
-
-export function cn(...inputs: ClassValue[]) {
-	return twMerge(clsx(inputs));
-}
 
 export const ContextMenuStyleMap: Record<ContextMenuEnum, string> = {
 	[ContextMenuEnum.CATEGORY]: "bg-[#2d2d2d] text-[#c0c0c0] hover:bg-[#4d4d4d]",
