@@ -1,5 +1,5 @@
+import { Edit, Star, Trash2, Book, Plus } from "lucide-react";
 import { FolderOption } from "@/components/sidebar/Folder";
-import { Edit, Star, Trash2, Book } from "lucide-react";
 import { UseNotesContext } from "@/lib/context";
 import { NotesActions } from "@/lib/constants";
 import { Folder } from "@/utils/enums";
@@ -19,12 +19,13 @@ export default function Sidebar() {
 	const type = NotesActions.SET_ACTIVE_FOLDER;
 
 	return (
-		<section className="h-full w-full max-w-[270px] text-[#d0d0d0]">
+		<section className="h-full w-full max-w-[270px] bg-neutral-800 border-r border-r-border">
 			<div
-				className="w-full text-center text-base capitalize leading-[50px] mb-1 text-background cursor-pointer"
+				className="w-full text-center text-base capitalize leading-[55px] mb-1 text-white cursor-pointer flex items-center justify-center border-b-[0.5px] border-b-neutral-700 hover:bg-neutral-700/10"
 				onClick={addNewNote}
 			>
-				Add New Note
+				<Plus size={16} className="-ml-4 mr-1" />
+				New Note
 			</div>
 			<section className="relative flex flex-1 flex-col pb-4">
 				<FolderOption

@@ -24,8 +24,7 @@ export const ContextMenuOption: React.FC<ContextMenuOptionProps> = ({
 	const className = cn(
 		"flex items-center gap-4 px-5 py-1",
 		ContextMenuStyleMap[type],
-		optionType === OptionTypesEnum.delete &&
-			"hover:bg-red-500 hover:text-[#f2f2f2]",
+		optionType === OptionTypesEnum.delete && "hover:bg-red-500",
 	);
 
 	return (

@@ -1,6 +1,4 @@
 import { ContextMenuEnum } from "@/utils/enums";
-import { twMerge } from "tailwind-merge";
-import { ClassValue, clsx } from "clsx";
 import { LabelText } from "./constants";
 import { NoteItem } from "@/types";
 import { Folder } from "./enums";

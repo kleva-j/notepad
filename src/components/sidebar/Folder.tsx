@@ -1,12 +1,9 @@
-import type { FC, ForwardRefExoticComponent } from "react";
-import type { LucideProps } from "lucide-react";
 import type { Folder } from "@/utils/enums";
+import type { IconType } from "@/types";
+import type { FC } from "react";
 
-import { setActiveColor } from "@/utils/helpers";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
-
-type IconType = ForwardRefExoticComponent<LucideProps>;
 
 export type FolderProps = {
 	text: string;
@@ -18,30 +15,34 @@ export type FolderProps = {
 	addNoteType?: (noteId: string) => void;
 };
 
-export const FolderOption: FC<FolderProps> = ({
-	text,
-	active,
-	onClick,
-	icon: Icon,
-	iconSize = 15,
-}) => {
+export const FolderOption: FC<FolderProps> = (props) => {
+	const { text, icon, active, onClick, iconSize = 15 } = props;
+	const Icon = motion(icon);
+
 	return (
 		<div
-			className={cn("relative w-full cursor-pointer gap-x-3 px-4 py-[10px]")}
+			className={cn(
+				"group relative flex w-full cursor-pointer items-center gap-x-3 px-4 py-[10px] transition focus-visible:outline-1 focus-visible:outline-neutral-700",
+			)}
+			style={{ WebkitTapHighlightColor: "transparent" }}
 			onClick={onClick}
+			tabIndex={0}
 		>
-			<div className="flex items-center gap-x-3 font-semibold text-foreground">
-				<Icon size={iconSize} className={active ? "text-[#5183f5]" : ""} />
-				<motion.span transition={{ delay: 1 }} className={cn("text-sm", active ? "text-background" : "")}>
-					{text}
-				</motion.span>
-			</div>
 			{active && (
 				<motion.span
 					layoutId="background"
-					className="absolute inset-0 -z-10 block h-full w-full border-r-2 border-r-muted-foreground bg-foreground"
+					className="absolute inset-0 z-10 bg-secondary mix-blend-difference dark:border-r-2 dark:border-r-sky-500"
+					transition={{ type: "spring", bounce: 0.2, duration: 0.6 }}
 				/>
 			)}
+			<motion.span
+				className={cn(
+					"flex items-center gap-x-1 text-[15px] font-medium leading-[1.4rem] tracking-[0.04em] text-white/90 transition-colors",
+				)}
+			>
+				<Icon size={iconSize} className={cn("mr-2 text-sky-500")} />
+				{text}
+			</motion.span>
 		</div>
 	);
 };

@@ -1,4 +1,5 @@
-import { MouseEvent, ChangeEvent, DragEvent } from "react";
+import { MouseEvent, ChangeEvent, DragEvent, ForwardRefExoticComponent } from "react";
+import { LucideProps } from "lucide-react";
 import { DefaultSession } from "next-auth";
 import { Folder } from "@/utils/enums";
 
@@ -11,6 +12,8 @@ export type WithoutNullableKeys<T> = {
 };
 
 export type AuthSession = WithoutNullableKeys<DefaultSession>;
+
+export type __Awaited__<T> = T extends Promise<infer U> ? __Awaited__<U> : T
 
 export type ReactMouseEvent =
 	| MouseEvent
@@ -98,6 +101,11 @@ export interface RootState {
 }
 
 export type PreviewType = "edit" | "preview";
+export enum ThemeEnum {
+	light = "light",
+	dark = "dark",
+}
+export type Themes = keyof typeof ThemeEnum;
 
 export enum Method {
 	GET = "GET",
@@ -116,3 +124,5 @@ export type HandleOptionsEvent = (
 	event: ClickEvent,
 	categoryId: string,
 ) => void;
+
+export type IconType = ForwardRefExoticComponent<LucideProps>;

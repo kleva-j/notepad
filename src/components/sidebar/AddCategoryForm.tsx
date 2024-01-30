@@ -20,7 +20,7 @@ export const AddCategoryForm = forwardRef<
 				aria-label="Category name"
 				placeholder="New category..."
 				onBlur={() => setIsAddingCategory(false)}
-				className="m-2 ml-4 w-[150px] border-0 bg-[#2d2d2d]/5 p-2 text-[0.9rem] text-[#eeeeee]"
+				className="m-2 ml-4 w-[150px] border-0 p-2 text-[0.9rem]"
 			/>
 		</form>
 	);
