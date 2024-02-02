@@ -1,4 +1,4 @@
-import { ContextMenuEnum } from "@/utils/enums";
+import { ContextMenuEnum, ContextType, ContextTypeEnum } from "@/utils/enums";
 import { LabelText } from "./constants";
 import { NoteItem } from "@/types";
 import { Folder } from "./enums";
@@ -33,7 +33,8 @@ export const getNoteTitle = (text: string): string => {
 export const setStrokeColor = (folder: Folder, activeFolder: Folder) =>
 	activeFolder === folder ? "#5183f5" : "#ffffff40";
 
-export const setActiveColor = (isActive: boolean) => isActive ? "#5183f5" : "#ffffff40"
+export const setActiveColor = (isActive: boolean) =>
+	isActive ? "#5183f5" : "#ffffff40";
 
 export const isDraftNote = (note: NoteItem) => {
 	return !note.scratchpad && note.text === "";
@@ -46,4 +47,19 @@ export const ContextMenuStyleMap: Record<ContextMenuEnum, string> = {
 	[ContextMenuEnum.CATEGORY]: "bg-[#2d2d2d] text-[#c0c0c0] hover:bg-[#4d4d4d]",
 	[ContextMenuEnum.NOTE]:
 		"text-slate-500 hover:text-slate-800 hover:bg-[#f0f0f0]",
+};
+
+export const checkContextType = (id: string): { type: ContextType | null } => {
+	const initial = id.split("-")[0];
+
+	switch (initial) {
+		case "c":
+		case "droppable":
+			return { type: ContextTypeEnum.category };
+		case "n":
+			return { type: ContextTypeEnum.note };
+
+		default:
+			return { type: null };
+	}
 };
