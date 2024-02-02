@@ -1,7 +1,7 @@
 import type { KeyboardEventHandler, MouseEventHandler } from "react";
 import { type ContextMenuEnum, OptionTypesEnum } from "@/utils/enums";
 import { ContextMenuStyleMap } from "@/utils/helpers";
-import { cn } from "@/utils/helpers";
+import { cn } from "@/lib/utils";
 
 type ContextMenuOptionProps = {
 	handler: MouseEventHandler & KeyboardEventHandler;
@@ -24,8 +24,7 @@ export const ContextMenuOption: React.FC<ContextMenuOptionProps> = ({
 	const className = cn(
 		"flex items-center gap-4 px-5 py-1",
 		ContextMenuStyleMap[type],
-		optionType === OptionTypesEnum.delete &&
-			"hover:bg-red-500 hover:text-[#f2f2f2]",
+		optionType === OptionTypesEnum.delete && "hover:bg-red-500",
 	);
 
 	return (

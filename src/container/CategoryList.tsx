@@ -1,140 +1,116 @@
 "use client";
 
-import type { ClickEvent } from "@/types";
-
-import { type FormEvent, useRef, useState, useEffect } from "react";
-
 import { ChevronDown, ChevronRight, Layers, Plus } from "lucide-react";
 import { AddCategoryForm } from "@/components/sidebar/AddCategoryForm";
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
+import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { NotesActions, CategoryActions } from "@/lib/constants";
-import { LabelText, iconColor } from "@/utils/constants";
+import { CategoryOptions } from "@/container/CategoryOptions";
+import { AnimatePresence } from "framer-motion";
+import { LabelText } from "@/utils/constants";
+import { useDroppable } from "@dnd-kit/core";
+import { useState, useEffect } from "react";
 import { Each } from "@/components/Each";
 import { Folder } from "@/utils/enums";
-
-import CategoryOptions from "@/container/CategoryOptions";
+import {
+	verticalListSortingStrategy,
+	SortableContext,
+} from "@dnd-kit/sortable";
 
 export default function CategoryList() {
-	const inputRef = useRef<HTMLInputElement>(null);
-
 	const { state: noteState, dispatch: dispatchNotes } = UseNotesContext();
-	const [optionsPosition, setOptionsPosition] = useState({ x: 0, y: 0 });
 	const { state: categoryState, dispatch } = UseCategoryContext();
-	const [isAddingCategory, setIsAddingCategory] = useState(false);
 	const { activeFolder, activeCategoryId } = noteState;
-	const { categories } = categoryState;
+	const { categories: list } = categoryState;
+	const { SET_ACTIVE_CATEGORY_ID } = NotesActions;
+	const { ADD_NEW_CATEGORY } = CategoryActions;
 
 	const [isListOpen, setCategoryListOpen] = useState(false);
+	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
 
 	useEffect(() => {
-		categories.length > 0 && setCategoryListOpen(true);
-	}, [categories.length]);
+		list.length > 0 && setCategoryListOpen(true);
+	}, [list.length]);
 
-	const onSubmitNewCategory = (event: FormEvent<HTMLFormElement>): void => {
-		event.preventDefault();
-		const name = inputRef.current?.value ?? "";
-
-		if (!categories.find((c) => c.name === name) || !(name === "")) {
-			dispatch({
-				type: CategoryActions.ADD_NEW_CATEGORY,
-				payload: name,
-			});
-		}
-		setIsAddingCategory(false);
+	const onSubmitNewCategory = (title: string): void => {
+		const notFound = list.findIndex((c) => c.name === title) < 0 ? 1 : 0;
+		setIsPopoverOpen(false);
+		!!notFound && dispatch({ type: ADD_NEW_CATEGORY, payload: title });
 	};
 
 	const handleAddCategory = () => {
-		setIsAddingCategory(true);
 		!isListOpen && setCategoryListOpen(true);
 	};
 
-	const openMenuOption = (event: ClickEvent, categoryId = "") => {
-		const clicked = event.target;
-		if (!clicked) return;
-
-		if ("clientX" in event && "clientY" in event)
-			setOptionsPosition(() => ({ x: event.clientX, y: event.clientY }));
-
-		event.stopPropagation();
-		setOptionsId(!optionsId || optionsId !== categoryId ? categoryId : "");
-	};
-
-	const handleRightClick = (event: Event | ClickEvent, categoryId = "") => {
-		event.preventDefault();
-		openMenuOption(event as ClickEvent, categoryId);
-	};
-
 	const handleClick = (id: string) =>
-		dispatchNotes({
-			type: NotesActions.SET_ACTIVE_CATEGORY_ID,
-			payload: id,
-		});
+		dispatchNotes({ type: SET_ACTIVE_CATEGORY_ID, payload: id });
 
-	const [optionsId, setOptionsId] = useState("");
+	const { setNodeRef } = useDroppable({ id: "droppable-category-options" });
 
 	return (
 		<section className="flex flex-col">
-			<div className="mt-4 flex items-center justify-between py-2 pl-4">
-				<button
-					className="category-menulist m-0 flex cursor-pointer items-center bg-transparent p-0 text-sm text-[#d0d0d067]"
+			<div className="group mt-4 flex items-center justify-between py-2 pl-4">
+				<div
+					className="m-0 flex cursor-pointer items-center bg-transparent p-0 text-sm text-foreground/50"
 					onClick={() => setCategoryListOpen(!isListOpen)}
 					aria-label={LabelText.COLLAPSE_CATEGORY}
+					tabIndex={0}
 				>
-					{categories.length > 0 ? (
+					{list.length > 0 ? (
 						isListOpen ? (
 							<ChevronDown size={16} />
 						) : (
 							<ChevronRight size={16} />
 						)
 					) : (
-						<Layers size={16} />
+						<Layers size={16} className="hover:text-foreground/80" />
 					)}
-					<h2 className="pl-3 text-[0.8125rem] font-[600] uppercase">
+					<h2 className="pl-3 text-[0.8125rem] font-semibold uppercase group-hover:text-foreground/80">
 						Categories
 					</h2>
-				</button>
-				<button
-					className="category-button flex cursor-pointer items-center border-0 bg-transparent px-4 py-2 text-sm text-[#d0d0d0]/20 hover:text-white"
-					onClick={handleAddCategory}
-					aria-label={LabelText.ADD_CATEGORY}
-				>
-					<Plus size={16} color={iconColor} />
-				</button>
+				</div>
+				<Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+					<PopoverTrigger asChild>
+						<button
+							className="flex cursor-pointer items-center border-0 bg-transparent px-4 py-2 text-sm"
+							onClick={handleAddCategory}
+							aria-label={LabelText.ADD_CATEGORY}
+						>
+							<Plus
+								size={16}
+								className="text-foreground/50 hover:text-foreground/80"
+							/>
+						</button>
+					</PopoverTrigger>
+					<AddCategoryForm onSubmit={onSubmitNewCategory} />
+				</Popover>
 			</div>
 
-			{isListOpen && (
-				<div>
-					<div className="category-list" aria-label="Category list">
-						<Each
-							of={categories}
-							render={(category) => (
-								<CategoryOptions
-									key={category.id}
-									category={category}
-									optionsId={optionsId}
-									options={optionsPosition}
-									setOptionsId={setOptionsId}
-									handleMenuClick={openMenuOption}
-									handleRightClick={handleRightClick}
-									handleClick={() => handleClick(category.id)}
-									active={
-										activeFolder === Folder.CATEGORY &&
-										category.id === activeCategoryId
-									}
-								/>
-							)}
-						/>
-					</div>
-
-					{isAddingCategory && (
-						<AddCategoryForm
-							ref={inputRef}
-							setIsAddingCategory={setIsAddingCategory}
-							onSubmit={onSubmitNewCategory}
-						/>
-					)}
-				</div>
-			)}
+			<ul ref={setNodeRef} className="">
+				<AnimatePresence aria-label="Category list" initial={false}>
+					<SortableContext items={list} strategy={verticalListSortingStrategy}>
+						{isListOpen && (
+							<Each
+								of={list}
+								render={(category, index) => (
+									<CategoryOptions
+										index={index}
+										key={category.id}
+										category={category}
+										handleMenuClick={() => {}}
+										handleRightClick={() => {}}
+										handleClick={() => handleClick(category.id)}
+										active={
+											activeFolder === Folder.CATEGORY &&
+											category.id === activeCategoryId
+										}
+									/>
+								)}
+							/>
+						)}
+					</SortableContext>
+				</AnimatePresence>
+			</ul>
 		</section>
 	);
 }

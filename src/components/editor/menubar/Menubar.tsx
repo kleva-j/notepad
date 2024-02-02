@@ -6,8 +6,8 @@ import {
 	MakeFavorite,
 	DownloadNote,
 	MoveToTrash,
+	ToggleTheme,
 	SyncNotes,
-	ChangeTheme,
 } from ".";
 
 interface MenubarProps {
@@ -27,20 +27,13 @@ export const EditorMenu = (props: MenubarProps) => {
 			>
 				<TooltipProvider>
 					{activeNote && <TogglePreview previewMarkdown={previewMarkdown} />}
-
 					<DownloadNote />
-
 					<MoveToTrash />
-
 					<CopyToClipboard />
-
 					<MakeFavorite />
-
 					<SettingsModal />
-
 					<SyncNotes />
-
-					<ChangeTheme />
+					<ToggleTheme />
 				</TooltipProvider>
 			</nav>
 		</div>

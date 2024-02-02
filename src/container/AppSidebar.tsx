@@ -1,6 +1,5 @@
+import { Edit, Star, Trash2, Book, Plus } from "lucide-react";
 import { FolderOption } from "@/components/sidebar/Folder";
-import { Edit, Star, Trash2, Book } from "lucide-react";
-import { setStrokeColor } from "@/utils/helpers";
 import { UseNotesContext } from "@/lib/context";
 import { NotesActions } from "@/lib/constants";
 import { Folder } from "@/utils/enums";
@@ -10,87 +9,52 @@ import CategoryList from "@/container/CategoryList";
 export default function Sidebar() {
 	const { state, dispatch } = UseNotesContext();
 	const { activeFolder, activeCategoryId } = state;
-
-	const addNewNote = () =>
-		dispatch({
-			type: NotesActions.ADD_NEW_NOTE,
-			payload: { activeFolder, activeCategoryId },
-		});
+	const { ADD_NEW_NOTE, SET_ACTIVE_FOLDER: type } = NotesActions;
 
 	return (
-		<section className="h-full bg-[#2d2d2d] pt-[0.4rem] text-[#d0d0d0]">
-			<button onClick={addNewNote} />
-			<section className="relative flex flex-1 flex-col pb-4">
+		<section className="h-full w-full max-w-[270px] border-r border-r-border bg-background">
+			<div
+				className="mb-1 flex w-full cursor-pointer items-center justify-center border-b-[0.5px] border-b-border text-center text-base capitalize leading-[55px] text-foreground hover:bg-background/90"
+				onClick={() =>
+					dispatch({
+						type: ADD_NEW_NOTE,
+						payload: { activeFolder, activeCategoryId },
+					})
+				}
+			>
+				<Plus size={16} className="-ml-4 mr-1" />
+				New Note
+			</div>
+			<section className="flex flex-col">
 				<FolderOption
 					text="Scratchpad"
-					icon={
-						<Edit
-							size={15}
-							style={{
-								stroke: setStrokeColor(Folder.SCRATCHPAD, activeFolder),
-							}}
-						/>
-					}
+					icon={Edit}
 					folder={Folder.SCRATCHPAD}
 					active={activeFolder === Folder.SCRATCHPAD}
-					onClick={() =>
-						dispatch({
-							type: NotesActions.SET_ACTIVE_FOLDER,
-							payload: Folder.SCRATCHPAD,
-						})
-					}
+					onClick={() => dispatch({ type, payload: Folder.SCRATCHPAD })}
 				/>
 				<FolderOption
 					text="Notes"
-					icon={
-						<Book
-							size={15}
-							style={{ stroke: setStrokeColor(Folder.ALL, activeFolder) }}
-						/>
-					}
+					icon={Book}
 					folder={Folder.ALL}
 					active={activeFolder === Folder.ALL}
-					onClick={() =>
-						dispatch({
-							type: NotesActions.SET_ACTIVE_FOLDER,
-							payload: Folder.ALL,
-						})
-					}
+					onClick={() => dispatch({ type, payload: Folder.ALL })}
 				/>
 				<FolderOption
 					text="Favorites"
-					icon={
-						<Star
-							size={15}
-							style={{ stroke: setStrokeColor(Folder.FAVORITES, activeFolder) }}
-						/>
-					}
+					icon={Star}
 					folder={Folder.FAVORITES}
 					active={activeFolder === Folder.FAVORITES}
-					onClick={() =>
-						dispatch({
-							type: NotesActions.SET_ACTIVE_FOLDER,
-							payload: Folder.FAVORITES,
-						})
-					}
+					onClick={() => dispatch({ type, payload: Folder.FAVORITES })}
 				/>
 				<FolderOption
 					text="Trash"
-					icon={
-						<Trash2
-							size={15}
-							style={{ stroke: setStrokeColor(Folder.TRASH, activeFolder) }}
-						/>
-					}
+					icon={Trash2}
 					folder={Folder.TRASH}
 					active={activeFolder === Folder.TRASH}
-					onClick={() =>
-						dispatch({
-							type: NotesActions.SET_ACTIVE_FOLDER,
-							payload: Folder.TRASH,
-						})
-					}
+					onClick={() => dispatch({ type, payload: Folder.TRASH })}
 				/>
+
 				<CategoryList />
 			</section>
 		</section>

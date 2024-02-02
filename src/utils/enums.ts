@@ -13,6 +13,12 @@ export enum Colors {
 	PURPLE = "PURPLE",
 }
 
+export type ContextType = "category" | "note";
+export enum ContextTypeEnum {
+	category = "category",
+	note = "note",
+}
+
 export enum ContextMenuEnum {
 	CATEGORY = "CATEGORY",
 	NOTE = "NOTE",
