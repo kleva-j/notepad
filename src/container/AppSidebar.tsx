@@ -9,25 +9,23 @@ import CategoryList from "@/container/CategoryList";
 export default function Sidebar() {
 	const { state, dispatch } = UseNotesContext();
 	const { activeFolder, activeCategoryId } = state;
-
-	const addNewNote = () =>
-		dispatch({
-			type: NotesActions.ADD_NEW_NOTE,
-			payload: { activeFolder, activeCategoryId },
-		});
-
-	const type = NotesActions.SET_ACTIVE_FOLDER;
+	const { ADD_NEW_NOTE, SET_ACTIVE_FOLDER: type } = NotesActions;
 
 	return (
-		<section className="h-full w-full max-w-[270px] bg-neutral-800 border-r border-r-border">
+		<section className="h-full w-full max-w-[270px] border-r border-r-border bg-background">
 			<div
-				className="w-full text-center text-base capitalize leading-[55px] mb-1 text-white cursor-pointer flex items-center justify-center border-b-[0.5px] border-b-neutral-700 hover:bg-neutral-700/10"
-				onClick={addNewNote}
+				className="mb-1 flex w-full cursor-pointer items-center justify-center border-b-[0.5px] border-b-border text-center text-base capitalize leading-[55px] text-foreground hover:bg-background/90"
+				onClick={() =>
+					dispatch({
+						type: ADD_NEW_NOTE,
+						payload: { activeFolder, activeCategoryId },
+					})
+				}
 			>
 				<Plus size={16} className="-ml-4 mr-1" />
 				New Note
 			</div>
-			<section className="relative flex flex-1 flex-col pb-4">
+			<section className="flex flex-col">
 				<FolderOption
 					text="Scratchpad"
 					icon={Edit}
@@ -56,6 +54,7 @@ export default function Sidebar() {
 					active={activeFolder === Folder.TRASH}
 					onClick={() => dispatch({ type, payload: Folder.TRASH })}
 				/>
+
 				<CategoryList />
 			</section>
 		</section>
