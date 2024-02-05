@@ -47,7 +47,7 @@
     "react-dom": "18.2.0",
     "react-feather": "^2.0.10",
     "react-markdown": "^8.0.7",
-    "rehype-sanitize": "^5.0.1",
+    "rehype-sanitize": "^6.0.0",
     "remark-gfm": "^3.0.1",
     "superjson": "1.12.3",
     "uuid": "^9.0.0",
