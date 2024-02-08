@@ -1,4 +1,5 @@
 import { CategoryItem, CategoryState } from "@/types";
+import { categoryList } from "@/utils/constants";
 import { atomWithStorage } from "jotai/utils";
 import { v4 as uuid } from "uuid";
 import { atom } from "jotai";
@@ -8,7 +9,7 @@ export const addCategory = (
 	name: string,
 ): CategoryItem[] => {
 	const newCategories = categories;
-	newCategories.push({ id: `c-${uuid()}`, name, draggedOver: false });
+	newCategories.push({ id: `c-${uuid()}`, name });
 	return newCategories;
 };
 
@@ -38,7 +39,7 @@ export const categoryDragEnter = (
 	payload: Partial<CategoryItem>,
 ) => {
 	categories = categories.map((category) =>
-		category.id === payload.id ? { ...category, draggedOver: true } : category,
+		category.id === payload.id ? { ...category } : category,
 	);
 };
 
@@ -47,7 +48,7 @@ export const categoryDragLeave = (
 	payload: Partial<CategoryItem>,
 ) => {
 	categories = categories.map((category) =>
-		category.id === payload.id ? { ...category, draggedOver: false } : category,
+		category.id === payload.id ? { ...category } : category,
 	);
 };
 
@@ -58,7 +59,7 @@ export const deleteCategory = (
 
 // CategoryState
 export const initialCategoryState: CategoryState = {
-	categories: [],
+	categories: categoryList,
 	error: "",
 	loading: false,
 };

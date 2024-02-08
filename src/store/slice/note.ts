@@ -1,5 +1,6 @@
 import { NoteItem, NoteState } from "@/types";
 import { atomWithStorage } from "jotai/utils";
+import { noteList } from "@/utils/constants";
 import { Folder } from "@/utils/enums";
 import { atom } from "jotai";
 
@@ -20,7 +21,7 @@ export const deleteNote = (notes: NoteItem[], id: string): NoteItem[] =>
 
 // NoteState
 export const initialNoteState: NoteState = {
-	notes: [],
+	notes: noteList,
 	activeFolder: Folder.ALL,
 	activeNoteId: "",
 	selectedNotesIds: [],

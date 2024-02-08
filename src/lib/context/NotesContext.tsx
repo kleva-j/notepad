@@ -1,6 +1,11 @@
 "use client";
 
 import { type PropsWithChildren, createContext, useContext } from "react";
+import { NotesActions } from "@/lib/constants";
+import { useReducerAtom } from "jotai/utils";
+import { Folder } from "@/utils/enums";
+import { NoteState } from "@/types";
+import { v4 as uuid } from "uuid";
 import {
 	updateActiveCategoryId,
 	updateNoteState,
@@ -9,11 +14,6 @@ import {
 	pruneNotes,
 	addNote,
 } from "@/store/slice/note";
-import { NotesActions } from "@/lib/constants";
-import { useReducerAtom } from "jotai/utils";
-import { Folder } from "@/utils/enums";
-import { NoteState } from "@/types";
-import { v4 as uuid } from "uuid";
 
 import dayjs from "dayjs";
 
@@ -35,11 +35,11 @@ export function UseNotesContext() {
 function NotesReducer(state: State, { type, payload }: Action) {
 	switch (type) {
 		case NotesActions.ADD_NEW_NOTE: {
-			const { activeFolder, activeCategoryId } = payload;
+			const { activeFolder, activeCategoryId, text = "Testing Note" } = payload;
 			return updateNoteState(state, {
 				notes: addNote(state.notes, {
+					text,
 					id: `n-${uuid()}`,
-					text: "",
 					categoryId: activeFolder === Folder.CATEGORY ? activeCategoryId : "",
 					trash: false,
 					created: dayjs().format(),
@@ -47,6 +47,9 @@ function NotesReducer(state: State, { type, payload }: Action) {
 					favorite: activeFolder === Folder.FAVORITES,
 				}),
 			});
+		}
+		case NotesActions.SET_NOTES: {
+			return updateNoteState(state, { notes: payload });
 		}
 		case NotesActions.UPDATE_NOTES: {
 			return updateNoteState(state, {

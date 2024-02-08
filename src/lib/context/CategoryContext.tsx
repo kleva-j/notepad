@@ -32,6 +32,9 @@ export function UseCategoryContext() {
 
 function CategoryReducer(state: State, { type, payload }: Action) {
 	switch (type) {
+		case CategoryActions.SET_CATEGORIES: {
+			return updateCategoryState(state, { categories: payload });
+		}
 		case CategoryActions.ADD_NEW_CATEGORY: {
 			return updateCategoryState(state, {
 				categories: addCategory(state.categories, payload),
