@@ -34,7 +34,10 @@ export const CategoryOptions: FC<CategoryOptionProps> = (props) => {
 			initial="hidden"
 			animate="visible"
 			exit="exit"
-			className={cn("group flex w-full cursor-pointer items-center px-5 text-foreground/80 hover:bg-blue-400/5 hover:text-foreground border-y border-transparent bg-white dark:bg-transparent dark:border-transparent", active ? "bg-blue-50 border-y border-blue-50 dark:bg-blue-200/5" : "")}
+			className={cn(
+				"group flex w-full cursor-pointer items-center border-y border-transparent bg-white px-5 text-foreground/80 hover:bg-blue-400/5 hover:text-foreground dark:border-transparent dark:bg-transparent",
+				active ? "border-y border-blue-50 bg-blue-50 dark:bg-blue-200/5" : "",
+			)}
 		>
 			<div className="flex cursor-pointer items-center gap-x-3.5 py-2 pr-4">
 				<FolderIcon

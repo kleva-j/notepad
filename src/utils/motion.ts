@@ -6,4 +6,4 @@ export const ListItemVariants = {
 		transition: { delay: i * 0.025 },
 	}),
 	exit: { opacity: 0 },
-}
+};

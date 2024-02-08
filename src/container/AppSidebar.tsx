@@ -12,7 +12,7 @@ export default function Sidebar() {
 	const { ADD_NEW_NOTE, SET_ACTIVE_FOLDER: type } = NotesActions;
 
 	return (
-		<section className="flex flex-col w-full max-w-[16.875rem] border-r border-r-border bg-background dark:bg-indigo-900">
+		<section className="flex w-full max-w-[16.875rem] flex-col border-r border-r-border bg-background dark:bg-indigo-900">
 			<div
 				className="mb-1 flex w-full cursor-pointer items-center justify-center border-b-[0.5px] border-b-border text-center text-base capitalize leading-[3.6625rem] text-foreground hover:bg-background/90"
 				onClick={() =>

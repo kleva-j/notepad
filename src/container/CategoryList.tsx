@@ -86,7 +86,7 @@ export default function CategoryList() {
 					axis="y"
 					values={list}
 					onReorder={reorderList}
-					className="flex flex-col h-full gap-y-1 overflow-y-auto"
+					className="flex h-full flex-col gap-y-1 overflow-y-auto"
 				>
 					<AnimatePresence initial={false}>
 						{list.map((item, index) => (

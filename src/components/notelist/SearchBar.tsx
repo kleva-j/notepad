@@ -12,7 +12,7 @@ export const SearchBar: FC<SearchBarProps> = ({ searchRef }) => {
 	};
 
 	return (
-		<div className="relative flex w-full items-center h-[60px]">
+		<div className="relative flex h-[60px] w-full items-center">
 			<Search className="absolute bottom-0 left-3 top-0 my-auto h-4 w-4 text-gray-500" />
 			<Input
 				ref={searchRef}
