@@ -1,6 +1,12 @@
-import { MouseEvent, ChangeEvent, DragEvent, ForwardRefExoticComponent } from "react";
-import { LucideProps } from "lucide-react";
-import { DefaultSession } from "next-auth";
+import type { DefaultSession } from "next-auth";
+import type { LucideProps } from "lucide-react";
+import type {
+	ForwardRefExoticComponent,
+	ChangeEvent,
+	MouseEvent,
+	DragEvent,
+} from "react";
+
 import { Folder } from "@/utils/enums";
 
 export type Prettify<T> = {
@@ -13,7 +19,7 @@ export type WithoutNullableKeys<T> = {
 
 export type AuthSession = WithoutNullableKeys<DefaultSession>;
 
-export type __Awaited__<T> = T extends Promise<infer U> ? __Awaited__<U> : T
+export type __Awaited__<T> = T extends Promise<infer U> ? __Awaited__<U> : T;
 
 export type ReactMouseEvent =
 	| MouseEvent
@@ -29,7 +35,6 @@ export type ClickEvent =
 export interface CategoryItem {
 	id: string;
 	name: string;
-	draggedOver: boolean;
 }
 
 export interface NoteItem {

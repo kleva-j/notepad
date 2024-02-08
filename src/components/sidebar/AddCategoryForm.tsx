@@ -2,6 +2,7 @@ import { PopoverContent } from "@/components/ui/popover";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
+import { formSchema } from "@/lib/utils";
 import { z } from "zod";
 import {
 	FormDescription,
@@ -11,13 +12,6 @@ import {
 	FormItem,
 	Form,
 } from "@/components/ui/form";
-
-const formSchema = z.object({
-	title: z
-		.string()
-		.min(2, { message: "Title must be at least 2 characters." })
-		.max(40, { message: "Title must not exceed 40 characters." }),
-});
 
 type Props = { onSubmit: (title: string) => void };
 type FormValues = z.infer<typeof formSchema>;
