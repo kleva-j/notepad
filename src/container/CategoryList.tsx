@@ -1,29 +1,24 @@
 "use client";
 
-import { ChevronDown, ChevronRight, Layers, Plus } from "lucide-react";
+import { ChevronRight, ChevronDown, Layers, Plus } from "lucide-react";
 import { AddCategoryForm } from "@/components/sidebar/AddCategoryForm";
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
 import { Popover, PopoverTrigger } from "@/components/ui/popover";
 import { NotesActions, CategoryActions } from "@/lib/constants";
 import { CategoryOptions } from "@/container/CategoryOptions";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, Reorder } from "framer-motion";
 import { LabelText } from "@/utils/constants";
-import { useDroppable } from "@dnd-kit/core";
 import { useState, useEffect } from "react";
-import { Each } from "@/components/Each";
+import { CategoryItem } from "@/types";
 import { Folder } from "@/utils/enums";
-import {
-	verticalListSortingStrategy,
-	SortableContext,
-} from "@dnd-kit/sortable";
 
 export default function CategoryList() {
 	const { state: noteState, dispatch: dispatchNotes } = UseNotesContext();
 	const { state: categoryState, dispatch } = UseCategoryContext();
+	const { ADD_NEW_CATEGORY, SET_CATEGORIES } = CategoryActions;
 	const { activeFolder, activeCategoryId } = noteState;
-	const { categories: list } = categoryState;
 	const { SET_ACTIVE_CATEGORY_ID } = NotesActions;
-	const { ADD_NEW_CATEGORY } = CategoryActions;
+	const { categories: list } = categoryState;
 
 	const [isListOpen, setCategoryListOpen] = useState(false);
 	const [isPopoverOpen, setIsPopoverOpen] = useState(false);
@@ -45,10 +40,11 @@ export default function CategoryList() {
 	const handleClick = (id: string) =>
 		dispatchNotes({ type: SET_ACTIVE_CATEGORY_ID, payload: id });
 
-	const { setNodeRef } = useDroppable({ id: "droppable-category-options" });
+	const reorderList = (payload: CategoryItem[]) =>
+		dispatch({ type: SET_CATEGORIES, payload });
 
 	return (
-		<section className="flex flex-col">
+		<section className="flex flex-col overflow-y-auto">
 			<div className="group mt-4 flex items-center justify-between py-2 pl-4">
 				<div
 					className="m-0 flex cursor-pointer items-center bg-transparent p-0 text-sm text-foreground/50"
@@ -85,32 +81,29 @@ export default function CategoryList() {
 					<AddCategoryForm onSubmit={onSubmitNewCategory} />
 				</Popover>
 			</div>
-
-			<ul ref={setNodeRef} className="">
-				<AnimatePresence aria-label="Category list" initial={false}>
-					<SortableContext items={list} strategy={verticalListSortingStrategy}>
-						{isListOpen && (
-							<Each
-								of={list}
-								render={(category, index) => (
-									<CategoryOptions
-										index={index}
-										key={category.id}
-										category={category}
-										handleMenuClick={() => {}}
-										handleRightClick={() => {}}
-										handleClick={() => handleClick(category.id)}
-										active={
-											activeFolder === Folder.CATEGORY &&
-											category.id === activeCategoryId
-										}
-									/>
-								)}
+			{isListOpen && (
+				<Reorder.Group
+					axis="y"
+					values={list}
+					onReorder={reorderList}
+					className="flex flex-col h-full gap-y-1 overflow-y-auto"
+				>
+					<AnimatePresence initial={false}>
+						{list.map((item, index) => (
+							<CategoryOptions
+								index={index}
+								key={item.id}
+								category={item}
+								handleClick={() => handleClick(item.id)}
+								active={
+									activeFolder === Folder.CATEGORY &&
+									item.id === activeCategoryId
+								}
 							/>
-						)}
-					</SortableContext>
-				</AnimatePresence>
-			</ul>
+						))}
+					</AnimatePresence>
+				</Reorder.Group>
+			)}
 		</section>
 	);
 }

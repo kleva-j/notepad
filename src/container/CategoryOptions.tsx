@@ -1,10 +1,11 @@
-import type { HandleOptionsEvent, CategoryItem } from "@/types";
+import type { CategoryItem } from "@/types";
 import type { FC } from "react";
 
 import { Folder as FolderIcon, MoreHorizontal } from "lucide-react";
-import { useSortable } from "@dnd-kit/sortable";
+import { useRaisedShadow } from "@/lib/hooks/useRaisedShadow";
+import { Reorder, useMotionValue } from "framer-motion";
+import { ListItemVariants } from "@/utils/motion";
 import { Button } from "@/components/ui/button";
-import { CSS } from "@dnd-kit/utilities";
 import { cn } from "@/lib/utils";
 
 interface CategoryOptionProps {
@@ -12,30 +13,28 @@ interface CategoryOptionProps {
 	active?: boolean;
 	category: CategoryItem;
 	handleClick?: () => void;
-	handleMenuClick: HandleOptionsEvent;
-	handleRightClick: HandleOptionsEvent;
 }
 
 export const CategoryOptions: FC<CategoryOptionProps> = (props) => {
-	const { index, active, category, handleClick, handleMenuClick } = props;
+	const { index, active, category, handleClick } = props;
+	const { id, name } = category;
 
-	const { setNodeRef, attributes, listeners, transform, transition } =
-		useSortable({ id: category.id, data: { index } });
-
-	const style = {
-		transition,
-		transform: CSS.Transform.toString(transform),
-	};
+	const y = useMotionValue(0);
+	const boxShadow = useRaisedShadow(y);
 
 	return (
-		<li
-			id={category.id}
-			ref={setNodeRef}
+		<Reorder.Item
+			id={id}
+			key={id}
+			custom={index}
+			value={category}
 			onClick={handleClick}
-			{...attributes}
-			{...listeners}
-			style={style}
-			className="group flex w-full cursor-pointer items-center px-5 text-foreground/80 hover:bg-blue-400/5 hover:text-foreground"
+			style={{ boxShadow, y }}
+			variants={ListItemVariants}
+			initial="hidden"
+			animate="visible"
+			exit="exit"
+			className={cn("group flex w-full cursor-pointer items-center px-5 text-foreground/80 hover:bg-blue-400/5 hover:text-foreground border-y border-transparent bg-white dark:bg-transparent dark:border-transparent", active ? "bg-blue-50 border-y border-blue-50 dark:bg-blue-200/5" : "")}
 		>
 			<div className="flex cursor-pointer items-center gap-x-3.5 py-2 pr-4">
 				<FolderIcon
@@ -46,16 +45,15 @@ export const CategoryOptions: FC<CategoryOptionProps> = (props) => {
 							: "text-[#888888] group-hover:text-foreground/90 dark:text-foreground/50",
 					)}
 				/>
-				<span className="text-[13px] font-light">{category.name}</span>
+				<span className="text-[13px] font-light">{name}</span>
 			</div>
 			<Button
 				variant="ghost"
 				className="ml-auto h-4 w-4 rounded-full p-0 text-xs text-transparent hover:bg-transparent group-hover:text-foreground/50"
-				onClick={(event) => handleMenuClick(event, category.id)}
 				asChild
 			>
 				<MoreHorizontal className="cursor-pointer" />
 			</Button>
-		</li>
+		</Reorder.Item>
 	);
 };

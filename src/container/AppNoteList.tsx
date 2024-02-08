@@ -1,30 +1,35 @@
-import type { MutableRefObject, ReactElement } from "react";
-import type { NoteItem, ReactDragEvent } from "@/types";
+"use client";
 
-import { Folder as FolderIcon, MoreHorizontal, Book, Star } from "lucide-react";
-import { debounceEvent, getNoteTitle, isDraftNote } from "@/utils/helpers";
+import type { MutableRefObject, ReactElement } from "react";
+import type { NoteItem } from "@/types";
+
 import { UseNotesContext, UseCategoryContext } from "@/lib/context";
+import { debounceEvent, getNoteTitle } from "@/utils/helpers";
 import { SearchBar } from "@/components/notelist/SearchBar";
+import { NoteCard } from "@/components/notelist/NoteCard";
+import { AnimatePresence, Reorder } from "framer-motion";
 import { NotesActions } from "@/lib/constants";
-import { Each } from "@/components/Each";
+import { noteList } from "@/utils/constants";
+import { useRef, useState } from "react";
 import { Folder } from "@/utils/enums";
-import { useRef } from "react";
 
 export default function NoteList() {
 	const { state: noteState, dispatch } = UseNotesContext();
 	const { categories } = UseCategoryContext().state;
 
 	const {
-		activeFolder,
+		selectedNotesIds,
 		activeCategoryId,
+		activeFolder,
 		searchValue,
 		notes,
-		selectedNotesIds,
 	} = noteState;
+
+	const { SET_NOTES_SEARCH, PRUNE_VOID_NOTES } = NotesActions;
 
 	const searchNotes = debounceEvent(
 		(searchValue: string) =>
-			dispatch({ type: NotesActions.SET_NOTES_SEARCH, payload: searchValue }),
+			dispatch({ type: SET_NOTES_SEARCH, payload: searchValue }),
 		100,
 	);
 
@@ -32,6 +37,7 @@ export default function NoteList() {
 		searchValue.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"),
 		"i",
 	);
+
 	const isMatch = (result: NoteItem) => regExp.test(result.text);
 
 	const filter: Record<Folder, (note: NoteItem) => boolean> = {
@@ -43,7 +49,7 @@ export default function NoteList() {
 		[Folder.ALL]: (note) => !note.trash && !note.scratchpad,
 	};
 
-	const filteredNotes: NoteItem[] = notes
+	let filteredNotes: NoteItem[] = notes
 		.filter(filter[activeFolder])
 		.filter(isMatch);
 
@@ -52,21 +58,22 @@ export default function NoteList() {
 	const showEmptyTrash =
 		activeFolder === Folder.TRASH && filteredNotes.length > 0;
 
-	const handleDragStart = (event: ReactDragEvent, noteId = "") => {
-		event.stopPropagation();
-		event.dataTransfer.setData("text/plain", noteId);
-	};
+	const [items, setItems] = useState(noteList);
 
 	return (
-		<section className="flex h-full w-full flex-col overflow-auto">
-			<div className="sticky top-0 flex h-[49px] w-full max-w-full items-center border-b px-[0.5rem] text-center">
-				<SearchBar searchRef={searchRef} searchNotes={searchNotes} />
+		<section className="flex h-full w-full flex-col overflow-y-auto">
+			<div className="flex items-center border-b px-3 text-center">
+				<SearchBar searchRef={searchRef} />
 				{showEmptyTrash && <div>Empty Button</div>}
 			</div>
-			<div className="note-list">
-				<Each
-					of={filteredNotes}
-					render={(note: NoteItem) => {
+			<Reorder.Group
+				axis="y"
+				values={items}
+				onReorder={setItems}
+				className="flex flex-col gap-y-2.5 p-3"
+			>
+				<AnimatePresence aria-label="Note list">
+					{items.map((note, index) => {
 						let noteTitle: string | ReactElement = getNoteTitle(note.text);
 						const noteCategory = categories.find(
 							(category) => category.id === note.categoryId,
@@ -89,76 +96,23 @@ export default function NoteList() {
 								);
 							}
 						}
-
-						const isSelected = selectedNotesIds.includes(note.id);
-
 						return (
-							<div
+							<NoteCard
 								key={note.id}
-								className={`note-list-item ${isSelected ? "selected" : ""} `}
-								onClick={(event) => {
-									event.stopPropagation();
-									dispatch({
-										type: NotesActions.PRUNE_VOID_NOTES,
-										payload: { noteId: note.id },
-									});
-								}}
-								draggable={note.text !== ""}
-								onDragStart={(event) => handleDragStart(event, note.id)}
-								// onContextMenu={}
-							>
-								<div className="flex w-full items-center">
-									<div className="flex w-full items-center justify-start">
-										{note.favorite ? (
-											<>
-												<div className="flex-[0_0_9%]">
-													<Star
-														aria-hidden="true"
-														className="note-favorite mr-[0.25rem]"
-														size={12}
-													/>
-													<span className="sr-only">Favorite note</span>
-												</div>
-												<div className="note-title">{noteTitle}</div>
-											</>
-										) : (
-											<>
-												<div className="flex-[9%_0_0]" />
-												<div className="note-title">{noteTitle}</div>
-											</>
-										)}
-									</div>
-									{!isDraftNote(note) ? (
-										<div className="z-1 block cursor-pointer p-[0.4rem] text-base text-transparent">
-											<MoreHorizontal
-												aria-hidden="true"
-												size={15}
-												className="more-option"
-											/>
-											<span className="sr-only">Note options</span>
-										</div>
-									) : (
-										<div className="note-options">&nbsp;</div>
-									)}
-								</div>
-								{(activeFolder === Folder.ALL ||
-									activeFolder === Folder.FAVORITES) && (
-									<div className="note-category">
-										{noteCategory ? (
-											<FolderIcon size={12} />
-										) : (
-											<Book size={12} />
-										)}
-										<span className="ml-[0.5rem] text-[0.8rem]">
-											{noteCategory?.name ?? "Notes"}
-										</span>
-									</div>
-								)}
-							</div>
+								note={note}
+								title={noteTitle}
+								index={index}
+								category={noteCategory}
+								activeFolder={activeFolder}
+								handlePrune={(noteId) =>
+									dispatch({ type: PRUNE_VOID_NOTES, payload: { noteId } })
+								}
+								isSelected={selectedNotesIds.includes(note.id)}
+							/>
 						);
-					}}
-				/>
-			</div>
+					})}
+				</AnimatePresence>
+			</Reorder.Group>
 		</section>
 	);
 }
