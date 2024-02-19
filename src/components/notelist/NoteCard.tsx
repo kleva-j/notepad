@@ -17,17 +17,17 @@ type NoteProps = {
 	title: string | ReactElement;
 	isSelected: boolean;
 	activeFolder: Folder;
+	isActive: boolean;
 	category?: CategoryItem;
-	handlePrune: (id: string) => void;
+	handleClick: (id: string) => void;
+	handleSelect: (id: string) => void;
 };
 
 export const NoteCard = (props: NoteProps) => {
-	const { note, index, isSelected, title, handlePrune } = props;
+	const { note, index, isSelected, title, isActive } = props;
 	const { id, created, favorite } = note;
 
-	const [day, date, time] = dayjs(new Date(created))
-		.format("MMM DD hh:mm")
-		.split(" ");
+	const [day, date, time] = dayjs(created).format("MMM DD hh:mm").split(" ");
 
 	const y = useMotionValue(0);
 	const boxShadow = useRaisedShadow(y);
@@ -39,7 +39,7 @@ export const NoteCard = (props: NoteProps) => {
 			value={note}
 			custom={index}
 			style={{ boxShadow, y }}
-			onClick={() => handlePrune(note.id)}
+			onClick={() => props.handleClick(note.id)}
 			variants={ListItemVariants}
 			dragControls={dragControls}
 			dragListener={false}
@@ -50,7 +50,11 @@ export const NoteCard = (props: NoteProps) => {
 			<Card
 				className={cn(
 					"group/card relative cursor-pointer overflow-hidden rounded bg-white shadow-sm hover:bg-gray-50 dark:border dark:bg-neutral-800 dark:text-gray-400",
-					isSelected ? "border border-zinc-400 dark:border-gray-500" : "",
+					{
+						"border border-zinc-400 dark:border-gray-500": isSelected,
+						"border border-sky-400 bg-sky-100 hover:bg-sky-100/50 dark:border-gray-400":
+							isActive,
+					},
 				)}
 			>
 				<CardContent className="flex items-center gap-x-3 p-2">
