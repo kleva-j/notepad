@@ -1,7 +1,7 @@
 import { ContextMenuEnum, ContextType, ContextTypeEnum } from "@/utils/enums";
-import { LabelText } from "./constants";
+import { LabelText } from "@/utils/constants";
+import { Folder } from "@/utils/enums";
 import { NoteItem } from "@/types";
-import { Folder } from "./enums";
 
 export const debounceEvent = <T extends Function>(cb: T, wait = 20) => {
 	let h = 0;
@@ -37,7 +37,7 @@ export const setActiveColor = (isActive: boolean) =>
 	isActive ? "#5183f5" : "#ffffff40";
 
 export const isDraftNote = (note: NoteItem) => {
-	return !note.scratchpad && note.text === "";
+	return !note.scratchpad && note.content === "";
 };
 
 export const getActiveNote = (notes: NoteItem[], activeNoteId: string) =>

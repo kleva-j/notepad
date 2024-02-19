@@ -3,11 +3,12 @@
 import { type PropsWithChildren, createContext, useContext } from "react";
 import { NotesActions } from "@/lib/constants";
 import { useReducerAtom } from "jotai/utils";
+import { faker } from "@faker-js/faker";
 import { Folder } from "@/utils/enums";
 import { NoteState } from "@/types";
 import { v4 as uuid } from "uuid";
 import {
-	updateActiveCategoryId,
+	setActiveFolder,
 	updateNoteState,
 	NoteStateAtom,
 	updateNote,
@@ -35,11 +36,12 @@ export function UseNotesContext() {
 function NotesReducer(state: State, { type, payload }: Action) {
 	switch (type) {
 		case NotesActions.ADD_NEW_NOTE: {
-			const { activeFolder, activeCategoryId, text = "Testing Note" } = payload;
+			const { activeFolder, activeCategoryId } = payload;
 			return updateNoteState(state, {
 				notes: addNote(state.notes, {
-					text,
 					id: `n-${uuid()}`,
+					title: payload.title || faker.lorem.words({ min: 2, max: 4 }),
+					content: faker.lorem.paragraphs({ min: 2, max: 4 }),
 					categoryId: activeFolder === Folder.CATEGORY ? activeCategoryId : "",
 					trash: false,
 					created: dayjs().format(),
@@ -60,19 +62,16 @@ function NotesReducer(state: State, { type, payload }: Action) {
 			});
 		}
 		case NotesActions.SET_ACTIVE_NOTE_ID: {
-			return updateNoteState(state, { selectedNotesIds: payload });
+			return updateNoteState(state, { activeNoteId: payload });
 		}
 		case NotesActions.SET_ACTIVE_FOLDER: {
-			return updateNoteState(state, { activeFolder: payload });
+			return updateNoteState(state, setActiveFolder(payload));
 		}
 		case NotesActions.SET_SELECTED_NOTES_ID: {
 			return updateNoteState(state, { selectedNotesIds: payload });
 		}
 		case NotesActions.SET_ACTIVE_CATEGORY_ID: {
-			return updateNoteState(
-				state,
-				updateActiveCategoryId(state.notes, payload),
-			);
+			return updateNoteState(state, setActiveFolder(Folder.CATEGORY, payload));
 		}
 		case NotesActions.SET_NOTES_ERROR: {
 			return updateNoteState(state, { error: payload });

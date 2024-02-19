@@ -1,6 +1,5 @@
 import { NoteItem, NoteState } from "@/types";
 import { atomWithStorage } from "jotai/utils";
-import { noteList } from "@/utils/constants";
 import { Folder } from "@/utils/enums";
 import { atom } from "jotai";
 
@@ -19,85 +18,52 @@ export const updateNote = (
 export const deleteNote = (notes: NoteItem[], id: string): NoteItem[] =>
 	notes.filter((note) => note.id !== id);
 
-// NoteState
-export const initialNoteState: NoteState = {
-	notes: noteList,
-	activeFolder: Folder.ALL,
-	activeNoteId: "",
-	selectedNotesIds: [],
-	activeCategoryId: "",
-	error: "",
-	loading: false,
-	searchValue: "",
-};
-
 export const updateNoteState = (
 	state: NoteState,
 	payload: Partial<NoteState>,
-): NoteState => ({
-	notes: payload.notes || state.notes,
-	activeFolder: payload.activeFolder || state.activeFolder,
-	activeNoteId: payload.activeNoteId || state.activeNoteId,
-	selectedNotesIds: payload.selectedNotesIds || state.selectedNotesIds,
-	activeCategoryId: payload.activeCategoryId || state.activeCategoryId,
-	error: payload.error || state.error,
-	loading: payload.loading || state.loading,
-	searchValue: payload.searchValue || state.searchValue,
-});
+): NoteState => {
+	return {
+		notes: payload.notes || state.notes,
+		activeFolder: payload.activeFolder || state.activeFolder,
+		activeNoteId:
+			"activeNoteId" in payload
+				? payload.activeNoteId || ""
+				: state.activeNoteId,
+		selectedNotesIds: payload.selectedNotesIds || state.selectedNotesIds,
+		selectedNotes: payload.selectedNotes || state.selectedNotes,
+		activeCategoryId:
+			"activeCategoryId" in payload
+				? payload.activeCategoryId || ""
+				: state.activeCategoryId,
+		error: payload.error || state.error,
+		loading: payload.loading || state.loading,
+		searchValue: payload.searchValue || state.searchValue,
+	};
+};
 
-export const getNoteIds = (
+export function filterNotesByFolder(
 	notes: NoteItem[],
 	folder: Folder,
 	categoryId?: string,
-): string => {
-	const firstNote = {
-		[Folder.ALL]: () => notes.find((note) => !note.scratchpad),
-		[Folder.TRASH]: () => notes.find((note) => note.trash),
-		[Folder.CATEGORY]: () =>
-			notes.find((note) => note.categoryId === categoryId),
-		[Folder.FAVORITES]: () => notes.find((note) => note.favorite),
-		[Folder.SCRATCHPAD]: () => notes.find((note) => note.scratchpad),
-	}[folder]();
+): NoteItem[] {
+	return notes.filter(
+		{
+			[Folder.ALL]: (note: NoteItem) => !note.trash && !note.scratchpad,
+			[Folder.TRASH]: (note: NoteItem) => note.trash,
+			[Folder.CATEGORY]: (note: NoteItem) => note.categoryId === categoryId,
+			[Folder.FAVORITES]: (note: NoteItem) => !note.trash && note.favorite,
+			[Folder.SCRATCHPAD]: (note: NoteItem) => !note.trash && note.scratchpad,
+		}[folder],
+	);
+}
 
-	return firstNote ? firstNote.id : "";
-};
-
-export const updateSelectedNotesIds = (
-	notes: NoteItem[],
-	activeFolder: Folder,
-	activeCategoryId?: string,
-): string[] => [getNoteIds(notes, activeFolder, activeCategoryId)];
-
-export const updateActiveNoteIds = (
-	notes: NoteItem[],
-	activeFolder: Folder,
-	activeCategoryId?: string,
-): string => getNoteIds(notes, activeFolder, activeCategoryId);
-
-export const updateActiveAndSelectedNotes = (
-	notes: NoteItem[],
-	activeFolder: Folder,
-	activeCategoryId?: string,
-) => {
-	const noteIds = getNoteIds(notes, activeFolder, activeCategoryId);
-	return {
-		activeNoteId: noteIds,
-		selectedNoteIds: [noteIds],
-	};
-};
-
-export const updateActiveCategoryId = (
-	notes: NoteItem[],
-	categoryId: string,
-) => {
-	return {
-		activeCategoryId: categoryId,
-		activeFolder: Folder.CATEGORY,
-		activeNoteId: getNoteIds(notes, Folder.CATEGORY, categoryId),
-		selectedNotesIds: [getNoteIds(notes, Folder.CATEGORY, categoryId)],
-		notes: notes.filter((note) => note.text !== ""),
-	};
-};
+export const setActiveFolder = (
+	folder: Folder,
+	categoryId?: string,
+): Partial<NoteState> => ({
+	activeFolder: folder,
+	activeCategoryId: categoryId || "",
+});
 
 export const pruneNotes = (
 	notes: NoteItem[],
@@ -105,8 +71,23 @@ export const pruneNotes = (
 ): NoteItem[] =>
 	notes.filter(
 		(note) =>
-			note.scratchpad || note.text !== "" || selectedNotesIds.includes(note.id),
+			note.scratchpad ||
+			note.content !== "" ||
+			selectedNotesIds.includes(note.id),
 	);
+
+const initialNoteState = {
+	notes: [],
+	activeFolder: Folder.ALL,
+	selectedNotesIds: [],
+	selectedNotes: [],
+	activeNoteId: "",
+	filteredNotes: [],
+	activeCategoryId: "",
+	error: "",
+	loading: false,
+	searchValue: "",
+};
 
 export const NoteStateAtom = atomWithStorage<NoteState>(
 	"noteState",
