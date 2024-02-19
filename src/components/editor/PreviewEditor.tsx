@@ -7,5 +7,5 @@ interface PreviewEditorProps {
 }
 
 export const PreviewEditor = ({}: PreviewEditorProps) => {
-	return <div></div>;
+	return <div>Preview Notes</div>;
 };
