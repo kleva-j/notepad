@@ -39,7 +39,8 @@ export interface CategoryItem {
 
 export interface NoteItem {
 	id: string;
-	text: string;
+	title: string;
+	content: string;
 	trash: boolean;
 	created: string;
 	scratchpad?: boolean;
@@ -75,6 +76,7 @@ export interface NoteState {
 	activeFolder: Folder;
 	activeNoteId: string;
 	selectedNotesIds: string[];
+	selectedNotes: NoteItem[];
 	activeCategoryId: string;
 	error: string;
 	loading: boolean;

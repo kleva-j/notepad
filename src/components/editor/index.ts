@@ -1,4 +1,5 @@
+export { EditorWrapper } from "./EditorWrapper";
 export { PreviewEditor } from "./PreviewEditor";
 export { EmptyEditor } from "./EmptyEditor";
 export { NoteEditor } from "./NoteEditor";
-export { EditorMenu } from "./menubar";
+export { EditorMenubar } from "./menubar";
