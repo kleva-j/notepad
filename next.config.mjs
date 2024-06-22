@@ -8,8 +8,5 @@ const config = {
 			"https://assets-global.website-files.com",
 		],
 	},
-	experimental: {
-		esmExternals: "loose",
-	},
 };
 export default config;
