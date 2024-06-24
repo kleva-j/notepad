@@ -1,6 +1,5 @@
-import { Roboto } from "next/font/google";
+import { GeistMono } from "geist/font/mono";
+import { GeistSans } from "geist/font/sans";
 
-export const fontMono = Roboto({
-	weight: ["100", "300", "400", "500", "700", "900"],
-	subsets: ["latin"],
-});
+export const fontSans = GeistSans;
+export const fontMono = GeistMono;
