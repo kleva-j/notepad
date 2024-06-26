@@ -1,4 +1,3 @@
-import type { DefaultSession } from "next-auth";
 import type { LucideProps } from "lucide-react";
 import type {
 	ForwardRefExoticComponent,
@@ -17,8 +16,6 @@ export type WithoutNullableKeys<T> = {
 	[Key in keyof T]-?: Prettify<WithoutNullableKeys<NonNullable<T[Key]>>>;
 };
 
-export type AuthSession = WithoutNullableKeys<DefaultSession>;
-
 export type __Awaited__<T> = T extends Promise<infer U> ? __Awaited__<U> : T;
 
 export type ReactMouseEvent =
@@ -33,8 +30,9 @@ export type ClickEvent =
 	| ReactMouseEvent;
 
 export interface CategoryItem {
-	id: string;
-	name: string;
+	id: number;
+	text: string;
+	checked: boolean;
 }
 
 export interface NoteItem {
@@ -43,7 +41,6 @@ export interface NoteItem {
 	content: string;
 	trash: boolean;
 	created: string;
-	scratchpad?: boolean;
 	lastUpdated: string;
 	categoryId?: string;
 	favorite?: boolean;
@@ -67,20 +64,14 @@ export interface AuthState {
 
 export interface CategoryState {
 	categories: CategoryItem[];
-	error: string;
-	loading: boolean;
+	activeCategoryId: number | null;
 }
 
 export interface NoteState {
 	notes: NoteItem[];
 	activeFolder: Folder;
 	activeNoteId: string;
-	selectedNotesIds: string[];
 	selectedNotes: NoteItem[];
-	activeCategoryId: string;
-	error: string;
-	loading: boolean;
-	searchValue: string;
 }
 
 export interface SettingsState {
@@ -107,12 +98,25 @@ export interface RootState {
 	syncState: SyncState;
 }
 
-export type PreviewType = "edit" | "preview";
 export enum ThemeEnum {
 	light = "light",
 	dark = "dark",
 }
 export type Themes = keyof typeof ThemeEnum;
+
+export enum EditorMode {
+	preview = "preview",
+	edit = "edit",
+}
+
+export enum MenuEnum {
+	notes = "notes",
+	favorites = "favorites",
+	trash = "trash",
+	categories = "categories",
+}
+
+export type Menus = keyof typeof MenuEnum;
 
 export enum Method {
 	GET = "GET",

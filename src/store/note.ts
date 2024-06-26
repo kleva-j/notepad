@@ -1,20 +1,22 @@
-import { NoteItem, NoteState } from "@/types";
-import { atomWithStorage } from "jotai/utils";
-import { Folder } from "@/utils/enums";
-import { atom } from "jotai";
+import type { NoteItem, NoteState } from "@/types";
 
-const initialNoteState = {
+import { atomWithStorage } from "jotai/utils";
+import { focusAtom } from "jotai-optics";
+import { Folder } from "@/utils/enums";
+
+export const noteStateAtom = atomWithStorage<NoteState>("noteState", {
 	notes: [],
 	activeFolder: Folder.ALL,
-	selectedNotesIds: [],
 	selectedNotes: [],
 	activeNoteId: "",
-	filteredNotes: [],
-	activeCategoryId: "",
-	error: "",
-	loading: false,
-	searchValue: "",
-};
+});
+
+export const NotesAtom = focusAtom(noteStateAtom, (optics) =>
+	optics.prop("notes"),
+);
+export const SelectedNotesAtom = focusAtom(noteStateAtom, (optics) =>
+	optics.prop("selectedNotes"),
+);
 
 export function filterNotesByFolder(
 	notes: NoteItem[],
@@ -23,16 +25,10 @@ export function filterNotesByFolder(
 ): NoteItem[] {
 	return notes.filter(
 		{
-			[Folder.ALL]: (note: NoteItem) => !note.trash && !note.scratchpad,
+			[Folder.ALL]: (note: NoteItem) => !note.trash,
 			[Folder.TRASH]: (note: NoteItem) => note.trash,
 			[Folder.CATEGORY]: (note: NoteItem) => note.categoryId === categoryId,
 			[Folder.FAVORITES]: (note: NoteItem) => !note.trash && note.favorite,
-			[Folder.SCRATCHPAD]: (note: NoteItem) => !note.trash && note.scratchpad,
 		}[folder],
 	);
 }
-
-export const NoteStateAtom = atomWithStorage<NoteState>(
-	"noteState",
-	initialNoteState,
-);

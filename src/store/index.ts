@@ -1,27 +1,22 @@
-import { atomWithStorage } from "jotai/utils";
-import { atom } from "jotai";
+import type { Themes, Menus } from "@/types";
 
-export const darkModeAtom = atomWithStorage("darkMode", false);
-export const colorAtom = atomWithStorage("color", "gray");
-export const notesAtom = atomWithStorage("notes", []);
+import { atomWithStorage, selectAtom } from "jotai/utils";
+import { ThemeEnum, EditorMode } from "@/types";
+import { focusAtom } from "jotai-optics";
 
-export const atomWithLocalStorage = (key: string, initialValue: any) => {
-	const getInitialValue = () => {
-		const item = localStorage.getItem(key);
-		if (item !== null) {
-			return JSON.parse(item);
-		}
-		return initialValue;
-	};
-	const baseAtom = atom(getInitialValue());
-	const derivedAtom = atom(
-		(get) => get(baseAtom),
-		(get, set, update) => {
-			const nextValue =
-				typeof update === "function" ? update(get(baseAtom)) : update;
-			set(baseAtom, nextValue);
-			localStorage.setItem(key, JSON.stringify(nextValue));
-		},
-	);
-	return derivedAtom;
-};
+const activeMenu = "notes" as Menus;
+const theme: Themes = ThemeEnum.dark;
+const settings = { viewMode: EditorMode.edit, theme };
+const initialAppState = { settings, activeMenu };
+
+type AppState = typeof initialAppState;
+
+const settingsSelector = (state: AppState) => state.settings;
+
+export const appState = atomWithStorage<AppState>("appState", initialAppState);
+
+export const SettingsAtom = selectAtom(appState, settingsSelector);
+
+export const activeMenuAtom = focusAtom(appState, (optics) =>
+	optics.prop("activeMenu"),
+);
