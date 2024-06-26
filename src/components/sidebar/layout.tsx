@@ -1,12 +1,13 @@
 "use client";
 
-import { MenuEnum, type CategoryItem } from "@/types";
+import type { CategoryItem } from "@/types";
 
 import { CategoriesAtom, activeCategoryIdAtom } from "@/store/category";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { Folder, FolderOpen, Plus } from "lucide-react";
 import { Separator } from "@/ui/separator";
 import { activeMenuAtom } from "@/store";
+import { MenuEnum } from "@/utils/enums";
 import { MenuBar, MenuItem } from ".";
 import { Button } from "@/ui/button";
 import { cn } from "@/lib/utils";

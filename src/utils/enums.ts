@@ -42,3 +42,29 @@ export enum OptionTypesEnum {
 	delete = "delete",
 	renanme = "rename",
 }
+
+export enum ThemeEnum {
+	light = "light",
+	dark = "dark",
+}
+
+export enum EditorMode {
+	preview = "preview",
+	edit = "edit",
+}
+
+export enum MenuEnum {
+	notes = "notes",
+	favorites = "favorites",
+	trash = "trash",
+	categories = "categories",
+}
+
+export enum Method {
+	GET = "GET",
+	POST = "POST",
+	PUT = "PUT",
+	PATCH = "PATCH",
+	DELETE = "DELETE",
+}
+

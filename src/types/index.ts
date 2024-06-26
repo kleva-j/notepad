@@ -6,7 +6,7 @@ import type {
 	DragEvent,
 } from "react";
 
-import { Folder } from "@/utils/enums";
+import { Folder, MenuEnum, ThemeEnum } from "@/utils/enums";
 
 export type Prettify<T> = {
 	[K in keyof T]: T[K];
@@ -98,38 +98,10 @@ export interface RootState {
 	syncState: SyncState;
 }
 
-export enum ThemeEnum {
-	light = "light",
-	dark = "dark",
-}
 export type Themes = keyof typeof ThemeEnum;
-
-export enum EditorMode {
-	preview = "preview",
-	edit = "edit",
-}
-
-export enum MenuEnum {
-	notes = "notes",
-	favorites = "favorites",
-	trash = "trash",
-	categories = "categories",
-}
-
 export type Menus = keyof typeof MenuEnum;
 
-export enum Method {
-	GET = "GET",
-	POST = "POST",
-	PUT = "PUT",
-	PATCH = "PATCH",
-	DELETE = "DELETE",
-}
-
-export type OptionsPosition = {
-	x: number;
-	y: number;
-};
+export type OptionsPosition = { x: number; y: number };
 
 export type HandleOptionsEvent = (
 	event: ClickEvent,
