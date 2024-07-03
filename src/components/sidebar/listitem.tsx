@@ -2,60 +2,109 @@
 
 import type { CategoryItem } from "@/types";
 
-import { useDragControls, Reorder, motion } from "framer-motion";
-import { GripVertical, Settings2 } from "lucide-react";
-import { useState } from "react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";
+import { FolderOpen, Folder, PencilIcon, Trash } from "lucide-react";
+import { Reorder, useDragControls } from "framer-motion";
+import { DotsVerticalIcon } from "@radix-ui/react-icons";
+import { ListItemVariants } from "@/utils/motion";
+import { atom, useAtom } from "jotai";
+import { Button } from "@/ui/button";
 import { cn } from "@/lib/utils";
+import { MenuItem } from ".";
 
-interface ListItemProps {
+type ListItemProps = {
 	item: CategoryItem;
 	order: number;
-	onClickItem: (id: number) => void;
-	onRemoveItem: (id: number) => void;
-}
+	isActive: boolean;
+	onRemoveItem?: (id: string) => void;
+	renderExtra?: (item: CategoryItem) => React.ReactNode;
+	isExpanded?: boolean;
+	className?: string;
+	handleDrag?: () => void;
+	onClick?: (id: string) => void;
+	onSelect?: (id: string) => void;
+};
 
-export const ListItem = (props: ListItemProps) => {
-	const { item, order, onClickItem, onRemoveItem } = props;
-	const [isDragging, setIsDragging] = useState(false);
-	const [isDraggable, setIsDraggable] = useState(true);
+const isDraggingAtom = atom(false);
+const isDraggableAtom = atom(true);
+
+export const CategoryListItem = (props: ListItemProps) => {
+	const { item, order, isActive, onRemoveItem, onSelect, ...rest } = props;
+	const { handleDrag, onClick } = rest;
+	const [isDragging, setIsDragging] = useAtom(isDraggingAtom);
+	const [isDraggable, setIsDraggable] = useAtom(isDraggableAtom);
 	const dragControls = useDragControls();
+
+	const handleDragStart = (event: any) => {
+		setIsDragging(true);
+		dragControls.start(event, { snapToCursor: true });
+		handleDrag?.();
+	};
 
 	const handleDragEnd = () => {
 		setIsDragging(false);
 	};
 
 	return (
-		<motion.div className={cn("relative")} onClick={() => onClickItem(item.id)}>
-			<Reorder.Item
-				value={item.id}
-				className="flex cursor-pointer items-center justify-start rounded-md border py-1.5 pl-3 pr-4 text-base capitalize text-gray-400 transition-colors duration-300 hover:bg-neutral-800/70 hover:text-gray-200"
-				initial={{ opacity: 0 }}
-				animate={{
-					opacity: 1,
-					transition: {
-						type: "spring",
-						bounce: 0,
-						duration: 0.4,
-					},
-				}}
-				exit={{
-					opacity: 0,
-					transition: {
-						duration: 0.05,
-						type: "spring",
-						bounce: 0.1,
-					},
-				}}
-				layout
-				layoutId={`item-${item.id}`}
-				dragListener={!item.checked}
-				dragControls={dragControls}
-				onDragEnd={handleDragEnd}
+		<Reorder.Item
+			key={item.id}
+			value={item}
+			custom={order}
+			variants={ListItemVariants}
+			initial="hidden"
+			animate="visible"
+			exit="exit"
+			layout
+			layoutId={`item-${item.id}`}
+			dragListener={!item.checked}
+			dragControls={dragControls}
+			onDragEnd={handleDragEnd}
+			whileDrag={{ zIndex: 9999 }}
+		>
+			<MenuItem
+				label={item.text}
+				active={isActive}
+				icon={isActive ? FolderOpen : Folder}
+				handleClick={() => onClick?.(item.id)}
+				className={cn(
+					"w-full bg-neutral-800/5 text-sm capitalize shadow",
+					isActive && "bg-neutral-800 text-gray-200",
+				)}
 			>
-				<GripVertical className="mr-2 h-5 w-5 cursor-grab text-gray-600" />
-				{item.text}
-				<Settings2 className="ml-auto h-4 w-4 text-gray-500 transition-colors duration-300 hover:text-gray-400" />
-			</Reorder.Item>
-		</motion.div>
+				<Popover>
+					<PopoverTrigger asChild onClick={(event) => event.stopPropagation()}>
+						<DotsVerticalIcon className="-mr-1 ml-auto h-4 w-4 text-gray-600 transition-colors duration-300 hover:text-gray-500" />
+					</PopoverTrigger>
+					<PopoverContent className="max-w-min bg-neutral-900/90 p-2 shadow-lg">
+						<div className="flex w-full items-center">
+							<div className="flex gap-x-1">
+								<Button
+									variant="ghost"
+									className="h-8 w-8 bg-neutral-900 p-2"
+									title="Edit"
+								>
+									<span className="sr-only">Edit</span>
+									<PencilIcon className="stroke-[0.75]" />
+								</Button>
+								<Button
+									variant="ghost"
+									className="h-8 w-8 bg-neutral-900 p-2"
+									title="Delete"
+									onClick={() => onSelect?.(item.id)}
+								>
+									<span className="sr-only">Delete</span>
+									<Trash className="stroke-red-500 stroke-[2px]" />
+								</Button>
+							</div>
+							{/* <AnimatePresence></AnimatePresence> */}
+						</div>
+					</PopoverContent>
+				</Popover>
+			</MenuItem>
+			<div
+				onPointerDown={isDraggable ? handleDragStart : undefined}
+				style={{ touchAction: "none" }}
+			/>
+		</Reorder.Item>
 	);
 };

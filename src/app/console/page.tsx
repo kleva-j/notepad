@@ -2,14 +2,14 @@
 
 import { Providers } from "@/app/_providers";
 import { EditorWrapper } from "@/editor";
-import { NoteList } from "@/notelist";
-
-import Sidebar from "@/sidebar/layout";
 
 import {
 	ResizablePanelGroup,
 	ResizableHandle,
 } from "@/components/ui/resizable";
+
+import NoteList from "@/notelist/layout";
+import Sidebar from "@/sidebar/layout";
 
 export default function Console() {
 	return (

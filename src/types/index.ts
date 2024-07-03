@@ -30,7 +30,7 @@ export type ClickEvent =
 	| ReactMouseEvent;
 
 export interface CategoryItem {
-	id: number;
+	id: string;
 	text: string;
 	checked: boolean;
 }
@@ -39,6 +39,7 @@ export interface NoteItem {
 	id: string;
 	title: string;
 	content: string;
+	checked: boolean;
 	trash: boolean;
 	created: string;
 	lastUpdated: string;
@@ -64,13 +65,13 @@ export interface AuthState {
 
 export interface CategoryState {
 	categories: CategoryItem[];
-	activeCategoryId: number | null;
+	activeCategoryId: string | null;
 }
 
 export interface NoteState {
 	notes: NoteItem[];
 	activeFolder: Folder;
-	activeNoteId: string;
+	activeNoteId: string | null;
 	selectedNotes: NoteItem[];
 }
 

@@ -1,4 +1,4 @@
-import type { NoteItem, NoteState } from "@/types";
+import type { NoteState } from "@/types";
 
 import { atomWithStorage } from "jotai/utils";
 import { focusAtom } from "jotai-optics";
@@ -8,7 +8,7 @@ export const noteStateAtom = atomWithStorage<NoteState>("noteState", {
 	notes: [],
 	activeFolder: Folder.ALL,
 	selectedNotes: [],
-	activeNoteId: "",
+	activeNoteId: null,
 });
 
 export const NotesAtom = focusAtom(noteStateAtom, (optics) =>
@@ -17,18 +17,6 @@ export const NotesAtom = focusAtom(noteStateAtom, (optics) =>
 export const SelectedNotesAtom = focusAtom(noteStateAtom, (optics) =>
 	optics.prop("selectedNotes"),
 );
-
-export function filterNotesByFolder(
-	notes: NoteItem[],
-	folder: Folder,
-	categoryId?: string,
-): NoteItem[] {
-	return notes.filter(
-		{
-			[Folder.ALL]: (note: NoteItem) => !note.trash,
-			[Folder.TRASH]: (note: NoteItem) => note.trash,
-			[Folder.CATEGORY]: (note: NoteItem) => note.categoryId === categoryId,
-			[Folder.FAVORITES]: (note: NoteItem) => !note.trash && note.favorite,
-		}[folder],
-	);
-}
+export const ActiveNoteIdAtom = focusAtom(noteStateAtom, (optics) =>
+	optics.prop("activeNoteId"),
+);

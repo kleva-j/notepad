@@ -2,11 +2,11 @@ import { Children } from "react";
 
 type EachProps = {
 	of: any[];
-	onClick?: (id: number) => void;
+	onClick?: (id: string) => void;
 	render: (
 		item: any,
 		index: number,
-		onClick?: (id: number) => void,
+		onClick?: (id: string) => void,
 	) => JSX.Element;
 };
 

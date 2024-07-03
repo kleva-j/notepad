@@ -1,7 +1,8 @@
-import { ContextMenuEnum, ContextType, ContextTypeEnum } from "@/utils/enums";
+import type { CategoryItem, Menus, NoteItem } from "@/types";
+
+import { Folder, MenuEnum } from "@/utils/enums";
 import { LabelText } from "@/utils/constants";
-import { Folder } from "@/utils/enums";
-import { NoteItem } from "@/types";
+import { faker } from "@faker-js/faker";
 
 export const debounceEvent = <T extends Function>(cb: T, wait = 20) => {
 	let h = 0;
@@ -30,36 +31,72 @@ export const getNoteTitle = (text: string): string => {
 	) as string;
 };
 
-export const setStrokeColor = (folder: Folder, activeFolder: Folder) =>
-	activeFolder === folder ? "#5183f5" : "#ffffff40";
-
-export const setActiveColor = (isActive: boolean) =>
-	isActive ? "#5183f5" : "#ffffff40";
-
-export const isDraftNote = (note: NoteItem) => {
-	return !note.scratchpad && note.content === "";
-};
-
 export const getActiveNote = (notes: NoteItem[], activeNoteId: string) =>
 	notes.find((note) => note.id === activeNoteId);
 
-export const ContextMenuStyleMap: Record<ContextMenuEnum, string> = {
-	[ContextMenuEnum.CATEGORY]: "bg-[#2d2d2d] text-[#c0c0c0] hover:bg-[#4d4d4d]",
-	[ContextMenuEnum.NOTE]:
-		"text-slate-500 hover:text-slate-800 hover:bg-[#f0f0f0]",
-};
+/**
+ * Generates an ID with the specified prefix.
+ *
+ * @param {string} prefix - The prefix for the generated ID.
+ * @return {string} The generated ID.
+ */
+export function generateId(prefix = "n") {
+	return `${prefix}-${faker.string.nanoid(10)}`;
+}
 
-export const checkContextType = (id: string): { type: ContextType | null } => {
-	const initial = id.split("-")[0];
+/**
+ * Generates fake notes with specified length.
+ *
+ * @param {number} length - The number of fake notes to generate.
+ * @return {NoteItem[]} An array of fake NoteItem objects.
+ */
+export function generateFakeNotes(length: number = 1): NoteItem[] {
+	return Array.from({ length }, (_, i) => i).map(() => ({
+		id: generateId(),
+		title: faker.lorem.sentence({ min: 1, max: 5 }),
+		content: faker.lorem.paragraph({ min: 1, max: 3 }),
+		categoryId: generateId("c"),
+		trash: faker.datatype.boolean(),
+		created: faker.date.recent({ days: 10 }).toISOString(),
+		lastUpdated: faker.date.recent({ days: 3 }).toISOString(),
+		favorite: faker.datatype.boolean(),
+		checked: false,
+	}));
+}
 
-	switch (initial) {
-		case "c":
-		case "droppable":
-			return { type: ContextTypeEnum.category };
-		case "n":
-			return { type: ContextTypeEnum.note };
+/**
+ * Generates fake categories with specified length.
+ *
+ * @param {number} length - The number of fake categories to generate.
+ * @return {CategoryItem[]} An array of fake CategoryItem objects.
+ */
+export function generateFakeCategories(length: number = 1): CategoryItem[] {
+	return Array.from({ length }, (_, i) => i).map((i) => ({
+		id: generateId("c"),
+		text: faker.word.noun({ length: { min: 2, max: 15 }, strategy: "longest" }),
+		checked: false,
+	}));
+}
 
-		default:
-			return { type: null };
-	}
-};
+export const mapMenuToFolder = (menu: Menus): Folder =>
+	({
+		[MenuEnum.notes]: Folder.ALL,
+		[MenuEnum.favorites]: Folder.FAVORITES,
+		[MenuEnum.trash]: Folder.TRASH,
+		[MenuEnum.categories]: Folder.CATEGORY,
+	})[menu] || Folder.ALL;
+
+export function filterNotesByFolder(
+	notes: NoteItem[],
+	folder: Folder,
+	categoryId?: string,
+): NoteItem[] {
+	return notes.filter(
+		{
+			[Folder.ALL]: (note: NoteItem) => !note.trash,
+			[Folder.TRASH]: (note: NoteItem) => note.trash,
+			[Folder.CATEGORY]: (note: NoteItem) => note.categoryId === categoryId,
+			[Folder.FAVORITES]: (note: NoteItem) => !note.trash && note.favorite,
+		}[folder],
+	);
+}

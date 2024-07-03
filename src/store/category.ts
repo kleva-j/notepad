@@ -5,11 +5,7 @@ import { CategoryState } from "@/types";
 export const categoryStateAtom = atomWithStorage<CategoryState>(
 	"categoryState",
 	{
-		categories: [
-			{ text: "Homework", checked: false, id: 1 },
-			{ text: "Study", checked: false, id: 2 },
-			{ text: "Work", checked: false, id: 3 },
-		],
+		categories: [],
 		activeCategoryId: null,
 	},
 );
