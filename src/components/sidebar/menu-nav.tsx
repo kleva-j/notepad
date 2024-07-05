@@ -1,6 +1,7 @@
 import type { PropsWithChildren } from "react";
 
 import { NotepadText, Trash2, Star } from "lucide-react";
+import { Children, useMemo } from "react";
 import { IconType, Menus } from "@/types";
 import { MenuEnum } from "@/utils/enums";
 import { motion } from "framer-motion";
@@ -8,7 +9,6 @@ import { Button } from "@/ui/button";
 import { appState } from "@/store";
 import { cn } from "@/lib/utils";
 import { useAtom } from "jotai";
-import { useMemo } from "react";
 
 export function MenuBar() {
 	const [{ activeMenu }, setAppState] = useAtom(appState);
@@ -23,7 +23,7 @@ export function MenuBar() {
 			{ icon: Star, label: "Favorites", menu: MenuEnum.favorites },
 			{ icon: Trash2, label: "Trash", menu: MenuEnum.trash },
 		],
-		[]
+		[],
 	);
 
 	return (
@@ -43,13 +43,13 @@ export function MenuBar() {
 
 type MenuItemProps = {
 	active?: boolean;
-	label: string;
-	icon: IconType;
+	label?: string | React.ReactNode;
+	icon?: IconType;
 	className?: string;
 	handleClick?: () => void;
 } & PropsWithChildren;
 
-const MotionButton = motion(Button)
+const MotionButton = motion(Button);
 
 export function MenuItem(props: MenuItemProps) {
 	const { active, icon: Icon, label, className, handleClick, ...rest } = props;
@@ -57,7 +57,7 @@ export function MenuItem(props: MenuItemProps) {
 	return (
 		<MotionButton
 			className={cn(
-				"justify-start rounded-md bg-transparent px-5 text-base text-gray-400 shadow-none hover:bg-neutral-800/70 hover:text-gray-200",
+				"flex items-center justify-start rounded-md bg-transparent px-5 text-base text-gray-400 shadow-none hover:bg-neutral-800/70 hover:text-gray-200",
 				active && "bg-neutral-800 text-gray-200",
 				className,
 			)}
@@ -65,11 +65,13 @@ export function MenuItem(props: MenuItemProps) {
 			size="lg"
 			{...rest}
 		>
-			<Icon className="mr-3 h-5 w-5 stroke-[0.85] text-inherit" />
-			<p className="truncate whitespace-nowrap tracking-wide text-inherit">
-				{label}
-			</p>
-			{props.children}
+			{Icon && <Icon className="mr-3 h-5 w-5 stroke-[0.85] text-inherit" />}
+			{label && (
+				<p className="truncate whitespace-nowrap tracking-wide text-inherit">
+					{label}
+				</p>
+			)}
+			{Children.toArray(props.children)}
 		</MotionButton>
 	);
 }

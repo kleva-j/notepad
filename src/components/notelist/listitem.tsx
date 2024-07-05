@@ -25,12 +25,13 @@ interface ListItemProps {
 	active: boolean;
 	onClick: (id: string) => void;
 	onRemoveItem: (id: string) => void;
+	updateNote: (id: string, note: Partial<NoteItem>) => void;
 }
 
 export const ListItem = (props: ListItemProps) => {
-	const { item, order, onClick, onRemoveItem } = props;
-	const [isDragging, setIsDragging] = useAtom(isDraggingAtom);
-	const [isDraggable, setIsDraggable] = useAtom(isDraggableAtom);
+	const { item, order, onClick, updateNote } = props;
+	const [, setIsDragging] = useAtom(isDraggingAtom);
+	const [isDraggable] = useAtom(isDraggableAtom);
 
 	const dragControls = useDragControls();
 
@@ -66,6 +67,7 @@ export const ListItem = (props: ListItemProps) => {
 				className={cn(
 					"flex cursor-pointer flex-col justify-start rounded-md border bg-neutral-900/80 px-4 py-3 text-base capitalize text-gray-400 transition-colors duration-150 hover:bg-neutral-800/90 hover:text-gray-200",
 					item.favorite && "border-yellow-400/20",
+					item.trash && "border-red-400/20",
 					props.active && "bg-amber-400/40 hover:bg-amber-400/30",
 				)}
 			>
@@ -103,6 +105,7 @@ export const ListItem = (props: ListItemProps) => {
 							variant="ghost"
 							className="h-4 w-4 stroke-yellow-500 stroke-[1.2px] px-0.5 py-0.5 text-gray-500 transition-colors duration-150 hover:bg-yellow-400/10 hover:text-gray-400"
 							asChild
+							onClick={() => updateNote(item.id, { favorite: !item.favorite })}
 						>
 							<Star />
 						</Button>

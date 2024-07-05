@@ -16,7 +16,6 @@ type ListItemProps = {
 	item: CategoryItem;
 	order: number;
 	isActive: boolean;
-	onRemoveItem?: (id: string) => void;
 	renderExtra?: (item: CategoryItem) => React.ReactNode;
 	isExpanded?: boolean;
 	className?: string;
@@ -29,10 +28,9 @@ const isDraggingAtom = atom(false);
 const isDraggableAtom = atom(true);
 
 export const CategoryListItem = (props: ListItemProps) => {
-	const { item, order, isActive, onRemoveItem, onSelect, ...rest } = props;
-	const { handleDrag, onClick } = rest;
-	const [isDragging, setIsDragging] = useAtom(isDraggingAtom);
-	const [isDraggable, setIsDraggable] = useAtom(isDraggableAtom);
+	const { item, order, isActive, onSelect, handleDrag, onClick } = props;
+	const [, setIsDragging] = useAtom(isDraggingAtom);
+	const [isDraggable] = useAtom(isDraggableAtom);
 	const dragControls = useDragControls();
 
 	const handleDragStart = (event: any) => {
@@ -75,7 +73,7 @@ export const CategoryListItem = (props: ListItemProps) => {
 					<PopoverTrigger asChild onClick={(event) => event.stopPropagation()}>
 						<DotsVerticalIcon className="-mr-1 ml-auto h-4 w-4 text-gray-600 transition-colors duration-300 hover:text-gray-500" />
 					</PopoverTrigger>
-					<PopoverContent className="max-w-min bg-neutral-900/90 p-2 shadow-lg">
+					<PopoverContent className="max-w-min bg-neutral-900/90 p-2 shadow-lg" side="right">
 						<div className="flex w-full items-center">
 							<div className="flex gap-x-1">
 								<Button
@@ -90,7 +88,10 @@ export const CategoryListItem = (props: ListItemProps) => {
 									variant="ghost"
 									className="h-8 w-8 bg-neutral-900 p-2"
 									title="Delete"
-									onClick={() => onSelect?.(item.id)}
+									onClick={(event) => {
+										event.stopPropagation();
+										onSelect?.(item.id);
+									}}
 								>
 									<span className="sr-only">Delete</span>
 									<Trash className="stroke-red-500 stroke-[2px]" />
