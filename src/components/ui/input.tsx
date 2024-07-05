@@ -25,7 +25,7 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 	},
 );
 
-const rootVariants = cva(
+export const inputVariants = cva(
 	"py-1 px-2 flex rounded gap-1 items-center transition duration-200",
 	{
 		variants: {
@@ -60,7 +60,7 @@ const rootVariants = cva(
 );
 
 type InputBlockProps = {
-	root?: VariantProps<typeof rootVariants> & {
+	root?: VariantProps<typeof inputVariants> & {
 		className?: string;
 	};
 	leftIcon?: React.ReactNode;
@@ -73,7 +73,7 @@ const InputBlock = ({
 	rightIcon,
 	...input
 }: InputBlockProps) => (
-	<div className={cn(rootVariants({ variant, size, className }))}>
+	<div className={cn(inputVariants({ variant, size, className }))}>
 		{leftIcon && <span className="px-1">{leftIcon}</span>}
 		<Input {...input} />
 		{rightIcon && <span className="px-1">{rightIcon}</span>}

@@ -9,6 +9,7 @@ export const noteStateAtom = atomWithStorage<NoteState>("noteState", {
 	activeFolder: Folder.ALL,
 	selectedNotes: [],
 	activeNoteId: null,
+	includeTrash: false,
 });
 
 export const NotesAtom = focusAtom(noteStateAtom, (optics) =>
@@ -19,4 +20,7 @@ export const SelectedNotesAtom = focusAtom(noteStateAtom, (optics) =>
 );
 export const ActiveNoteIdAtom = focusAtom(noteStateAtom, (optics) =>
 	optics.prop("activeNoteId"),
+);
+export const IncludeTrashAtom = focusAtom(noteStateAtom, (optics) =>
+	optics.prop("includeTrash"),
 );

@@ -73,6 +73,7 @@ export interface NoteState {
 	activeFolder: Folder;
 	activeNoteId: string | null;
 	selectedNotes: NoteItem[];
+	includeTrash: boolean;
 }
 
 export interface SettingsState {

@@ -90,6 +90,7 @@ export function filterNotesByFolder(
 	notes: NoteItem[],
 	folder: Folder,
 	categoryId?: string,
+	filterObj?: {},
 ): NoteItem[] {
 	return notes.filter(
 		{
@@ -97,6 +98,7 @@ export function filterNotesByFolder(
 			[Folder.TRASH]: (note: NoteItem) => note.trash,
 			[Folder.CATEGORY]: (note: NoteItem) => note.categoryId === categoryId,
 			[Folder.FAVORITES]: (note: NoteItem) => !note.trash && note.favorite,
+			...filterObj,
 		}[folder],
 	);
 }
