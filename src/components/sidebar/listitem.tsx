@@ -71,7 +71,10 @@ export const CategoryListItem = (props: ListItemProps) => {
 					<PopoverTrigger asChild onClick={(event) => event.stopPropagation()}>
 						<DotsVerticalIcon className="-mr-1 ml-auto h-4 w-4 text-gray-600 transition-colors duration-300 hover:text-gray-500" />
 					</PopoverTrigger>
-					<PopoverContent className="max-w-min bg-neutral-900/90 p-2 shadow-lg" side="right">
+					<PopoverContent
+						className="max-w-min bg-neutral-900/90 p-2 shadow-lg"
+						side="right"
+					>
 						<div className="flex w-full items-center">
 							<div className="flex gap-x-1">
 								<Button

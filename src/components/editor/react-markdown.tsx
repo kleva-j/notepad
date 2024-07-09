@@ -2,7 +2,7 @@ import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 
 import { Code, Mention } from ".";
 
-import rehypeStringify from 'rehype-stringify'
+import rehypeStringify from "rehype-stringify";
 import remarkRehype from "remark-rehype";
 import remarkParse from "remark-parse";
 import rehypeReact from "rehype-react";

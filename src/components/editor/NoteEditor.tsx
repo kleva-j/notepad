@@ -26,12 +26,9 @@ export const NoteEditor = () => {
 		}
 	}, []);
 
-	const updateNote = useCallback(
-		(note: NoteItem) => {
-			setNotes((_notes) => _notes.map((n) => (n.id === note.id ? note : n)));
-		},
-		[],
-	);
+	const updateNote = useCallback((note: NoteItem) => {
+		setNotes((_notes) => _notes.map((n) => (n.id === note.id ? note : n)));
+	}, []);
 
 	useEffect(() => {
 		if (activeNoteId && activeNote) {

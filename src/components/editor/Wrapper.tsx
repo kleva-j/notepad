@@ -13,7 +13,7 @@ export const EditorWrapper = () => {
 	return (
 		<ResizablePanel
 			defaultSize={75}
-			className="bg-neutral-200 dark:bg-neutral-900 p-4"
+			className="bg-neutral-200 p-4 dark:bg-neutral-900"
 		>
 			{activeNoteId ? <NoteEditor /> : <EmptyEditor />}
 		</ResizablePanel>

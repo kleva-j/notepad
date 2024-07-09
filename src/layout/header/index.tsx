@@ -35,14 +35,14 @@ export default function Header({ sticky, variant }: HeaderProps) {
 		<header
 			className={cn(
 				"w-full bg-zinc-50 backdrop-blur dark:bg-zinc-950/50",
-				sticky && variant == "centered" && "top-3 md:sticky max-w-4xl mx-auto",
+				sticky && variant == "centered" && "top-3 mx-auto max-w-4xl md:sticky",
 				sticky && variant == "default" && "top-0 md:sticky",
 			)}
 		>
 			<div className={cn("hidden md:block", headerVariants({ variant }))}>
-				<div className="justify-start flex w-full gap-2 px-6 pb-2 pt-3">
+				<div className="flex w-full justify-start gap-2 px-6 pb-2 pt-3">
 					<Logo />
-					<nav className="flex ml-auto gap-2 lg:gap-4">
+					<nav className="ml-auto flex gap-2 lg:gap-4">
 						{navigationLinks.map((link, i) => (
 							<Button asChild key={i} variant="link">
 								<Link key={i} href={link.href}>
