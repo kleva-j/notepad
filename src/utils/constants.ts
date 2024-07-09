@@ -1,4 +1,5 @@
 import { Folder } from "@/utils/enums";
+import { z } from "zod";
 
 export const iconColor = "rgba(255, 255, 255, 0.25)";
 
@@ -46,3 +47,18 @@ export enum LabelText {
 	TOGGLE_FAVORITE = "Toggle favorite",
 	COPY_REFERENCE_TO_NOTE = "Copy reference to note",
 }
+
+export const NoteSchema = z.object({
+	id: z.string().length(12, { message: "ID must be 12 characters long." }),
+	title: z
+		.string()
+		.min(2, { message: "Title must be at least 2 characters." })
+		.max(40, { message: "Title must not exceed 40 characters." }),
+	content: z.string(),
+	checked: z.boolean(),
+	trash: z.boolean(),
+	created: z.string().datetime(),
+	lastUpdated: z.string().datetime(),
+	favorite: z.boolean().optional(),
+	categoryId: z.string().optional(),
+});

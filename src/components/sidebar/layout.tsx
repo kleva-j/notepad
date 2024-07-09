@@ -1,5 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
+"use client";
+
 import type { KeyboardEventHandler } from "react";
 
 import { CategoriesAtom, activeCategoryIdAtom } from "@/store/category";
@@ -7,6 +9,7 @@ import { AnimatePresence, LayoutGroup, Reorder } from "framer-motion";
 import { memo, useCallback, useState, useRef } from "react";
 import { CategoryListItem } from "@/sidebar/listitem";
 import { Folder, Loader2, Plus } from "lucide-react";
+import { useMousetrap } from "use-mousetrap";
 import { generateId } from "@/utils/helpers";
 import { Separator } from "@/ui/separator";
 import { activeMenuAtom } from "@/store";
@@ -83,6 +86,9 @@ export default function Layout() {
 			setShowDialog(false);
 		}
 	};
+
+	// Create a new Category
+	useMousetrap("command+shift+b", handlePopup);
 
 	return (
 		<section className="flex h-full w-full max-w-[17rem] flex-col gap-y-4 bg-neutral-900 px-4">

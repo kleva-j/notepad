@@ -1,5 +1,3 @@
-"use client";
-
 import { Providers } from "@/app/_providers";
 import { EditorWrapper } from "@/editor";
 

@@ -1,5 +1,3 @@
-"use client";
-
 import type { CategoryItem } from "@/types";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";

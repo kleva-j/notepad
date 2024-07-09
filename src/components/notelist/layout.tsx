@@ -1,4 +1,7 @@
+"use client";
+
 /* eslint-disable react-hooks/exhaustive-deps */
+
 import type { NoteItem } from "@/types";
 
 import { ActiveNoteIdAtom, IncludeTrashAtom, NotesAtom } from "@/store/note";

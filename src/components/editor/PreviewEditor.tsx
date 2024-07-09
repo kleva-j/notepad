@@ -1,11 +1,10 @@
-import type { NoteItem } from "@/types";
+import { useProcessor, ReactMarkdown } from ".";
 
-interface PreviewEditorProps {
-	noteText: string;
-	directionText?: string;
-	notes?: NoteItem[];
-}
-
-export const PreviewEditor = ({}: PreviewEditorProps) => {
-	return <div>Preview Notes</div>;
+export const PreviewEditor = (props: { textValue: string }) => {
+	return (
+		<div className="prose-headings:font-cal prose prose-sm prose-neutral h-[80vh] max-w-full overflow-auto rounded-md border p-2 dark:prose-invert">
+			{/* {useProcessor(props.textValue)} */}
+			<ReactMarkdown textValue={props.textValue} />
+		</div>
+	);
 };
