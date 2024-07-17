@@ -1,6 +1,6 @@
 import rehypeSanitize, { defaultSchema } from "rehype-sanitize";
 
-import { Code, Mention } from ".";
+import { Code } from ".";
 
 import rehypeStringify from "rehype-stringify";
 import remarkRehype from "remark-rehype";
@@ -28,10 +28,7 @@ export const ReactMarkdown = (props: { textValue: string }) => {
 					},
 				],
 			]}
-			components={{
-				code: (props: any) => <Code {...props} />,
-				mention: (props: any) => <Mention {...props} />,
-			}}
+			components={{ code: (props: any) => <Code {...props} /> }}
 		>
 			{props.textValue}
 		</Markdown>

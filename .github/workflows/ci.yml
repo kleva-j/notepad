@@ -14,6 +14,7 @@ jobs:
       AUTH_GITHUB_ID: ${{ secrets.AUTH_GITHUB_ID }}
       AUTH_GITHUB_SECRET: ${{ secrets.AUTH_GITHUB_SECRET }}
       AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+      TIPTAP_PRO_TOKEN: ${{ secrets.TIPTAP_PRO_TOKEN }}
     runs-on: ubuntu-latest
 
     steps:
