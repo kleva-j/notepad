@@ -78,7 +78,7 @@ export default function Layout() {
 		<ResizablePanel
 			defaultSize={25}
 			minSize={25}
-			className="bg-neutral-100 dark:bg-neutral-900/80"
+			className="bg-neutral-100 dark:bg-neutral-900/60"
 		>
 			<section className="relative h-full border-l py-3">
 				<div className="w-full px-4">

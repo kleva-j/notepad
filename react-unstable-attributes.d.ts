@@ -1,6 +1,8 @@
 // react-unstable-attributes.d.ts
-// import "react";
 
+import type { Editor } from "@tiptap/react";
+
+// import "react";
 // declare module "react" {
 // 	interface IntrinsicElements {
 // 		mention: React.DetailedHTMLProps<
@@ -16,5 +18,11 @@ declare namespace JSX {
 			React.HTMLAttributes<HTMLElement>,
 			HTMLElement
 		>;
+	}
+}
+
+declare global {
+	interface Window {
+		editor: Editor | null;
 	}
 }

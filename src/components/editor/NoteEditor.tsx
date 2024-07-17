@@ -3,13 +3,13 @@
 
 import type { NoteItem } from "@/types";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ActiveNoteIdAtom, NotesAtom } from "@/store/note";
 import { useAtom, useAtomValue } from "jotai";
 
-import { PreviewEditor } from "./PreviewEditor";
-import { Write } from "./Write";
+import dynamic from "next/dynamic";
+
+export const Tiptap = dynamic(() => import("./tiptap"), { ssr: false });
 
 export const NoteEditor = () => {
 	const activeNoteId = useAtomValue(ActiveNoteIdAtom);
@@ -42,18 +42,5 @@ export const NoteEditor = () => {
 		}
 	}, [activeNoteId]);
 
-	return (
-		<Tabs defaultValue="write" className="w-full">
-			<TabsList>
-				<TabsTrigger value="write">Write</TabsTrigger>
-				<TabsTrigger value="preview">Preview</TabsTrigger>
-			</TabsList>
-			<TabsContent value="write">
-				<Write {...{ textValue, setTextValue }} />
-			</TabsContent>
-			<TabsContent value="preview">
-				<PreviewEditor {...{ textValue }} />
-			</TabsContent>
-		</Tabs>
-	);
+	return <Tiptap>{textValue}</Tiptap>;
 };
