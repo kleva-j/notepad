@@ -50,3 +50,4 @@ certificates
 testapp
 
 src/lib/db/migrations
+.npmrc
