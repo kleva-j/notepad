@@ -1,4 +1,4 @@
-import type{ Editor } from "@tiptap/react";
+import type { Editor } from "@tiptap/react";
 
 import { ContentPickerOptions } from "@/tiptap/components";
 import { useMemo } from "react";
@@ -103,9 +103,9 @@ export const useTextmenuContentTypes = (editor: Editor) => {
 				type: "option",
 			},
 			{
-				icon: "ListTodo", // @ts-expect-error
+				icon: "ListTodo",
 				onClick: () => editor.chain().focus().toggleTaskList().run(),
-				id: "todoList", // @ts-expect-error
+				id: "todoList",
 				disabled: () => !editor.can().toggleTaskList(),
 				isActive: () => editor.isActive("taskList"),
 				label: "Todo list",
