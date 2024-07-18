@@ -3,13 +3,23 @@
 
 import type { NoteItem } from "@/types";
 
+import { ProgressLoader } from "@/components/linear-progress-bar";
 import { useState, useEffect, useCallback, useRef } from "react";
 import { ActiveNoteIdAtom, NotesAtom } from "@/store/note";
 import { useAtom, useAtomValue } from "jotai";
 
 import dynamic from "next/dynamic";
 
-export const Tiptap = dynamic(() => import("./tiptap"), { ssr: false });
+export const Tiptap = dynamic(() => import("./tiptap"), {
+	ssr: false,
+	loading: () => (
+		<div className="grid h-full w-full place-items-center">
+			<div className="h-min w-1/2">
+				<ProgressLoader  />
+			</div>
+		</div>
+	),
+});
 
 export const NoteEditor = () => {
 	const activeNoteId = useAtomValue(ActiveNoteIdAtom);

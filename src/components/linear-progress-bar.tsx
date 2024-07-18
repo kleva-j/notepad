@@ -1,6 +1,7 @@
 import { useMotionValue, useSpring, frame } from "framer-motion";
 import { Progress } from "@/components/ui/progress";
 import { useEffect, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 type Props = {
 	min?: number;
@@ -32,5 +33,11 @@ export const ProgressLoader = (props: Props) => {
 		});
 	}, [springValue]);
 
-	return <Progress ref={ref} value={0} className={className} />;
+	return (
+		<Progress
+			ref={ref}
+			value={0}
+			className={cn("[&>div]:bg-neutral-500", className)}
+		/>
+	);
 };
