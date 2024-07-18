@@ -88,7 +88,7 @@ export default function Layout() {
 	};
 
 	// Create a new Category
-	useMousetrap("command+shift+b", handlePopup);
+	useMousetrap("command+m", handlePopup);
 
 	return (
 		<section className="flex h-full w-full max-w-[17rem] flex-col gap-y-4 bg-neutral-900 px-4">
