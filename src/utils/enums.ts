@@ -3,6 +3,7 @@ export enum Folder {
 	TRASH = "TRASH",
 	CATEGORY = "CATEGORY",
 	FAVORITES = "FAVORITES",
+	SCRATCHPAD = "SCRATCHPAD",
 }
 
 export enum Colors {
@@ -58,6 +59,7 @@ export enum MenuEnum {
 	favorites = "favorites",
 	trash = "trash",
 	categories = "categories",
+	scratchpad = "scratchpad",
 }
 
 export enum Method {

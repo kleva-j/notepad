@@ -84,6 +84,7 @@ export const mapMenuToFolder = (menu: Menus): Folder =>
 		[MenuEnum.favorites]: Folder.FAVORITES,
 		[MenuEnum.trash]: Folder.TRASH,
 		[MenuEnum.categories]: Folder.CATEGORY,
+		[MenuEnum.scratchpad]: Folder.SCRATCHPAD,
 	})[menu] || Folder.ALL;
 
 export function filterNotesByFolder(
@@ -98,6 +99,7 @@ export function filterNotesByFolder(
 			[Folder.TRASH]: (note: NoteItem) => note.trash,
 			[Folder.CATEGORY]: (note: NoteItem) => note.categoryId === categoryId,
 			[Folder.FAVORITES]: (note: NoteItem) => !note.trash && note.favorite,
+			[Folder.SCRATCHPAD]: (note: NoteItem) => note.scratchpad,
 			...filterObj,
 		}[folder],
 	);

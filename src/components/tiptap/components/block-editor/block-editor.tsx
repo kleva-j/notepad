@@ -27,7 +27,7 @@ export const BlockEditor = ({ ydoc, provider, content }: TiptapProps) => {
 	if (!editor) return null;
 
 	return (
-		<div className="flex h-full rounded-md border" ref={menuContainerRef}>
+		<div className="flex h-full rounded-md border overflow-hidden" ref={menuContainerRef}>
 			<Sidebar
 				isOpen={leftSidebar.isOpen}
 				onClose={leftSidebar.close}

@@ -7,18 +7,18 @@ import type { KeyboardEventHandler } from "react";
 import { CategoriesAtom, activeCategoryIdAtom } from "@/store/category";
 import { AnimatePresence, LayoutGroup, Reorder } from "framer-motion";
 import { memo, useCallback, useState, useRef } from "react";
+import { menuSubject$, menuSubjectAtom } from "@/store";
 import { CategoryListItem } from "@/sidebar/listitem";
-import { Folder, Loader2, Plus } from "lucide-react";
+import { useAtom, useAtomValue } from "jotai";
+import { Loader2, Plus } from "lucide-react";
 import { useMousetrap } from "use-mousetrap";
 import { generateId } from "@/utils/helpers";
 import { Separator } from "@/ui/separator";
-import { activeMenuAtom } from "@/store";
 import { MenuEnum } from "@/utils/enums";
 import { MenuBar, MenuItem } from ".";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { cn } from "@/lib/utils";
-import { useAtom } from "jotai";
 import { z } from "zod";
 import {
 	AlertDialogDescription,
@@ -40,13 +40,15 @@ const CategorySchema = z
 
 export default function Layout() {
 	const [categories, setCategories] = useAtom(CategoriesAtom);
-	const [activeMenu, setActiveMenu] = useAtom(activeMenuAtom);
 	const [activeId, setActiveId] = useAtom(activeCategoryIdAtom);
 	const [selectedId, setSelectedId] = useState<string | null>(null);
 	const [showDialog, setShowDialog] = useState(false);
 
+	const activeMenu = useAtomValue(menuSubjectAtom);
+
 	const handleClickItem = useCallback((id: string) => {
-		if (activeMenu !== MenuEnum.categories) setActiveMenu(MenuEnum.categories);
+		if (activeMenu !== MenuEnum.categories)
+			menuSubject$.next(MenuEnum.categories);
 		if (activeId !== id) setActiveId(id);
 	}, []);
 
@@ -91,7 +93,7 @@ export default function Layout() {
 	useMousetrap("command+m", handlePopup);
 
 	return (
-		<section className="flex h-full w-full max-w-[17rem] flex-col gap-y-4 bg-neutral-900 px-4">
+		<section className="flex h-full w-full max-w-[17rem] flex-col gap-y-4 border-r bg-neutral-900 px-4">
 			<MenuBar />
 			<div className="mt-4 flex flex-col">
 				<div className="flex items-center justify-between gap-x-2">
@@ -113,12 +115,12 @@ export default function Layout() {
 						axis="y"
 						values={categories}
 						onReorder={setCategories}
-						className="no-scrollbar flex h-[69vh] flex-col gap-y-2 overflow-y-auto"
+						className="no-scrollbar flex h-[65vh] flex-col gap-y-2 overflow-y-auto"
 					>
 						<AnimatePresence>
 							{showDialog && (
 								<MenuItem
-									icon={Folder}
+									icon="Folder"
 									className="w-full bg-neutral-800/5 text-sm capitalize shadow"
 								>
 									<Input

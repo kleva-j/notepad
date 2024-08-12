@@ -3,10 +3,14 @@ import type { Doc as YDoc } from "yjs";
 
 import { TiptapCollabProvider, WebSocketStatus } from "@hocuspocus/provider";
 import { ExtensionKit } from "@/tiptap/extensions/extension-kit";
+import { debouncedValueAtom, menuSubjectAtom } from "@/store";
+import { ActiveNoteIdAtom, NotesAtom } from "@/store/note";
 import { useEffect, useMemo, useState } from "react";
 import { initialContent } from "@/tiptap/lib/data";
+import { useAtomValue, useSetAtom } from "jotai";
 import { useSidebar } from "./use-sidebar";
 import { useEditor } from "@tiptap/react";
+import { MenuEnum } from "@/utils/enums";
 
 type UseBlockEditorProps = {
 	ydoc: YDoc;
@@ -14,21 +18,25 @@ type UseBlockEditorProps = {
 	provider?: TiptapCollabProvider | null | undefined;
 };
 
-export const useBlockEditor = ({ ydoc, provider }: UseBlockEditorProps) => {
+export const useBlockEditor = ({ provider }: UseBlockEditorProps) => {
 	const leftSidebar = useSidebar();
 	const [collabState, setCollabState] = useState<WebSocketStatus>(
 		WebSocketStatus.Connecting,
 	);
 
+	const notes = useAtomValue(NotesAtom);
+	const noteId = useAtomValue(ActiveNoteIdAtom);
+	const activeMenu = useAtomValue(menuSubjectAtom);
+	const setDebouncedValue = useSetAtom(debouncedValueAtom);
+	const activeNote = notes.find((note) => note.id === noteId);
+
 	const editor = useEditor({
-		autofocus: true,
-		onCreate: ({ editor }) => {
-			provider?.on("synced", () => {
-				if (editor.isEmpty) {
-					editor.commands.setContent(initialContent);
-				}
-			});
+		onUpdate: ({ editor }) => {
+			if (activeMenu === MenuEnum.scratchpad) {
+				editor.commands.setContent(initialContent);
+			}
 		},
+		autofocus: true,
 		extensions: [...ExtensionKit({ provider })],
 		content: initialContent,
 		editorProps: {
@@ -60,6 +68,22 @@ export const useBlockEditor = ({ ydoc, provider }: UseBlockEditorProps) => {
 		characters: () => 0,
 		words: () => 0,
 	};
+
+	useEffect(() => {
+		if (editor) {
+			if (activeMenu === MenuEnum.scratchpad) {
+				editor.commands.setContent(initialContent);
+			}
+		}
+	}, [activeMenu, editor]);
+
+	useEffect(() => {
+		if (editor) {
+			if (noteId && activeNote) {
+				editor.commands.setContent(activeNote.content);
+			}
+		}
+	}, [noteId, activeNote, editor]);
 
 	useEffect(() => {
 		provider?.on("status", (event: { status: WebSocketStatus }) => {

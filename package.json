@@ -112,6 +112,7 @@
 		"remark-mdx": "^3.0.1",
 		"remark-parse": "^11.0.0",
 		"remark-rehype": "^11.1.0",
+		"rxjs": "^7.8.1",
 		"tailwind-merge": "^2.2.1",
 		"tailwindcss-animate": "^1.0.7",
 		"tippy.js": "^6.3.7",
