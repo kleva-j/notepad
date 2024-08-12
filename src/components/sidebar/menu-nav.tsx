@@ -1,27 +1,39 @@
 import type { PropsWithChildren } from "react";
+import type { Menus } from "@/types";
 
-import { NotepadText, Trash2, Star } from "lucide-react";
+import { type IconType, Icon } from "@/ui/icon";
+
+import { menuSubject$, menuSubjectAtom } from "@/store";
 import { Children, useMemo } from "react";
-import { IconType, Menus } from "@/types";
 import { MenuEnum } from "@/utils/enums";
 import { motion } from "framer-motion";
+import { useAtomValue } from "jotai";
 import { Button } from "@/ui/button";
-import { appState } from "@/store";
+import { icons } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useAtom } from "jotai";
 
 export function MenuBar() {
-	const [{ activeMenu }, setAppState] = useAtom(appState);
-
-	const setActive = (menu: Menus) => {
-		setAppState((state) => ({ ...state, activeMenu: menu }));
-	};
+	const activeMenu = useAtomValue(menuSubjectAtom);
+	const setActive = (menu: Menus) => menuSubject$.next(menu);
 
 	const menuItems = useMemo(
 		() => [
-			{ icon: NotepadText, label: "All Notes", menu: MenuEnum.notes },
-			{ icon: Star, label: "Favorites", menu: MenuEnum.favorites },
-			{ icon: Trash2, label: "Trash", menu: MenuEnum.trash },
+			{
+				icon: "NotebookPen" as IconType,
+				label: "Scratchpad",
+				menu: MenuEnum.scratchpad,
+			},
+			{
+				icon: "NotepadText" as IconType,
+				label: "All Notes",
+				menu: MenuEnum.notes,
+			},
+			{
+				icon: "Star" as IconType,
+				label: "Favorites",
+				menu: MenuEnum.favorites,
+			},
+			{ icon: "Trash2" as IconType, label: "Trash", menu: MenuEnum.trash },
 		],
 		[],
 	);
@@ -44,7 +56,7 @@ export function MenuBar() {
 type MenuItemProps = {
 	active?: boolean;
 	label?: string | React.ReactNode;
-	icon?: IconType;
+	icon: keyof typeof icons;
 	className?: string;
 	handleClick?: () => void;
 } & PropsWithChildren;
@@ -52,7 +64,7 @@ type MenuItemProps = {
 const MotionButton = motion(Button);
 
 export function MenuItem(props: MenuItemProps) {
-	const { active, icon: Icon, label, className, handleClick, ...rest } = props;
+	const { active, icon, label, className, handleClick, ...rest } = props;
 
 	return (
 		<MotionButton
@@ -65,7 +77,9 @@ export function MenuItem(props: MenuItemProps) {
 			size="lg"
 			{...rest}
 		>
-			{Icon && <Icon className="mr-3 h-5 w-5 stroke-[0.85] text-inherit" />}
+			{Icon && (
+				<Icon name={icon} className="mr-3 h-5 w-5 stroke-[0.85] text-inherit" />
+			)}
 			{label && (
 				<p className="truncate whitespace-nowrap tracking-wide text-inherit">
 					{label}

@@ -3,16 +3,13 @@ import { Icon } from "@/ui/icon";
 
 import Link from "next/link";
 
-export type LinkPreviewPanelProps = {
+export type Props = {
 	url: string;
 	onEdit: () => void;
 	onClear: () => void;
 };
 
-export const LinkPreviewPanel = (props: LinkPreviewPanelProps) => {
-	const { url, onEdit, onClear } = props;
-	console.log("url", url);
-
+export const LinkPreviewPanel = ({ url, onEdit, onClear }: Props) => {
 	return (
 		<Surface className="flex items-center gap-2 p-2">
 			<Link

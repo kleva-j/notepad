@@ -12,11 +12,11 @@ import { memo, useCallback, useMemo } from "react";
 import { ResizablePanel } from "@/ui/resizable";
 import { useAtom, useAtomValue } from "jotai";
 import { Separator } from "@/ui/separator";
+import { menuSubjectAtom } from "@/store";
 import { InputBlock } from "@/ui/input";
 import { Folder } from "@/utils/enums";
 import { ListItem, Toolbar } from ".";
 import { Button } from "@/ui/button";
-import { appState } from "@/store";
 import {
 	filterNotesByFolder,
 	generateFakeNotes,
@@ -30,7 +30,7 @@ export default function Layout() {
 	const [includeTrash, setIncludeTrash] = useAtom(IncludeTrashAtom);
 	const [activeNoteId, setActiveNoteId] = useAtom(ActiveNoteIdAtom);
 
-	const { activeMenu } = useAtomValue(appState);
+	const activeMenu = useAtomValue(menuSubjectAtom);
 	const { activeCategoryId: categoryId } = useAtomValue(categoryStateAtom);
 
 	const handleClickItem = useCallback((id: string) => setActiveNoteId(id), []);
@@ -80,7 +80,7 @@ export default function Layout() {
 			minSize={25}
 			className="bg-neutral-100 dark:bg-neutral-900/60"
 		>
-			<section className="relative h-full border-l py-3">
+			<section className="relative h-full py-3">
 				<div className="w-full px-4">
 					<InputBlock
 						type="text"
@@ -111,7 +111,7 @@ export default function Layout() {
 							onReorder={setNotes}
 							className="flex flex-col gap-y-4 pb-5"
 						>
-							<AnimatePresence initial={false}>
+							<AnimatePresence initial={false} mode="popLayout">
 								{filteredNotes?.map((item, index) => (
 									<MemoizedListItem
 										key={item.id}

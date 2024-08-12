@@ -45,6 +45,7 @@ export interface NoteItem {
 	lastUpdated: string;
 	categoryId?: string;
 	favorite?: boolean;
+	scratchpad?: boolean;
 }
 
 export interface SyncPayload {

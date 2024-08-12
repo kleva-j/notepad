@@ -1,10 +1,10 @@
 import type { CategoryItem } from "@/types";
 
 import { Popover, PopoverContent, PopoverTrigger } from "@/ui/popover";
-import { FolderOpen, Folder, PencilIcon, Trash } from "lucide-react";
 import { Reorder, useDragControls } from "framer-motion";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { ListItemVariants } from "@/utils/motion";
+import { PencilIcon, Trash } from "lucide-react";
 import { atom, useAtom } from "jotai";
 import { Button } from "@/ui/button";
 import { cn } from "@/lib/utils";
@@ -60,7 +60,7 @@ export const CategoryListItem = (props: ListItemProps) => {
 			<MenuItem
 				label={item.text}
 				active={isActive}
-				icon={isActive ? FolderOpen : Folder}
+				icon={isActive ? "FolderOpen" : "Folder"}
 				handleClick={() => onClick?.(item.id)}
 				className={cn(
 					"w-full bg-neutral-800/5 text-sm capitalize shadow",
