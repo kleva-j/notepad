@@ -50,3 +50,5 @@ certificates
 testapp
 
 src/lib/db/migrations
+src/components/notelist/sortable-list.tsx
+src/components/notelist/sortable-listitem.tsx
