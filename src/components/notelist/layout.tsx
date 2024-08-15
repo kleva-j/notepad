@@ -6,7 +6,7 @@ import type { NoteItem } from "@/types";
 
 import { ActiveNoteIdAtom, IncludeTrashAtom, NotesAtom } from "@/store/note";
 import { LayoutGroup, Reorder, AnimatePresence } from "framer-motion";
-import { Plus, SearchIcon, SendHorizonal } from "lucide-react";
+import { SearchIcon, SendHorizonal } from "lucide-react";
 import { categoryStateAtom } from "@/store/category";
 import { memo, useCallback, useMemo } from "react";
 import { ResizablePanel } from "@/ui/resizable";
@@ -16,7 +16,6 @@ import { menuSubjectAtom } from "@/store";
 import { InputBlock } from "@/ui/input";
 import { Folder } from "@/utils/enums";
 import { ListItem, Toolbar } from ".";
-import { Button } from "@/ui/button";
 import {
 	filterNotesByFolder,
 	generateFakeNotes,
@@ -45,10 +44,6 @@ export default function Layout() {
 			),
 		[notes, activeMenu, categoryId, includeTrash],
 	);
-
-	const handleAddNewNote = useCallback(() => {
-		setNotes((notes) => [...notes, ...generateFakeNotes()]);
-	}, []);
 
 	const handleEmptyTrash = useCallback(() => {
 		setNotes((notes) => notes.filter((note) => note && !note.trash));
@@ -127,13 +122,6 @@ export default function Layout() {
 						</Reorder.Group>
 					</LayoutGroup>
 				</div>
-
-				<Button
-					className="absolute bottom-6 right-6 h-10 w-10 rounded-full bg-amber-400 p-1 shadow-lg transition-colors duration-300 hover:bg-amber-300"
-					onClick={handleAddNewNote}
-				>
-					<Plus />
-				</Button>
 			</section>
 		</ResizablePanel>
 	);

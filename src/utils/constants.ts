@@ -48,12 +48,14 @@ export enum LabelText {
 	COPY_REFERENCE_TO_NOTE = "Copy reference to note",
 }
 
+export const TitleSchema = z
+	.string()
+	.min(2, { message: "Title must be at least 2 characters." })
+	.max(40, { message: "Title must not exceed 40 characters." });
+
 export const NoteSchema = z.object({
 	id: z.string().length(12, { message: "ID must be 12 characters long." }),
-	title: z
-		.string()
-		.min(2, { message: "Title must be at least 2 characters." })
-		.max(40, { message: "Title must not exceed 40 characters." }),
+	title: TitleSchema,
 	content: z.string(),
 	checked: z.boolean(),
 	trash: z.boolean(),
@@ -62,3 +64,8 @@ export const NoteSchema = z.object({
 	favorite: z.boolean().optional(),
 	categoryId: z.string().optional(),
 });
+
+export const CategorySchema = z
+	.string()
+	.min(1, { message: "Must be 1 or more characters long" })
+	.max(20, { message: "Must be 20 or fewer characters long" });
