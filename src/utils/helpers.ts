@@ -44,24 +44,32 @@ export function generateId(prefix = "n") {
 	return `${prefix}-${faker.string.nanoid(10)}`;
 }
 
+export const generateNote = (initialNote?: Partial<NoteItem>) => ({
+	id: generateId(),
+	title: faker.lorem.sentence({ min: 1, max: 5 }),
+	content: faker.lorem.paragraph({ min: 1, max: 3 }),
+	categoryId: generateId("c"),
+	trash: faker.datatype.boolean(),
+	created: faker.date.recent({ days: 10 }).toISOString(),
+	lastUpdated: faker.date.recent({ days: 3 }).toISOString(),
+	favorite: faker.datatype.boolean(),
+	checked: false,
+	...initialNote,
+});
+
 /**
  * Generates fake notes with specified length.
  *
  * @param {number} length - The number of fake notes to generate.
  * @return {NoteItem[]} An array of fake NoteItem objects.
  */
-export function generateFakeNotes(length: number = 1): NoteItem[] {
-	return Array.from({ length }, (_, i) => i).map(() => ({
-		id: generateId(),
-		title: faker.lorem.sentence({ min: 1, max: 5 }),
-		content: faker.lorem.paragraph({ min: 1, max: 3 }),
-		categoryId: generateId("c"),
-		trash: faker.datatype.boolean(),
-		created: faker.date.recent({ days: 10 }).toISOString(),
-		lastUpdated: faker.date.recent({ days: 3 }).toISOString(),
-		favorite: faker.datatype.boolean(),
-		checked: false,
-	}));
+export function generateFakeNotes(
+	length: number = 1,
+	initialNote?: Partial<NoteItem>,
+): NoteItem[] {
+	return Array.from({ length }, (_, i) => i).map(() =>
+		generateNote(initialNote),
+	);
 }
 
 /**

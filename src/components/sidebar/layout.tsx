@@ -9,6 +9,7 @@ import { AnimatePresence, LayoutGroup, Reorder } from "framer-motion";
 import { memo, useCallback, useState, useRef } from "react";
 import { menuSubject$, menuSubjectAtom } from "@/store";
 import { CategoryListItem } from "@/sidebar/listitem";
+import { CategorySchema } from "@/utils/constants";
 import { useAtom, useAtomValue } from "jotai";
 import { Loader2, Plus } from "lucide-react";
 import { useMousetrap } from "use-mousetrap";
@@ -19,7 +20,7 @@ import { MenuBar, MenuItem } from ".";
 import { Button } from "@/ui/button";
 import { Input } from "@/ui/input";
 import { cn } from "@/lib/utils";
-import { z } from "zod";
+
 import {
 	AlertDialogDescription,
 	AlertDialogContent,
@@ -32,11 +33,6 @@ import {
 } from "@/ui/alert-dialog";
 
 const MemoizedCategoryListItem = memo(CategoryListItem);
-
-const CategorySchema = z
-	.string()
-	.min(1, { message: "Must be 1 or more characters long" })
-	.max(15, { message: "Must be 15 or fewer characters long" });
 
 export default function Layout() {
 	const [categories, setCategories] = useAtom(CategoriesAtom);
