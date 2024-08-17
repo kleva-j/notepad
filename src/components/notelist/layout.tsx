@@ -5,6 +5,7 @@
 import type { NoteItem } from "@/types";
 
 import { ActiveNoteIdAtom, IncludeTrashAtom, NotesAtom } from "@/store/note";
+import { filterNotesByFolder, mapMenuToFolder } from "@/utils/helpers";
 import { LayoutGroup, Reorder, AnimatePresence } from "framer-motion";
 import { SearchIcon, SendHorizonal } from "lucide-react";
 import { categoryStateAtom } from "@/store/category";
@@ -16,11 +17,6 @@ import { menuSubjectAtom } from "@/store";
 import { InputBlock } from "@/ui/input";
 import { Folder } from "@/utils/enums";
 import { ListItem, Toolbar } from ".";
-import {
-	filterNotesByFolder,
-	generateFakeNotes,
-	mapMenuToFolder,
-} from "@/utils/helpers";
 
 const MemoizedListItem = memo(ListItem);
 
