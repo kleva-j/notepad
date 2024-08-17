@@ -89,7 +89,7 @@ export default function Layout() {
 	useMousetrap("command+m", handlePopup);
 
 	return (
-		<section className="flex h-full w-full max-w-[17rem] flex-col gap-y-4 border-r bg-neutral-900 px-4">
+		<section className="flex h-full w-full max-w-[17rem] flex-col gap-y-4 border-r dark:bg-neutral-900 px-4">
 			<MenuBar />
 			<div className="mt-4 flex flex-col">
 				<div className="flex items-center justify-between gap-x-2">
