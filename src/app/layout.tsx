@@ -2,6 +2,7 @@ import "@/styles/globals.css";
 
 import { type PropsWithChildren } from "react";
 
+import { ThemeProvider } from "@/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 import { fontMono, fontSans } from "@/lib/font";
 export { metadata } from "@/app/_metadata";
@@ -18,8 +19,15 @@ export default function RootLayout({ children }: PropsWithChildren) {
 					fontMono.variable,
 				)}
 			>
-				{children}
-				<Toaster />
+				<ThemeProvider
+					enableSystem
+					attribute="class"
+					defaultTheme="system"
+					disableTransitionOnChange
+				>
+					{children}
+					<Toaster />
+				</ThemeProvider>
 			</body>
 		</html>
 	);

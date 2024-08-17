@@ -1,10 +1,11 @@
 "use client";
 
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
-import { Folder, Settings2, File, Share2 } from "lucide-react";
+import { Folder, Settings2, File, Sun, Moon } from "lucide-react";
 import { AddCategory } from "@/editor/toolbar/AddCategory";
-import { AddNote } from "@/editor/toolbar/AddNote";
+import { SelectTheme } from "@/editor/toolbar/SelectTheme";
 import { useEffect, useRef, useState } from "react";
+import { AddNote } from "@/editor/toolbar/AddNote";
 import { useOnClickOutside } from "usehooks-ts";
 import { Button } from "@/ui/button";
 import { cn } from "@/lib/utils";
@@ -37,16 +38,14 @@ const ITEMS = [
 	},
 	{
 		id: 4,
-		label: "Share",
-		title: <Share2 className="h-5 w-5" />,
-		content: () => (
-			<div className="flex flex-col space-y-4">
-				<span className="text-zinc-600">
-					Click button to copy shareable link.
-				</span>
-				<Button variant="secondary">Copy</Button>
-			</div>
+		label: "Theme",
+		title: (
+			<>
+				<Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+				<Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+			</>
 		),
+		content: SelectTheme,
 	},
 ];
 
@@ -119,7 +118,7 @@ export function ExpandableToolbar() {
 								key={item.id}
 								aria-label={item.label}
 								className={cn(
-									"relative flex h-9 w-9 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98] dark:hover:bg-amber-400",
+									"relative flex h-9 w-9 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-zinc-500 transition-colors hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98] hover:bg-amber-300",
 									active === item.id ? "bg-amber-400 text-zinc-800" : "",
 								)}
 								type="button"
