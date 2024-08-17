@@ -60,6 +60,7 @@ export const AddNote = ({ replayAction }: ToolbarItemProps) => {
 				<Checkbox
 					checked={checked}
 					onCheckedChange={() => setChecked(!checked)}
+					className="border-gray-500 hover:border-gray-400/95"
 				/>
 				Open in editor
 			</Label>

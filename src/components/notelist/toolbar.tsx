@@ -1,12 +1,14 @@
 import type { Menus } from "@/types";
 
 import { SlideInAnimationVariants } from "@/utils/motion";
+import { AddNoteModal } from "@/notelist/add-note-modal";
 import { AnimatePresence, motion } from "framer-motion";
+import { Dialog, DialogTrigger } from "@/ui/dialog";
+import { Plus, TrashIcon } from "lucide-react";
+import { useCallback, useState } from "react";
 import { MenuEnum } from "@/utils/enums";
-import { TrashIcon } from "lucide-react";
 import { Checkbox } from "@/ui/checkbox";
 import { Button } from "@/ui/button";
-import { useCallback } from "react";
 import { Label } from "@/ui/label";
 import {
 	AlertDialogDescription,
@@ -19,6 +21,8 @@ import {
 	AlertDialogTitle,
 	AlertDialog,
 } from "@/ui/alert-dialog";
+
+import useMousetrap from "use-mousetrap";
 
 interface ToolbarProps {
 	activeMenu: Menus;
@@ -39,8 +43,14 @@ export const Toolbar = (props: ToolbarProps) => {
 		[onIncludeTrashChange],
 	);
 
+	const [open, setOpen] = useState(false);
+
+	const handleOpen = () => !open && setOpen(true);
+
+	useMousetrap("command+k", handleOpen);
+
 	return (
-		<div className="flex h-14 items-center justify-start bg-neutral-900 px-4">
+		<div className="flex h-14 items-center justify-between gap-x-4 bg-neutral-100 px-4 dark:bg-neutral-900">
 			<AnimatePresence>
 				{activeMenu === MenuEnum.notes && (
 					<motion.div
@@ -48,21 +58,26 @@ export const Toolbar = (props: ToolbarProps) => {
 						initial="hidden"
 						animate="visible"
 						exit="exit"
-						className="flex w-full cursor-pointer items-center justify-end gap-2 text-xs text-gray-500"
+						className="flex w-full cursor-pointer items-center gap-2 text-xs text-gray-500"
 					>
 						<Checkbox
 							id="terms"
-							className="border-gray-500"
+							className="border-gray-500 hover:border-gray-400/95"
 							checked={isIncludeTrashChecked}
 							onCheckedChange={handleCheckChange}
 						/>
-						<Label htmlFor="terms">Include trash</Label>
+						<Label
+							htmlFor="terms"
+							className="cursor-pointer text-gray-500 hover:text-gray-400/95"
+						>
+							Include trash
+						</Label>
 					</motion.div>
 				)}
 
 				{activeMenu === MenuEnum.trash && (
 					<motion.div
-						className="flex w-full items-center justify-end"
+						className="flex w-full items-center"
 						variants={SlideInAnimationVariants}
 						initial="hidden"
 						animate="visible"
@@ -98,6 +113,19 @@ export const Toolbar = (props: ToolbarProps) => {
 						</AlertDialog>
 					</motion.div>
 				)}
+
+				<Dialog open={open} onOpenChange={setOpen}>
+					<DialogTrigger asChild>
+						<Button
+							variant="ghost"
+							className="ml-auto justify-end bg-transparent px-0 text-gray-500 hover:bg-neutral-900/90 hover:text-gray-400/95"
+						>
+							<Plus className="mr-1.5 h-4 w-4" />
+							Create Note
+						</Button>
+					</DialogTrigger>
+					<AddNoteModal handleClose={() => setOpen(false)} />
+				</Dialog>
 			</AnimatePresence>
 		</div>
 	);
