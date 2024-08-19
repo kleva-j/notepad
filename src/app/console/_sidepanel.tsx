@@ -27,7 +27,7 @@ export const SidePanel = () => {
 			exit="closed"
 		>
 			<NoteList />
-			{!padIsActive && <ResizableHandle withHandle />}
+			<ResizableHandle withHandle={padIsActive} />
 		</motion.div>
 	);
 };
