@@ -69,8 +69,9 @@ export function MenuItem(props: MenuItemProps) {
 	return (
 		<MotionButton
 			className={cn(
-				"flex items-center justify-start rounded-md bg-transparent px-5 text-base text-gray-400 shadow-none hover:bg-neutral-800/70 hover:text-gray-200",
-				active && "bg-neutral-800 text-gray-200",
+				"flex items-center justify-start rounded-md bg-transparent px-5 text-base text-zinc-500 shadow-none hover:bg-amber-100 hover:text-neutral-700 dark:text-gray-400 dark:hover:bg-neutral-800/70 dark:hover:text-gray-200",
+				active &&
+					"bg-amber-400 text-neutral-800 hover:bg-amber-400 dark:bg-neutral-800 dark:text-gray-200",
 				className,
 			)}
 			onClick={handleClick}

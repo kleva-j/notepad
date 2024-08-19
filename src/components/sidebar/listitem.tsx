@@ -63,8 +63,8 @@ export const CategoryListItem = (props: ListItemProps) => {
 				icon={isActive ? "FolderOpen" : "Folder"}
 				handleClick={() => onClick?.(item.id)}
 				className={cn(
-					"w-full bg-neutral-800/5 text-sm capitalize shadow",
-					isActive && "bg-neutral-800 text-gray-200",
+					"w-full bg-neutral-800/5 text-sm capitalize shadow hover:bg-neutral-800/5",
+					isActive && "bg-neutral-800 hover:bg-neutral-800 text-gray-200 hover:text-gray-200",
 				)}
 			>
 				<Popover>
@@ -72,14 +72,14 @@ export const CategoryListItem = (props: ListItemProps) => {
 						<DotsVerticalIcon className="-mr-1 ml-auto h-4 w-4 text-gray-600 transition-colors duration-300 hover:text-gray-500" />
 					</PopoverTrigger>
 					<PopoverContent
-						className="max-w-min bg-neutral-900/90 p-2 shadow-lg"
+						className="max-w-min dark:bg-neutral-900/90 p-2 shadow-lg"
 						side="right"
 					>
 						<div className="flex w-full items-center">
 							<div className="flex gap-x-1">
 								<Button
 									variant="ghost"
-									className="h-8 w-8 bg-neutral-900 p-2"
+									className="h-8 w-8 dark:bg-neutral-900 p-2"
 									title="Edit"
 								>
 									<span className="sr-only">Edit</span>
@@ -87,7 +87,7 @@ export const CategoryListItem = (props: ListItemProps) => {
 								</Button>
 								<Button
 									variant="ghost"
-									className="h-8 w-8 bg-neutral-900 p-2"
+									className="h-8 w-8 dark:bg-neutral-900 p-2"
 									title="Delete"
 									onClick={(event) => {
 										event.stopPropagation();
@@ -98,7 +98,6 @@ export const CategoryListItem = (props: ListItemProps) => {
 									<Trash className="stroke-red-500 stroke-[2px]" />
 								</Button>
 							</div>
-							{/* <AnimatePresence></AnimatePresence> */}
 						</div>
 					</PopoverContent>
 				</Popover>

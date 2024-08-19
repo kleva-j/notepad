@@ -93,12 +93,12 @@ export default function Layout() {
 			<MenuBar />
 			<div className="mt-4 flex flex-col">
 				<div className="flex items-center justify-between gap-x-2">
-					<h3 className="px-2 text-xs uppercase tracking-wider text-gray-600 transition-colors duration-300 hover:text-gray-500">
+					<h3 className="px-2 text-xs uppercase font-semibold tracking-wider dark:text-zinc-600 transition-colors duration-300 dark:hover:text-zinc-500">
 						Categories
 					</h3>
 					<Button
 						variant="ghost"
-						className="text-gray-600 hover:bg-transparent hover:text-gray-500"
+						className="dark:text-gray-600 hover:bg-transparent dark:hover:text-gray-500"
 						onClick={handlePopup}
 					>
 						<span className="sr-only">Add Category</span>
@@ -117,7 +117,7 @@ export default function Layout() {
 							{showDialog && (
 								<MenuItem
 									icon="Folder"
-									className="w-full bg-neutral-800/5 text-sm capitalize shadow"
+									className="w-full dark:bg-neutral-800/5 text-sm capitalize dark:shadow bg-neutral-200 shadow-sm"
 								>
 									<Input
 										autoFocus
@@ -130,7 +130,7 @@ export default function Layout() {
 										)}
 										onBlur={() => setShowDialog(false)}
 									/>
-									<Loader2 className="stroke-text-500 duration-[2000ms] ml-auto h-7 w-7 animate-spin cursor-pointer stroke-[1.2px] px-0.5 py-0.5 text-gray-500 hover:text-gray-400" />
+									<Loader2 className="stroke-text-500 duration-[2000ms] ml-auto h-7 w-7 animate-spin cursor-pointer stroke-[1.2px] px-0.5 py-0.5 dark:text-gray-500 dark:hover:text-gray-400" />
 								</MenuItem>
 							)}
 							{categories.map((item, order) => (
