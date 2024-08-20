@@ -56,7 +56,7 @@ export const AddNoteModal = ({ handleClose }: AddNoteModalProps) => {
 	const setActiveNoteId = useSetAtom(ActiveNoteIdAtom);
 
 	const handleSubmit = ({ title, content, categoryId }: Schema) => {
-		const note = generateNote({ title, content, categoryId, trash: false });
+		const note = generateNote({ title, content, categoryId });
 		setNotes((notes) => [...notes, note]);
 		if (activeMenu !== MenuEnum.notes) menuSubject$.next(MenuEnum.notes);
 		setActiveNoteId(note.id);

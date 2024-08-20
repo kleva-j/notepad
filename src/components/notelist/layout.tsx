@@ -75,14 +75,14 @@ export default function Layout() {
 				<div className="w-full px-4">
 					<InputBlock
 						type="text"
-						root={{ variant: "filled" }}
+						root={{ variant: "filled", className: "bg-neutral-200/40" }}
 						placeholder="Search for notes"
-						leftIcon={<SearchIcon className="h-4 w-4" />}
-						rightIcon={<SendHorizonal className="h-4 w-4" />}
+						leftIcon={<SearchIcon className="h-4 w-4 text-gray-400 peer-focus:text-gray-600" />}
+						rightIcon={<SendHorizonal className="h-4 w-4 text-gray-400 peer-focus:text-gray-600" />}
 					/>
 				</div>
 
-				<Separator className="mt-3 h-px bg-neutral-800" />
+				<Separator className="mt-3 h-px dark:bg-neutral-800" />
 
 				<Toolbar
 					activeMenu={activeMenu}
@@ -92,7 +92,7 @@ export default function Layout() {
 					onIncludeTrashChange={handleIncludeTrashChange}
 				/>
 
-				<Separator className="h-px bg-neutral-800" />
+				<Separator className="h-px dark:bg-neutral-800" />
 
 				<div className="no-scrollbar my-4 h-[calc(100vh_-_theme(spacing.32))] overflow-y-auto px-4">
 					<LayoutGroup>

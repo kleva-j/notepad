@@ -50,7 +50,7 @@ export const Toolbar = (props: ToolbarProps) => {
 	useMousetrap("command+k", handleOpen);
 
 	return (
-		<div className="flex h-14 items-center justify-between gap-x-4 bg-neutral-100 px-4 dark:bg-neutral-900">
+		<div className="flex h-14 items-center justify-between gap-x-4 bg-neutral-200 px-4 dark:bg-neutral-900">
 			<AnimatePresence>
 				{activeMenu === MenuEnum.notes && (
 					<motion.div
@@ -58,17 +58,17 @@ export const Toolbar = (props: ToolbarProps) => {
 						initial="hidden"
 						animate="visible"
 						exit="exit"
-						className="flex w-full cursor-pointer items-center gap-2 text-xs text-gray-500"
+						className="flex cursor-pointer items-center gap-2 text-xs text-gray-500"
 					>
 						<Checkbox
 							id="terms"
-							className="border-gray-500 hover:border-gray-400/95"
+							className="border-gray-500 dark:data-[state=checked]:border-yellow-600 dark:data-[state=checked]:bg-yellow-600 data-[state=checked]:border-amber-400 data-[state=checked]:bg-amber-400 data-[state=checked]:text-white"
 							checked={isIncludeTrashChecked}
 							onCheckedChange={handleCheckChange}
 						/>
 						<Label
 							htmlFor="terms"
-							className="cursor-pointer text-gray-500 hover:text-gray-400/95"
+							className="cursor-pointer text-gray-500 dark:hover:text-gray-400/95"
 						>
 							Include trash
 						</Label>
@@ -88,7 +88,7 @@ export const Toolbar = (props: ToolbarProps) => {
 								<Button
 									disabled={isTrashEmpty}
 									variant="outline"
-									className="bg-transparent text-red-500 hover:text-red-500"
+									className="dark:bg-transparent border-red-200 dark:border-none text-red-500 hover:text-red-500 hover:bg-red-50/95"
 									size="sm"
 								>
 									<TrashIcon className="mr-1.5 h-4 w-4 stroke-red-500" />
@@ -118,10 +118,10 @@ export const Toolbar = (props: ToolbarProps) => {
 					<DialogTrigger asChild>
 						<Button
 							variant="ghost"
-							className="ml-auto justify-end bg-transparent px-0 text-gray-500 hover:bg-neutral-900/90 hover:text-gray-400/95"
+							className="ml-auto justify-end bg-white text-neutral-800 hover:bg-white/70 dark:bg-transparent dark:text-gray-500 dark:hover:bg-neutral-900/90 dark:hover:text-gray-400/95"
 						>
 							<Plus className="mr-1.5 h-4 w-4" />
-							Create Note
+							New Note
 						</Button>
 					</DialogTrigger>
 					<AddNoteModal handleClose={() => setOpen(false)} />
