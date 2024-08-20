@@ -10,6 +10,7 @@ import { atom, useAtom } from "jotai";
 import { Button } from "@/ui/button";
 import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { toast } from "sonner";
 
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
@@ -46,6 +47,18 @@ export const ListItem = (props: ListItemProps) => {
 
 	const date = dayjs(item.created).fromNow();
 
+	const setActiveNote = () => {
+		if (props.active) {
+			toast.info("Note is already active");
+			return;
+		}
+		if (item.trash) {
+			toast.info("Note is in trash, remove it first");
+			return;
+		}
+		onClick(item.id);
+	};
+
 	return (
 		<Reorder.Item
 			key={item.id}
@@ -63,20 +76,22 @@ export const ListItem = (props: ListItemProps) => {
 			whileDrag={{ zIndex: 9999 }}
 		>
 			<motion.div
-				onDoubleClick={() => onClick(item.id)}
+				onDoubleClick={setActiveNote}
 				className={cn(
-					"flex cursor-pointer flex-col justify-start rounded-md border bg-neutral-900/80 px-4 py-3 text-base capitalize text-gray-400 transition-colors duration-150 hover:bg-neutral-800/90 hover:text-gray-200",
-					item.favorite && "border-yellow-400/20",
-					item.trash && "border-red-400/20",
-					props.active && "bg-amber-400/40 hover:bg-amber-400/30",
+					"flex cursor-pointer flex-col justify-start rounded-md border bg-white px-4 py-3 text-base capitalize transition-colors duration-150 dark:bg-neutral-900/80 dark:text-gray-400 dark:hover:bg-neutral-800/90 dark:hover:text-gray-200",
+					item.favorite && "dark:border-yellow-400/20",
+					item.trash && "border-red-300/50 blur-[0.5px] dark:border-red-400/20",
+					props.active &&
+						"bg-yellow-50 dark:bg-amber-400/40 dark:hover:bg-amber-400/35",
 				)}
 			>
 				<div className="flex items-center justify-between">
 					<p
 						className={cn(
 							"truncate whitespace-nowrap tracking-wide text-inherit transition-colors duration-150",
-							item.favorite && "text-amber-200/60",
-							props.active && "text-white",
+							item.favorite && "text-yellow-500 dark:text-amber-200/60",
+							props.active && "dark:text-white",
+							{ "line-through decoration-red-300": item.trash },
 						)}
 					>
 						{item.title}
@@ -94,26 +109,32 @@ export const ListItem = (props: ListItemProps) => {
 				<div
 					className={cn(
 						"line-clamp-3 text-[13px] leading-[18px] text-gray-500 transition-colors duration-150",
-						props.active && "text-white",
+						props.active && "dark:text-white",
+						{ "line-through decoration-red-300": item.trash },
 					)}
 				>
 					{item.content}
 				</div>
 				<div className="my-2 flex items-center justify-between">
-					{item.favorite && (
-						<Button
-							variant="ghost"
-							className="h-4 w-4 stroke-yellow-500 stroke-[1.2px] px-0.5 py-0.5 text-gray-500 transition-colors duration-150 hover:bg-yellow-400/10 hover:text-gray-400"
-							asChild
-							onClick={() => updateNote(item.id, { favorite: !item.favorite })}
-						>
-							<Star />
-						</Button>
-					)}
+					<Button
+						variant="ghost"
+						className={cn(
+							"h-4 w-4 stroke-[1.2px] px-0.5 py-0.5 text-gray-500 transition-colors duration-150 hover:bg-yellow-400/10 hover:text-gray-400",
+							{
+								"stroke-yellow-500": item.favorite,
+								"fill-yellow-500": props.active && item.favorite,
+								"dark:stroke-white": props.active && !item.favorite,
+							},
+						)}
+						asChild
+						onClick={() => updateNote(item.id, { favorite: !item.favorite })}
+					>
+						<Star />
+					</Button>
 					<span
 						className={cn(
-							"ml-auto font-mono text-xs",
-							props.active && "text-white",
+							"ml-auto font-mono text-[11px] leading-4",
+							props.active && "dark:text-white",
 						)}
 					>
 						{date}

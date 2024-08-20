@@ -75,7 +75,7 @@ const InputBlock = ({
 }: InputBlockProps) => (
 	<div className={cn(inputVariants({ variant, size, className }))}>
 		{leftIcon && <span className="px-1">{leftIcon}</span>}
-		<Input {...input} />
+		<Input {...input} className={cn("peer", input.className)} />
 		{rightIcon && <span className="px-1">{rightIcon}</span>}
 	</div>
 );
