@@ -64,7 +64,8 @@ export const CategoryListItem = (props: ListItemProps) => {
 				handleClick={() => onClick?.(item.id)}
 				className={cn(
 					"w-full bg-neutral-800/5 text-sm capitalize shadow hover:bg-neutral-800/5",
-					isActive && "bg-neutral-800 hover:bg-neutral-800 text-gray-200 hover:text-gray-200",
+					isActive &&
+						"bg-neutral-800 text-gray-200 hover:bg-neutral-800 hover:text-gray-200",
 				)}
 			>
 				<Popover>
@@ -72,22 +73,18 @@ export const CategoryListItem = (props: ListItemProps) => {
 						<DotsVerticalIcon className="-mr-1 ml-auto h-4 w-4 text-gray-600 transition-colors duration-300 hover:text-gray-500" />
 					</PopoverTrigger>
 					<PopoverContent
-						className="max-w-min dark:bg-neutral-900/90 p-2 shadow-lg"
+						className="max-w-min p-2 shadow-lg dark:bg-neutral-900/90"
 						side="right"
 					>
 						<div className="flex w-full items-center">
 							<div className="flex gap-x-1">
-								<Button
-									variant="ghost"
-									className="h-8 w-8 dark:bg-neutral-900 p-2"
-									title="Edit"
-								>
+								<Button variant="ghost" className="h-8 w-8 p-2" title="Edit">
 									<span className="sr-only">Edit</span>
 									<PencilIcon className="stroke-[0.75]" />
 								</Button>
 								<Button
 									variant="ghost"
-									className="h-8 w-8 dark:bg-neutral-900 p-2"
+									className="h-8 w-8 p-2"
 									title="Delete"
 									onClick={(event) => {
 										event.stopPropagation();

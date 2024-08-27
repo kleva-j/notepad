@@ -55,6 +55,7 @@ export const AddNote = ({ replayAction }: ToolbarItemProps) => {
 				ref={inputRef}
 				className="max-h-[36px] text-zinc-400"
 				placeholder="Title here..."
+				autoFocus
 			/>
 			<Label className="mb-2 mt-5 flex items-center gap-x-2 text-xs font-medium leading-none text-zinc-400 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
 				<Checkbox
