@@ -122,7 +122,10 @@ export const ListItem = (props: ListItemProps) => {
 							</Button>
 						</DropdownMenuTrigger>
 						<DropdownMenuPortal>
-							<DropdownMenuContent align="start" className="w-[200px] dark:bg-neutral-900/95">
+							<DropdownMenuContent
+								align="start"
+								className="w-[200px] dark:bg-neutral-900/95"
+							>
 								<DropdownMenuLabel>Actions</DropdownMenuLabel>
 								<DropdownMenuGroup>
 									<DropdownMenuItem
@@ -179,7 +182,10 @@ export const ListItem = (props: ListItemProps) => {
 										</DropdownMenuSubContent>
 									</DropdownMenuSub>
 									<DropdownMenuSeparator />
-									<DropdownMenuItem className="text-red-600 cursor-pointer" onClick={onRemoveItem}>
+									<DropdownMenuItem
+										className="cursor-pointer text-red-600"
+										onClick={onRemoveItem}
+									>
 										<Trash className="mr-2 h-4 w-4" />
 										Move to Trash
 									</DropdownMenuItem>

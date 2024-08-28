@@ -23,7 +23,8 @@ export const AddNote = ({ replayAction }: ToolbarItemProps) => {
 	const activeMenu = useAtomValue(menuSubjectAtom);
 	const setActiveNoteId = useSetAtom(ActiveNoteIdAtom);
 
-	const addNewNote = () => {
+	const submitNewNote = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 		const text = inputRef.current?.value;
 		const parsedText = TitleSchema.safeParse(text);
 
@@ -45,10 +46,7 @@ export const AddNote = ({ replayAction }: ToolbarItemProps) => {
 	return (
 		<form
 			className="flex h-full flex-col justify-between"
-			onSubmit={(e) => {
-				e.preventDefault();
-				addNewNote();
-			}}
+			onSubmit={submitNewNote}
 		>
 			<Input
 				type="text"
