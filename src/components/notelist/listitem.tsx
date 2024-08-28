@@ -1,16 +1,40 @@
 "use client";
 
-import type { NoteItem } from "@/types";
+import type { CategoryItem, NoteItem } from "@/types";
 
+import { Edit, Pencil, Star, StarIcon, Trash } from "lucide-react";
 import { useDragControls, Reorder, motion } from "framer-motion";
 import { DotsVerticalIcon } from "@radix-ui/react-icons";
 import { ListItemVariants } from "@/utils/motion";
 import { Separator } from "@/ui/separator";
 import { atom, useAtom } from "jotai";
 import { Button } from "@/ui/button";
-import { Star } from "lucide-react";
+import { useState } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+
+import {
+	DropdownMenuSubTrigger,
+	DropdownMenuSubContent,
+	DropdownMenuSeparator,
+	DropdownMenuContent,
+	DropdownMenuTrigger,
+	DropdownMenuPortal,
+	DropdownMenuLabel,
+	DropdownMenuGroup,
+	DropdownMenuItem,
+	DropdownMenuSub,
+	DropdownMenu,
+} from "@/ui/dropdown-menu";
+
+import {
+	CommandInput,
+	CommandEmpty,
+	CommandGroup,
+	CommandList,
+	CommandItem,
+	Command,
+} from "@/ui/command";
 
 import relativeTime from "dayjs/plugin/relativeTime";
 import dayjs from "dayjs";
@@ -18,34 +42,24 @@ import dayjs from "dayjs";
 dayjs.extend(relativeTime);
 
 const isDraggingAtom = atom(false);
-const isDraggableAtom = atom(true);
 
 interface ListItemProps {
-	item: NoteItem;
 	order: number;
+	item: NoteItem;
 	active: boolean;
+	categories: CategoryItem[];
 	onClick: (id: string) => void;
-	onRemoveItem: (id: string) => void;
+	onRemoveItem: () => void;
 	updateNote: (id: string, note: Partial<NoteItem>) => void;
 }
 
 export const ListItem = (props: ListItemProps) => {
-	const { item, order, onClick, updateNote } = props;
+	const { item, order, onClick, updateNote, categories, onRemoveItem } = props;
 	const [, setIsDragging] = useAtom(isDraggingAtom);
-	const [isDraggable] = useAtom(isDraggableAtom);
+
+	const [isOpen, setIsOpen] = useState(false);
 
 	const dragControls = useDragControls();
-
-	const handleDragStart = (event: any) => {
-		setIsDragging(true);
-		dragControls.start(event, { snapToCursor: true });
-	};
-
-	const handleDragEnd = () => {
-		setIsDragging(false);
-	};
-
-	const date = dayjs(item.created).fromNow();
 
 	const setActiveNote = () => {
 		if (props.active) {
@@ -72,8 +86,8 @@ export const ListItem = (props: ListItemProps) => {
 			layoutId={`item-${item.id}`}
 			dragListener={!item.checked}
 			dragControls={dragControls}
-			onDragEnd={handleDragEnd}
 			whileDrag={{ zIndex: 9999 }}
+			onDragEnd={() => setIsDragging(false)}
 		>
 			<motion.div
 				onDoubleClick={setActiveNote}
@@ -96,13 +110,89 @@ export const ListItem = (props: ListItemProps) => {
 					>
 						{item.title}
 					</p>
-					<Button
-						variant="ghost"
-						className="ml-6 h-5 w-5 rounded-full px-1 py-1 text-gray-500 transition-colors duration-150"
-						asChild
-					>
-						<DotsVerticalIcon />
-					</Button>
+
+					<DropdownMenu open={isOpen} onOpenChange={setIsOpen}>
+						<DropdownMenuTrigger asChild>
+							<Button
+								variant="ghost"
+								className="ml-6 h-5 w-5 rounded-full px-1 py-1 text-gray-500 transition-colors duration-150"
+								asChild
+							>
+								<DotsVerticalIcon />
+							</Button>
+						</DropdownMenuTrigger>
+						<DropdownMenuPortal>
+							<DropdownMenuContent
+								align="start"
+								className="w-[200px] dark:bg-neutral-900/95"
+							>
+								<DropdownMenuLabel>Actions</DropdownMenuLabel>
+								<DropdownMenuGroup>
+									<DropdownMenuItem
+										className="cursor-pointer"
+										onClick={() =>
+											updateNote(item.id, { favorite: !item.favorite })
+										}
+									>
+										<StarIcon
+											className={cn("mr-2 h-4 w-4 stroke-[1px]", {
+												"stroke-yellow-500": !item.favorite,
+												"fill-yellow-500 stroke-yellow-500": item.favorite,
+											})}
+										/>
+										{item.favorite
+											? "Remove from Favorites"
+											: "Add to Favorites"}
+									</DropdownMenuItem>
+									<DropdownMenuItem className="cursor-pointer">
+										<Pencil className="mr-2 h-4 w-4 stroke-[1px]" />
+										Update Title
+									</DropdownMenuItem>
+									<DropdownMenuSeparator />
+									<DropdownMenuSub>
+										<DropdownMenuSubTrigger>
+											<Edit className="mr-2 h-4 w-4 stroke-[1px]" />
+											Edit Category
+										</DropdownMenuSubTrigger>
+										<DropdownMenuSubContent className="p-0">
+											<Command className="dark:bg-neutral-900/90">
+												<CommandInput
+													placeholder="Filter label..."
+													autoFocus={true}
+												/>
+												<CommandList>
+													<CommandEmpty>No Category found.</CommandEmpty>
+													<CommandGroup>
+														{categories.map(({ id, text }) => (
+															<CommandItem
+																key={"listitem-actions-" + id}
+																value={text}
+																className="cursor-pointer hover:bg-neutral-200"
+																onSelect={() => {
+																	updateNote(item.id, { categoryId: id });
+																	setIsOpen(false);
+																}}
+															>
+																{text}
+															</CommandItem>
+														))}
+													</CommandGroup>
+												</CommandList>
+											</Command>
+										</DropdownMenuSubContent>
+									</DropdownMenuSub>
+									<DropdownMenuSeparator />
+									<DropdownMenuItem
+										className="cursor-pointer text-red-600"
+										onClick={onRemoveItem}
+									>
+										<Trash className="mr-2 h-4 w-4" />
+										Move to Trash
+									</DropdownMenuItem>
+								</DropdownMenuGroup>
+							</DropdownMenuContent>
+						</DropdownMenuPortal>
+					</DropdownMenu>
 				</div>
 
 				<Separator className="my-1 h-full w-px bg-transparent" />
@@ -137,13 +227,9 @@ export const ListItem = (props: ListItemProps) => {
 							props.active && "dark:text-white",
 						)}
 					>
-						{date}
+						{dayjs(item.created).fromNow()}
 					</span>
 				</div>
-				<div
-					onPointerDown={isDraggable ? handleDragStart : undefined}
-					style={{ touchAction: "none" }}
-				/>
 			</motion.div>
 		</Reorder.Item>
 	);

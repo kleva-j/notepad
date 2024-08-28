@@ -7,8 +7,8 @@ import type { NoteItem } from "@/types";
 import { ActiveNoteIdAtom, IncludeTrashAtom, NotesAtom } from "@/store/note";
 import { filterNotesByFolder, mapMenuToFolder } from "@/utils/helpers";
 import { LayoutGroup, Reorder, AnimatePresence } from "framer-motion";
+import { CategoriesAtom, categoryStateAtom } from "@/store/category";
 import { SearchIcon, SendHorizonal } from "lucide-react";
-import { categoryStateAtom } from "@/store/category";
 import { memo, useCallback, useMemo } from "react";
 import { ResizablePanel } from "@/ui/resizable";
 import { useAtom, useAtomValue } from "jotai";
@@ -25,8 +25,10 @@ export default function Layout() {
 	const [includeTrash, setIncludeTrash] = useAtom(IncludeTrashAtom);
 	const [activeNoteId, setActiveNoteId] = useAtom(ActiveNoteIdAtom);
 
-	const activeMenu = useAtomValue(menuSubjectAtom);
 	const { activeCategoryId: categoryId } = useAtomValue(categoryStateAtom);
+
+	const categories = useAtomValue(CategoriesAtom);
+	const activeMenu = useAtomValue(menuSubjectAtom);
 
 	const handleClickItem = useCallback((id: string) => setActiveNoteId(id), []);
 
@@ -77,8 +79,12 @@ export default function Layout() {
 						type="text"
 						root={{ variant: "filled", className: "bg-neutral-200/40" }}
 						placeholder="Search for notes"
-						leftIcon={<SearchIcon className="h-4 w-4 text-gray-400 peer-focus:text-gray-600" />}
-						rightIcon={<SendHorizonal className="h-4 w-4 text-gray-400 peer-focus:text-gray-600" />}
+						leftIcon={
+							<SearchIcon className="h-4 w-4 text-gray-400 peer-focus:text-gray-600" />
+						}
+						rightIcon={
+							<SendHorizonal className="h-4 w-4 text-gray-400 peer-focus:text-gray-600" />
+						}
 					/>
 				</div>
 
@@ -105,13 +111,14 @@ export default function Layout() {
 							<AnimatePresence initial={false} mode="popLayout">
 								{filteredNotes?.map((item, index) => (
 									<MemoizedListItem
+										item={item}
 										key={item.id}
 										order={index}
-										item={item}
+										categories={categories}
 										onClick={handleClickItem}
 										updateNote={handleNoteUpdate}
-										onRemoveItem={handleRemoveItem}
 										active={activeNoteId === item.id}
+										onRemoveItem={() => handleRemoveItem(item.id)}
 									/>
 								))}
 							</AnimatePresence>

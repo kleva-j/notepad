@@ -91,7 +91,7 @@ export function ExpandableToolbar() {
 
 											return (
 												<motion.div
-													key={item.id}
+													key={`content-${item.id}`}
 													initial={{ opacity: 0 }}
 													animate={{ opacity: isSelected ? 1 : 0 }}
 													exit={{ opacity: 0 }}
@@ -115,10 +115,10 @@ export function ExpandableToolbar() {
 					<div className="flex space-x-2 p-2" ref={menuRef}>
 						{ITEMS.map((item) => (
 							<button
-								key={item.id}
+								key={`item-${item.id}`}
 								aria-label={item.label}
 								className={cn(
-									"relative flex h-9 w-9 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-zinc-500 transition-colors hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98] hover:bg-amber-300",
+									"relative flex h-9 w-9 shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-zinc-500 transition-colors hover:bg-amber-300 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98]",
 									active === item.id ? "bg-amber-400 text-zinc-800" : "",
 								)}
 								type="button"

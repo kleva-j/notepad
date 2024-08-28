@@ -41,14 +41,15 @@ const FormSchema = z.object({
 
 type AddNoteModalProps = {
 	handleClose: () => void;
+	defaultValues?: Schema;
 };
 
 type Schema = z.infer<typeof FormSchema>;
+const resolver = zodResolver(FormSchema);
 
-export const AddNoteModal = ({ handleClose }: AddNoteModalProps) => {
-	const form = useForm<Schema>({
-		resolver: zodResolver(FormSchema),
-	});
+export const AddNoteModal = (props: AddNoteModalProps) => {
+	const { handleClose, defaultValues = { title: "" } } = props;
+	const form = useForm<Schema>({ resolver, defaultValues });
 
 	const setNotes = useSetAtom(NotesAtom);
 	const categories = useAtomValue(CategoriesAtom);
@@ -83,6 +84,7 @@ export const AddNoteModal = ({ handleClose }: AddNoteModalProps) => {
 									<Input
 										className="border-b focus:border-b-neutral-700"
 										placeholder="Add title here..."
+										autoFocus
 										{...field}
 									/>
 								</FormControl>

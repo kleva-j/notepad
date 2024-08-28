@@ -23,7 +23,8 @@ export const AddNote = ({ replayAction }: ToolbarItemProps) => {
 	const activeMenu = useAtomValue(menuSubjectAtom);
 	const setActiveNoteId = useSetAtom(ActiveNoteIdAtom);
 
-	const addNewNote = () => {
+	const submitNewNote = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
 		const text = inputRef.current?.value;
 		const parsedText = TitleSchema.safeParse(text);
 
@@ -45,16 +46,14 @@ export const AddNote = ({ replayAction }: ToolbarItemProps) => {
 	return (
 		<form
 			className="flex h-full flex-col justify-between"
-			onSubmit={(e) => {
-				e.preventDefault();
-				addNewNote();
-			}}
+			onSubmit={submitNewNote}
 		>
 			<Input
 				type="text"
 				ref={inputRef}
 				className="max-h-[36px] text-zinc-400"
 				placeholder="Title here..."
+				autoFocus
 			/>
 			<Label className="mb-2 mt-5 flex items-center gap-x-2 text-xs font-medium leading-none text-zinc-400 peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
 				<Checkbox
