@@ -1,3 +1,5 @@
+import { IconType } from "@/ui/icon";
+
 export enum AuthActions {
 	SET_LOGIN_SUCCESS = "SET_LOGIN_SUCCESS",
 	SET_LOGIN_LOADING = "SET_LOGIN_LOADING",
@@ -34,3 +36,18 @@ export enum NotesActions {
 	SET_NOTES_SEARCH = "SET_NOTES_SEARCH",
 	PRUNE_VOID_NOTES = "PRUNE_VOID_NOTES",
 }
+
+const Tabs = {
+	preferences: { label: "Preferences", icon: "Settings", tab: "preferences" },
+	"keyboard-shortcuts": {
+		label: "Keyboard Shortcuts",
+		icon: "Command",
+		tab: "keyboard-shortcuts",
+	},
+};
+
+export type TabsType = keyof typeof Tabs;
+
+export const TabsGroup = Tabs as {
+	[key in TabsType]: { label: string; icon: IconType; tab: key };
+};

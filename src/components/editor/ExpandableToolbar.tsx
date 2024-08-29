@@ -1,13 +1,12 @@
 "use client";
 
 import { AnimatePresence, motion, MotionConfig } from "framer-motion";
-import { Folder, Settings2, File, Sun, Moon } from "lucide-react";
+import { Folder, File, Sun, Moon, Share2 } from "lucide-react";
 import { AddCategory } from "@/editor/toolbar/AddCategory";
 import { SelectTheme } from "@/editor/toolbar/SelectTheme";
 import { useEffect, useRef, useState } from "react";
 import { AddNote } from "@/editor/toolbar/AddNote";
 import { useOnClickOutside } from "usehooks-ts";
-import { Button } from "@/ui/button";
 import { cn } from "@/lib/utils";
 
 import useMeasure from "react-use-measure";
@@ -28,13 +27,8 @@ const ITEMS = [
 	{
 		id: 3,
 		label: "settings",
-		title: <Settings2 className="h-5 w-5" />,
-		content: () => (
-			<div className="flex flex-col space-y-4">
-				<span className="text-zinc-600">Open Settings.</span>
-				<Button variant="secondary">Open</Button>
-			</div>
-		),
+		title: <Share2 className="h-5 w-5" />,
+		content: () => <p>Click to Share</p>,
 	},
 	{
 		id: 4,
