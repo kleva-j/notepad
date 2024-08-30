@@ -8,6 +8,7 @@ import { CategoriesAtom, activeCategoryIdAtom } from "@/store/category";
 import { AnimatePresence, LayoutGroup, Reorder } from "framer-motion";
 import { memo, useCallback, useState, useRef } from "react";
 import { menuSubject$, menuSubjectAtom } from "@/store";
+import { DeleteWithNotesAtom } from "@/store/setting";
 import { CategoryListItem } from "@/sidebar/listitem";
 import { CategorySchema } from "@/utils/constants";
 import { useAtom, useAtomValue } from "jotai";
@@ -41,6 +42,7 @@ export default function Layout() {
 	const [showDialog, setShowDialog] = useState(false);
 
 	const activeMenu = useAtomValue(menuSubjectAtom);
+	const withNotes = useAtomValue(DeleteWithNotesAtom);
 
 	const handleClickItem = useCallback((id: string) => {
 		if (activeMenu !== MenuEnum.categories)
@@ -89,16 +91,16 @@ export default function Layout() {
 	useMousetrap("command+m", handlePopup);
 
 	return (
-		<section className="flex h-full w-full max-w-[17rem] flex-col gap-y-4 border-r dark:bg-neutral-900 px-4">
+		<section className="flex h-full w-full max-w-[17rem] flex-col gap-y-4 border-r px-4 dark:bg-neutral-900">
 			<MenuBar />
 			<div className="mt-4 flex flex-col">
 				<div className="flex items-center justify-between gap-x-2">
-					<h3 className="px-2 text-xs uppercase font-semibold tracking-wider dark:text-zinc-600 transition-colors duration-300 dark:hover:text-zinc-500">
+					<h3 className="px-2 text-xs font-semibold uppercase tracking-wider transition-colors duration-300 dark:text-zinc-600 dark:hover:text-zinc-500">
 						Categories
 					</h3>
 					<Button
 						variant="ghost"
-						className="dark:text-gray-600 hover:bg-transparent dark:hover:text-gray-500"
+						className="hover:bg-transparent dark:text-gray-600 dark:hover:text-gray-500"
 						onClick={handlePopup}
 					>
 						<span className="sr-only">Add Category</span>
@@ -117,7 +119,7 @@ export default function Layout() {
 							{showDialog && (
 								<MenuItem
 									icon="Folder"
-									className="w-full dark:bg-neutral-800/5 text-sm capitalize dark:shadow bg-neutral-200 shadow-sm"
+									className="w-full bg-neutral-200 text-sm capitalize shadow-sm dark:bg-neutral-800/5 dark:shadow"
 								>
 									<Input
 										autoFocus
@@ -158,8 +160,9 @@ export default function Layout() {
 						<AlertDialogHeader>
 							<AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
 							<AlertDialogDescription>
-								This action cannot be undone. This will permanently delete and
-								remove your data from our servers.
+								This action cannot be undone. This will permanently delete this
+								category with ID <strong>{selectedId}</strong>{" "}
+								{withNotes && "and all associated notes"}.
 							</AlertDialogDescription>
 						</AlertDialogHeader>
 						<AlertDialogFooter>

@@ -79,6 +79,7 @@ export interface NoteState {
 
 export interface SettingsState {
 	showExpandableToolbar: boolean;
+	deleteCategoryWithNotes: boolean;
 }
 
 export interface SyncState {
