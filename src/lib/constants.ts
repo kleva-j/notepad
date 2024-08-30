@@ -51,3 +51,15 @@ export type TabsType = keyof typeof Tabs;
 export const TabsGroup = Tabs as {
 	[key in TabsType]: { label: string; icon: IconType; tab: key };
 };
+
+export const Keybindings: Record<string, string> = {
+	"⌘+M": "Create a new category",
+	"⌘+K": "Create a new note",
+	// TODO: Add more shortcuts
+	// "⌘+⇧+N": "Empty trash",
+	// "⌘+⇧+K": "Download all notes",
+	// "⌘+⇧+M": "Open settings",
+	// "⌘+⇧+T": "Open search",
+	// "⌘+⇧+D": "Toggle dark mode",
+	// "⌘+⇧+S": "Toggle expandable toolbar",
+};
