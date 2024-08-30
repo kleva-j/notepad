@@ -78,12 +78,7 @@ export interface NoteState {
 }
 
 export interface SettingsState {
-	isOpen: boolean;
-	loading: boolean;
-	darkTheme: boolean;
-	sidebarVisible: boolean;
-	previewMarkdown: boolean;
-	codeMirrorOptions: { [key: string]: any };
+	showExpandableToolbar: boolean;
 }
 
 export interface SyncState {
