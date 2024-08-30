@@ -1,6 +1,7 @@
 "use client";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
+import { KeyboardShortcuts } from "@/settings/keyboard-shortcuts";
 import { TabsGroup } from "@/lib/constants";
 import { Settings2 } from "lucide-react";
 import { Button } from "@/ui/button";
@@ -10,7 +11,6 @@ import { Icon } from "@/ui/icon";
 import {
 	DialogTrigger,
 	DialogContent,
-	DialogFooter,
 	DialogHeader,
 	DialogTitle,
 	Dialog,
@@ -63,16 +63,10 @@ export const Settings = () => {
 						</div>
 					</TabsContent>
 
-					<TabsContent value="keyboard-shortcuts" className="mt-0">
-						<div className="ml-4 flex flex-col gap-y-2">
-							<h3 className="text-lg font-semibold">Keyboard Shortcuts</h3>
-						</div>
+					<TabsContent value="keyboard-shortcuts" className="mt-0 w-full">
+						<KeyboardShortcuts />
 					</TabsContent>
 				</Tabs>
-
-				<DialogFooter>
-					<Button type="submit">Save changes</Button>
-				</DialogFooter>
 			</DialogContent>
 		</Dialog>
 	);
