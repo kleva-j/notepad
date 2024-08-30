@@ -2,6 +2,7 @@
 
 import { ExpandableToolbar } from "@/editor/ExpandableToolbar";
 import { EmptyEditor } from "@/components/editor/EmptyEditor";
+import { ShowExpandableToolbarAtom } from "@/store/setting";
 import { ResizablePanel } from "@/components/ui/resizable";
 import { NoteEditor } from "@/editor/NoteEditor";
 import { ActiveNoteIdAtom } from "@/store/note";
@@ -12,6 +13,7 @@ import { useAtomValue } from "jotai";
 export const EditorWrapper = () => {
 	const activeMenu = useAtomValue(menuSubjectAtom);
 	const activeNoteId = useAtomValue(ActiveNoteIdAtom);
+	const showToolbar = useAtomValue(ShowExpandableToolbarAtom);
 
 	const showEditor = activeMenu === MenuEnum.scratchpad || activeNoteId;
 
@@ -21,7 +23,7 @@ export const EditorWrapper = () => {
 			className="relative bg-neutral-200 p-4 dark:bg-neutral-900"
 		>
 			{showEditor ? <NoteEditor /> : <EmptyEditor />}
-			<ExpandableToolbar />
+			{showToolbar && <ExpandableToolbar />}
 		</ResizablePanel>
 	);
 };

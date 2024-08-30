@@ -2,6 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/ui/tabs";
 import { KeyboardShortcuts } from "@/settings/keyboard-shortcuts";
+import { Preferences } from "@/settings/preferences";
 import { TabsGroup } from "@/lib/constants";
 import { Settings2 } from "lucide-react";
 import { Button } from "@/ui/button";
@@ -57,10 +58,8 @@ export const Settings = () => {
 						))}
 					</TabsList>
 
-					<TabsContent value="preferences" className="mt-0">
-						<div className="ml-4 flex flex-col gap-y-2">
-							<h3 className="text-lg font-semibold">Preferences</h3>
-						</div>
+					<TabsContent value="preferences" className="mt-0 w-full">
+						<Preferences />
 					</TabsContent>
 
 					<TabsContent value="keyboard-shortcuts" className="mt-0 w-full">
